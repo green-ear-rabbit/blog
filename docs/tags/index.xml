@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on A Hugo website</title>
-    <link>file:///c:/Users/Wanqi/Desktop/github/blog/docs/tags/</link>
+    <link>https://green-ear-rabbit.github.io/blog/tags/</link>
     <description>Recent content in Tags on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
     
-	<atom:link href="file:///c:/Users/Wanqi/Desktop/github/blog/docs/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://green-ear-rabbit.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>plot</title>
-      <link>file:///c:/Users/Wanqi/Desktop/github/blog/docs/tags/plot/</link>
+      <link>https://green-ear-rabbit.github.io/blog/tags/plot/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
       
-      <guid>file:///c:/Users/Wanqi/Desktop/github/blog/docs/tags/plot/</guid>
+      <guid>https://green-ear-rabbit.github.io/blog/tags/plot/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R Markdown</title>
-      <link>file:///c:/Users/Wanqi/Desktop/github/blog/docs/tags/r-markdown/</link>
+      <link>https://green-ear-rabbit.github.io/blog/tags/r-markdown/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
       
-      <guid>file:///c:/Users/Wanqi/Desktop/github/blog/docs/tags/r-markdown/</guid>
+      <guid>https://green-ear-rabbit.github.io/blog/tags/r-markdown/</guid>
       <description></description>
     </item>
     
     <item>
       <title>regression</title>
-      <link>file:///c:/Users/Wanqi/Desktop/github/blog/docs/tags/regression/</link>
+      <link>https://green-ear-rabbit.github.io/blog/tags/regression/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
       
-      <guid>file:///c:/Users/Wanqi/Desktop/github/blog/docs/tags/regression/</guid>
+      <guid>https://green-ear-rabbit.github.io/blog/tags/regression/</guid>
       <description></description>
     </item>
     
