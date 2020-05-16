@@ -1,0 +1,35 @@
+---
+title: "How to write an short essay in 10 minutes"
+author: "Wanqi Wang"
+date: "16/05/2020"
+output: html_document
+---
+
+I always like to help others. 
+
+If you realized you have a deadline in 10 minutes, don't worry, there is a way help you not fail the assignment. It's only the last resort, and it may only pass when following assumptions are meet:
+
+ - You are Year 1 or Year 2 undergraduate student
+ - Your assignment is to write a review essay without any data analysis.
+ - Check plagiarism and add citation
+ 
+Now I will show you how to use the [EssayBot](https://www.essaybot.com).
+
+First, write your title of essay and a little bit words to describe the title, like what I did:  
+![](C:/Users/Wanqi/Desktop/github/blog/image/eb1.PNG)
+
+Then you will select a first paragraph. I select this one:
+![](C:/Users/Wanqi/Desktop/github/blog/image/eb3.PNG)
+
+Then you can search and select the paragraph you need:
+![](C:/Users/Wanqi/Desktop/github/blog/image/eb2.PNG)
+
+Then you can finish a short essay, don't remember to change sentence and add citation on red highlight part, which may be a plagiarism.
+![](C:/Users/Wanqi/Desktop/github/blog/image/eb4.PNG)
+
+I need to state that, it's definitely a terrible essay, but it save time and less likely to fail in our undergraduate assignment. 
+
+I also need to state that, I never use it in any assignments or work. I don't take any interest and responsibility on this post... I am just happy to save others. 
+
+![](C:/Users/Wanqi/Desktop/github/blog/image/eb5.jpg)
+
