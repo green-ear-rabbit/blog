@@ -13,12 +13,13 @@
     
     <item>
       <title>A Plain Markdown Post</title>
-      <link>https://green-ear-rabbit.github.io/blog/2016/12/30/a-plain-markdown-post/</link>
-      <pubDate>Fri, 30 Dec 2016 21:49:57 -0700</pubDate>
+      <link>https://green-ear-rabbit.github.io/blog/2020/05/16/a-plain-markdown-post/</link>
+      <pubDate>Sat, 16 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://green-ear-rabbit.github.io/blog/2016/12/30/a-plain-markdown-post/</guid>
-      <description>This is a post written in plain Markdown (*.md) instead of R Markdown (*.Rmd). The major differences are:
- You cannot run any R code in a plain Markdown document, whereas in an R Markdown document, you can embed R code chunks (```{r}); A plain Markdown post is rendered through Blackfriday, and an R Markdown document is compiled by rmarkdown and Pandoc.  There are many differences in syntax between Blackfriday&amp;rsquo;s Markdown and Pandoc&amp;rsquo;s Markdown.</description>
+      <guid>https://green-ear-rabbit.github.io/blog/2020/05/16/a-plain-markdown-post/</guid>
+      <description>I always like to help others.
+If you realized you have a deadline in 10 minutes, don&amp;rsquo;t worry, there is a way help you not fail the assignment. It&amp;rsquo;s only the last resort, and it may only pass when following assumptions are meet:
+ You are Year 1 or Year 2 undergraduate student Your assignment is to write a review essay without any data analysis.  Now I will show you how to use the EssayBot.</description>
     </item>
     
     <item>
@@ -47,8 +48,20 @@ summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://green-ear-rabbit.github.io/blog/1/01/01/hello-i-am-wanqi/</guid>
-      <description>Hello! I am Wanqi!
-It&amp;rsquo;s really exciting to learn how to make a blog from my school. I am trying it just for fun. If there is any problems or conflicts, feel free to contact me via: greenearrabbit@163.com</description>
+      <description>Hello! I am Wanqi! I am an undergraduate student, and I am interested in epidemiology, clinical practice and statistical modeling.
+It&amp;rsquo;s really interesting and exciting to learn how to make a blog in school. If there is any problems or conflicts, feel free to contact me via: greenearrabbit@163.com
+I am also planning for my graduate school or research, if you wish coperation or willing to provide an opportunity, don&amp;rsquo;t hesitate to contact me!</description>
+    </item>
+    
+    <item>
+      <title>How to write an short essay in 10 minutes</title>
+      <link>https://green-ear-rabbit.github.io/blog/1/01/01/how-to-write-an-short-essay-in-10-minutes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/1/01/01/how-to-write-an-short-essay-in-10-minutes/</guid>
+      <description>I always like to help others.
+If you realized you have a deadline in 10 minutes, don’t worry, there is a way help you not fail the assignment. It’s only the last resort, and it may only pass when following assumptions are meet:
+You are Year 1 or Year 2 undergraduate studentYour assignment is to write a review essay without any data analysis.Check plagiarism and add citationNow I will show you how to use the EssayBot.</description>
     </item>
     
   </channel>
