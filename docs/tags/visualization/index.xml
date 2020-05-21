@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Visualization on A Hugo website</title>
+    <link>https://green-ear-rabbit.github.io/blog/tags/visualization/</link>
+    <description>Recent content in Visualization on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://green-ear-rabbit.github.io/blog/tags/visualization/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>An exploration of patient infomation of COVID in South Korea</title>
+      <link>https://green-ear-rabbit.github.io/blog/1/01/01/an-exploration-of-patient-infomation-of-covid-in-south-korea/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/1/01/01/an-exploration-of-patient-infomation-of-covid-in-south-korea/</guid>
+      <description>require(tidyverse)require(ggplot2)Overview of assignment requirementVisualizationofdataingraphicalformatusingR.Submission deadline: 2020-03-23 14:00 (5% of final mark, no re-sit)
+Obtain a public health dataset (different from Assignment 1, from published papers, government websites, or your own research) that is suitable for producing graphs.Import the dataset into an R project in an R markdown report.Plot three of the following graphs with the dataset in the report:scatterplot, pie chart, bar graph, and box graph.</description>
+    </item>
+    
+  </channel>
+</rss>

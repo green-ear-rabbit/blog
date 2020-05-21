@@ -3,16 +3,6 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://green-ear-rabbit.github.io/blog/2020/05/16/a-plain-markdown-post/</loc>
-    <lastmod>2020-05-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://green-ear-rabbit.github.io/blog/post/</loc>
-    <lastmod>2020-05-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://green-ear-rabbit.github.io/blog/</loc>
     <lastmod>2016-05-05T21:48:51-07:00</lastmod>
   </url>
@@ -23,38 +13,15 @@
   </url>
   
   <url>
+    <loc>https://green-ear-rabbit.github.io/blog/1/01/01/an-exploration-of-patient-infomation-of-covid-in-south-korea/</loc>
+  </url>
+  
+  <url>
     <loc>https://green-ear-rabbit.github.io/blog/categories/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
   </url>
   
   <url>
-    <loc>https://green-ear-rabbit.github.io/blog/2015/07/23/hello-r-markdown/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://green-ear-rabbit.github.io/blog/tags/plot/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://green-ear-rabbit.github.io/blog/categories/r/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://green-ear-rabbit.github.io/blog/tags/r-markdown/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://green-ear-rabbit.github.io/blog/tags/regression/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://green-ear-rabbit.github.io/blog/tags/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+    <loc>https://green-ear-rabbit.github.io/blog/tags/covid-19/</loc>
   </url>
   
   <url>
@@ -63,6 +30,22 @@
   
   <url>
     <loc>https://green-ear-rabbit.github.io/blog/1/01/01/how-to-write-an-short-essay-in-10-minutes/</loc>
+  </url>
+  
+  <url>
+    <loc>https://green-ear-rabbit.github.io/blog/tags/korea/</loc>
+  </url>
+  
+  <url>
+    <loc>https://green-ear-rabbit.github.io/blog/post/</loc>
+  </url>
+  
+  <url>
+    <loc>https://green-ear-rabbit.github.io/blog/tags/</loc>
+  </url>
+  
+  <url>
+    <loc>https://green-ear-rabbit.github.io/blog/tags/visualization/</loc>
   </url>
   
 </urlset>
