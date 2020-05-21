@@ -1,6 +1,6 @@
 ---
 title: "My assignments in school: Data clean and exploration"
-author: "Green Ear Tom"
+author: "W"
 date: "`r Sys.Date()`"
 subtitle: An exploration of Chinese Longitudinal Healthy Longevity Survey (CLHLS)
   cross-sectional dataset
