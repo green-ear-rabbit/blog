@@ -16,8 +16,8 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://green-ear-rabbit.github.io/blog/1/01/01/an-exploration-of-patient-infomation-of-covid-in-south-korea/</guid>
-      <description>require(tidyverse)require(ggplot2)Overview of assignment requirementVisualizationofdataingraphicalformatusingR.Submission deadline: 2020-03-23 14:00 (5% of final mark, no re-sit)
-Obtain a public health dataset (different from Assignment 1, from published papers, government websites, or your own research) that is suitable for producing graphs.Import the dataset into an R project in an R markdown report.Plot three of the following graphs with the dataset in the report:scatterplot, pie chart, bar graph, and box graph.</description>
+      <description>require(tidyverse)My research topicCOVID-19 has rapidly become a worldwide pandemic since December in 2019, with the symtoms of fever, cough, fatigue, and clinic manifestation of maniground-glass lung changes, hypoxaemia, and deranged gastrointestinal, liver and renal function(???). For severe cases, the disease will deteriorate to severe fibrotic lung (which is called “Withe Lung” by Chinese doctors), and multi-organ failure (???).
+Moreover, the virus has a high reproductive number (R0).</description>
     </item>
     
     <item>
@@ -29,6 +29,16 @@
       <description>Hello! I am Wanqi! I am an undergraduate student, and I am interested in epidemiology, clinical practice and statistical modeling.
 It&amp;rsquo;s really interesting and exciting to learn how to make a blog in school. If there is any problems or conflicts, feel free to contact me via: greenearrabbit@163.com
 I am also planning for my graduate school or research, if you wish coperation or willing to provide an opportunity, don&amp;rsquo;t hesitate to contact me!</description>
+    </item>
+    
+    <item>
+      <title>R-visualization-of-epidemic-in-United-States</title>
+      <link>https://green-ear-rabbit.github.io/blog/1/01/01/r-visualization-of-epidemic-in-united-states/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/1/01/01/r-visualization-of-epidemic-in-united-states/</guid>
+      <description>My research topicCOVID-19 has rapidly become a worldwide pandemic since December in 2019. China has controled the domestic cases effectively and timely by a series of polcy, e.g lockdown of Wuhan city, close of schools and company. However, United States has become the epicenter of this outbreak.
+U.S has adopted “mass screening” policy to identify cases, which is use rapid and wide testing to identify both active and inactive cases to control the further transmission.</description>
     </item>
     
   </channel>

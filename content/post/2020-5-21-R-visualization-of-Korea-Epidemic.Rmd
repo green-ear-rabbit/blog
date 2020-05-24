@@ -1,6 +1,6 @@
 ---
 title: 'An exploration of patient infomation of COVID in South Korea'
-author: "W"
+author: "Green Ear Rabbit"
 date: "21/05/2020"
 fontsize: 13pt
 output: pdf_document
@@ -18,19 +18,9 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
 ```{r}
 require(tidyverse)
-require(ggplot2)
 ```
 
-# Overview of assignment requirement
-VisualizationofdataingraphicalformatusingR.Submission deadline: 2020-03-23 14:00 (5% of final mark, no re-sit) 
 
- - Obtain a public health dataset (different from Assignment 1, from published papers, government websites, or your own research) that is suitable for producing graphs.
- - Import the dataset into an R project in an R markdown report.
- - Plot three of the following graphs with the dataset in the report:scatterplot, pie chart, bar graph, and box graph. For the scatter plot, please provide a linear regression, list the intercept, slope, and the correlation coeﬀicient using R. For the box graph, please add the mean value to each box. 
- - Knit the .Rmd file into a .pdf report.
- - Submit the data file, the R markdown file (.Rmd), the report file (.pdf), and the project file (.Rproj).
- 
- 
 # My research topic 
 COVID-19 has rapidly become a worldwide pandemic since December in 2019, with the symtoms of fever, cough, fatigue, and clinic manifestation of maniground-glass lung changes, hypoxaemia, and deranged gastrointestinal, liver and renal function[@chan_familial_2020]. For severe cases, the disease will deteriorate to severe fibrotic lung (which is called "Withe Lung" by Chinese doctors), and multi-organ failure [@cao_trial_2020].
 

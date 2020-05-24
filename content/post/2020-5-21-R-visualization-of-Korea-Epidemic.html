@@ -1,13 +1,13 @@
 ---
 title: 'An exploration of patient infomation of COVID in South Korea'
-author: "W"
+author: "Green Ear Rabbit"
 date: "21/05/2020"
 fontsize: 13pt
 output: pdf_document
 link-citations: yes
 mainfont: Palatino
 bibliography: "reference/a1.bib"
-subtitle: My assignment at school
+subtitle: A brief visualization in R
 biblio-style: apalike
 always_allow_html: true
 tags: ["Korea", "COVID-19", "Visualization"]
@@ -24,19 +24,7 @@ tags: ["Korea", "COVID-19", "Visualization"]
 <script src="/blog/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
 
 
-<pre class="r"><code>require(tidyverse)
-require(ggplot2)</code></pre>
-<div id="overview-of-assignment-requirement" class="section level1">
-<h1>Overview of assignment requirement</h1>
-<p>VisualizationofdataingraphicalformatusingR.Submission deadline: 2020-03-23 14:00 (5% of final mark, no re-sit)</p>
-<ul>
-<li>Obtain a public health dataset (different from Assignment 1, from published papers, government websites, or your own research) that is suitable for producing graphs.</li>
-<li>Import the dataset into an R project in an R markdown report.</li>
-<li>Plot three of the following graphs with the dataset in the report:scatterplot, pie chart, bar graph, and box graph. For the scatter plot, please provide a linear regression, list the intercept, slope, and the correlation coeﬀicient using R. For the box graph, please add the mean value to each box.</li>
-<li>Knit the .Rmd file into a .pdf report.</li>
-<li>Submit the data file, the R markdown file (.Rmd), the report file (.pdf), and the project file (.Rproj).</li>
-</ul>
-</div>
+<pre class="r"><code>require(tidyverse)</code></pre>
 <div id="my-research-topic" class="section level1">
 <h1>My research topic</h1>
 <p>COVID-19 has rapidly become a worldwide pandemic since December in 2019, with the symtoms of fever, cough, fatigue, and clinic manifestation of maniground-glass lung changes, hypoxaemia, and deranged gastrointestinal, liver and renal function<span class="citation">(<span class="citeproc-not-found" data-reference-id="chan_familial_2020"><strong>???</strong></span>)</span>. For severe cases, the disease will deteriorate to severe fibrotic lung (which is called “Withe Lung” by Chinese doctors), and multi-organ failure <span class="citation">(<span class="citeproc-not-found" data-reference-id="cao_trial_2020"><strong>???</strong></span>)</span>.</p>
@@ -211,8 +199,8 @@ summary(ds$pro)</code></pre>
 </div>
 <div id="conclusion" class="section level1">
 <h1>Conclusion</h1>
-<p>It’s only an pilot study, several study limitations merit noting. <strong>First</strong>, due to limited varaibles for travel history, co-morbidities, and symtoms, our analysis is relatively weak. <strong>Second</strong>, the generality is limited due to different policy and laws for disease control, different life and diety style between Korea and other counties. <strong>Third</strong>, even if the visulization is relatively aesthetic and colorful, different people may have different subjective opinion of “aesthetic”.</p>
-<p>Nevertheless, the report is an exploratory try of Korea COVID outbreak dataset and satisfied well with the assignment requirement, and a clear clue were tried to designed, rather than just make many plots. Both idea and code are finished independently. All relative online source are provided with a link, and all realtive research are provided citation and link-citation reference list.</p>
+<p>It’s only an pilot study, several study limitations merit noting. <strong>First</strong>, due to limited varaibles for travel history, co-morbidities, and symtoms, our analysis is relatively weak. <strong>Second</strong>, the generality is limited due to different policy and laws for disease control, different life and diety style between Korea and other counties.</p>
+<p>Nevertheless, the report is an exploratory try of Korea COVID outbreak dataset, and a clear clue were tried to designed, rather than just make many plots. Both idea and code are finished independently. All relative online source are provided with a link, and all realtive research are provided citation and link-citation reference list.</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>

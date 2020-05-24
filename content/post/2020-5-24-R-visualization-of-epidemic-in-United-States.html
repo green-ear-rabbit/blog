@@ -1,0 +1,226 @@
+---
+title: "R-visualization-of-epidemic-in-United-States"
+author: "Green Ear Rabbit"
+date: "24/05/2020"
+output:
+  html_document:
+    df_print: paged
+mainfont: Palatino
+fontsize: 13pt
+subtitle: The characteristics of the COVID-19 outbreak in United States
+bibliography: "reference/a1.bib"
+link-citations: yes
+biblio-style: apalike
+always_allow_html: yes
+---
+
+<script src="/blog/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/blog/rmarkdown-libs/plotly-binding/plotly.js"></script>
+<script src="/blog/rmarkdown-libs/typedarray/typedarray.min.js"></script>
+<script src="/blog/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/blog/rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/blog/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="/blog/rmarkdown-libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="/blog/rmarkdown-libs/plotly-main/plotly-latest.min.js"></script>
+
+
+<div id="my-research-topic" class="section level1">
+<h1>My research topic</h1>
+<p>COVID-19 has rapidly become a worldwide pandemic since December in 2019. China has controled the domestic cases effectively and timely by a series of polcy, e.g lockdown of Wuhan city, close of schools and company. However, United States has become the epicenter of this outbreak.</p>
+<p>U.S has adopted “mass screening” policy to identify cases, which is use rapid and wide testing to identify both active and inactive cases to control the further transmission.</p>
+<p>However, we don’t know if the “mass screening” is effective for disease control. Moreover, we don’t know if the health systems are overload, if resources are limited.</p>
+<p>This assignment use the data from <a href="https://docs.google.com/spreadsheets/u/2/d/e/2PACX-1vRwAqp96T9sYYq2-i7Tj0pvTf6XVHjDSMIKBdZHXiCGGdNC0ypEU9NbngS8mxea55JuCFuua1MUeOj5/pubhtml">COVID Tracking Project</a> in United States. Data were downloaded at 4pm ET. April 14th.</p>
+<p>We mainly focus on following research questions:</p>
+<ol style="list-style-type: decimal">
+<li>How’s the results and effectiveness of ‘mass screening’ in U.S. ?</li>
+<li>How’s the burden and chanlenge of health system in U.S.</li>
+<li>How’s the trend of mortality</li>
+<li>How’s the geographic disrubution?</li>
+<li>Is there any difference of health care system performance between different states?</li>
+</ol>
+</div>
+<div id="explore-the-trend" class="section level1">
+<h1>Explore the trend</h1>
+<pre class="r"><code>require(tidyverse)
+require(plotly)</code></pre>
+<p>Data download</p>
+<pre class="r"><code>md &lt;- readr::read_csv(&quot;data/USvirus.csv&quot;)</code></pre>
+<p>some varibale names contatin some un-preferred symbols, let’s change them.</p>
+<pre class="r"><code>names(md)[6]&lt;-&quot;hospitalized_curr&quot;
+names(md)[7]&lt;-&quot;hospitalized_cumu&quot;
+names(md)[8]&lt;-&quot;icu_curr&quot;
+names(md)[9]&lt;-&quot;icu_cumu&quot;
+names(md)[10]&lt;-&quot;ventilator_curr&quot;
+names(md)[11]&lt;-&quot;ventilator_cumu&quot;</code></pre>
+<p>by date</p>
+<pre class="r"><code>require(tidyverse)
+md_date &lt;-
+  md %&gt;% group_by(Date) %&gt;% summarise(
+    positive_all_state = sum(Positive, na.rm = TRUE),
+    negative_all_state = sum(Negative, na.rm = TRUE),
+    pending_all_state = sum(Pending, na.rm = TRUE),
+    hospitalized_curr_all_state = sum(hospitalized_curr, na.rm = TRUE),
+    hospitalized_cumu_all_state = sum(hospitalized_cumu, na.rm = TRUE),
+    icu_curr_all_sate = sum(icu_curr, na.rm = TRUE),
+    icu_cumu_all_state = sum(icu_cumu, na.rm = TRUE),
+    ventilator_curr_all_state = sum(ventilator_curr, na.rm = TRUE),
+    ventilator_cumu_all_state = sum(ventilator_cumu, na.rm = TRUE),
+    recover_all_state = sum(Recovered, na.rm = TRUE),
+    death_all_state = sum(Deaths, na.rm = TRUE)
+  )</code></pre>
+<pre class="r"><code>md_date$date2 &lt;- as.Date(paste(substr(md_date$Date,1,4),substr(md_date$Date,5,6),substr(md_date$Date,7,8),sep = &#39;-&#39;))</code></pre>
+<pre class="r"><code>md_date_w &lt;-
+  md_date %&gt;% select(-Date) %&gt;%  gather(key = &quot;type&quot;, value = &quot;number&quot;,-date2)</code></pre>
+<p>Let’s have a look at the epidemic in U.S.</p>
+<pre class="r"><code>ggplot(md_date_w, aes(date2, number, color = type)) +
+  geom_line(size = 0.8) +
+  geom_point(pch = 19, size = 2) +
+  theme_minimal(base_size = 14)+ 
+   scale_colour_manual(labels=c(&quot;Total death&quot;,&quot;Cumulative patients in hospital&quot;,&quot;Current patients in hospital&quot;,&quot;Cumulative patients in ICU&quot;,&quot;Current patients in ICU&quot;,&quot;Total negative cases form testing&quot;,&quot;Pending in testing&quot;,&quot;Total positive cases from testing&quot;,&quot;Total recovered cases&quot;,&quot;Cumulative patients on ventilator&quot;, &quot;Current patients on ventilator&quot;),values = rainbow(11), name=&quot;Categories&quot;)+
+ ggtitle(&quot;Figure 1: Exploration of the trend of the epidemic&quot;) +
+  xlab(&quot;Calendar date&quot;) +
+  ylab(&quot;Case number&quot;)</code></pre>
+<p><img src="/blog/post/2020-5-24-R-visualization-of-epidemic-in-United-States_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Because the range of cases is relatively various for different categories, the <em>Figure 1</em> might be difficult to provide clear and detailed information. Let’s continous the exploration.</p>
+</div>
+<div id="rq1-hows-the-results-and-effectiveness-of-mass-screening-in-u.s." class="section level1">
+<h1>RQ1: How’s the results and effectiveness of ‘mass screening’ in U.S.?</h1>
+<p>Following plots are to evaluate the effectiveness of “mass testing” policy</p>
+<p>Let’s have a look at cumulative results by 2020-04-13 before next step</p>
+<pre class="r"><code>legendtitle &lt;- list(yref=&#39;paper&#39;,xref=&quot;paper&quot;,y=1.03,x=1.15, text=&quot;Test results&quot;,showarrow=F)
+
+md_date_w %&gt;%
+  filter(
+    type %in% c(&quot;positive_all_state&quot;, &quot;negative_all_state&quot;,&quot;pending_all_state&quot;)) %&gt;%
+  filter(date2==as.Date(&quot;2020-04-13&quot;)) %&gt;% group_by(type) %&gt;% plot_ly(labels = ~type, values = ~number , type = &quot;pie&quot;) %&gt;% 
+layout(title =&quot;Figure 2: Cumulative results from mass screening by 2020-04-13&quot;, annotations=legendtitle)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"visdat":{"39c81dd518a9":["function () ","plotlyVisDat"]},"cur_data":"39c81dd518a9","attrs":{"39c81dd518a9":{"labels":{},"values":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Figure 2: Cumulative results from mass screening by 2020-04-13","annotations":[{"yref":"paper","xref":"paper","y":1.03,"x":1.15,"text":"Test results","showarrow":false}],"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"labels":["positive_all_state","negative_all_state","pending_all_state"],"values":[576774,2358232,17159],"type":"pie","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code># medthod 2: a better method
+t2&lt;-md_date_w %&gt;%
+  filter(type %in% c(&quot;positive_all_state&quot;,&quot;negative_all_state&quot;, &quot;pending_all_state&quot;)) %&gt;% filter(date2&gt;as.Date(&quot;2020-03-21&quot;)) %&gt;%
+  ggplot(aes(date2, number, color = type)) +
+  geom_point(pch = 19,
+             size = 2) +  geom_line(size = 0.8) +
+  theme_minimal(base_size = 14)+
+ scale_color_manual(labels=c(&quot;Total negative cases from testing&quot;,&quot;Pending cases&quot;,&quot;Total positive cases from testing&quot;),values = 1:3, name=&quot;Results from &#39;mass screening&#39;&quot;)+
+ ggtitle(&quot;Figure 3: Exploration of the results of mass screening&quot;) +
+  xlab(&quot;Calendar date&quot;) +
+  ylab(&quot;Case number&quot;)+
+  geom_smooth(method = loess)
+t2</code></pre>
+<p><img src="/blog/post/2020-5-24-R-visualization-of-epidemic-in-United-States_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>As Figure 3 shows, the results of mass screening indicates that negative cases are always more than positive cases, and screening size is increasing since the March 21st.</p>
+</div>
+<div id="rq2-lets-evaluate-the-burden-and-chanlenge-of-health-system-in-u.s." class="section level1">
+<h1>RQ2: Let’s evaluate the burden and chanlenge of health system in U.S.</h1>
+<p>this plot is to evaluate the burden and effectiveness of health systems, we use current patients in hospitalized/in icu/ on ventilator. Becuse we aim to evaluate the burden for clinical settings, people recover/ death and people who are isolated in house/community will be excluded in the analysis. Only the current patients in hospital are analyzed.</p>
+<pre class="r"><code>t3&lt;-md_date_w %&gt;%
+  filter(
+    type %in% c(&quot;hospitalized_curr_all_state&quot;, &quot;icu_curr_all_sate&quot;, &quot;ventilator_curr_all_state&quot;)) %&gt;%
+  filter(date2&gt;as.Date(&quot;2020-03-21&quot;)) %&gt;% 
+  ggplot(aes(date2, number, color = type)) +
+  geom_point(pch = 19,
+             size = 2) +  geom_line(size = 0.8) +
+  theme_minimal(base_size = 14) +
+  scale_color_manual(labels=c(&quot;Current patients in hospital&quot;,&quot;Current patients in ICU&quot;,&quot;Current patients on ventilator&quot;),values = 1:3, name=&quot;current patients in hospital&quot;)+
+ ggtitle(&quot;Figure 4: Exploration of the chanllenges in clinical settings&quot;) +
+  xlab(&quot;Calendar date&quot;) +
+  ylab(&quot;Case number&quot;)+
+  geom_smooth(method = loess)
+t3</code></pre>
+<p><img src="/blog/post/2020-5-24-R-visualization-of-epidemic-in-United-States_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Figure 4 shows that both patients in hospital, patients in ICU and patients on ventilator are keeping increasing since Mar 21st. However, the number of three categroies tend to become flat since April 11th.</p>
+<p>To further explore whther the trend is due to effectiveness of mass screening, next section will be focus on the death rate.</p>
+</div>
+<div id="rq3-the-trend-of-death-rate" class="section level1">
+<h1>RQ3: The trend of death rate</h1>
+<p>let’s make a bar chart to explore the recover and death</p>
+<pre class="r"><code>md_date_w %&gt;%
+  filter(
+    type %in% c(&quot;death_all_state&quot;, &quot;recover_all_state&quot;)) %&gt;%
+  filter(date2&gt;as.Date(&quot;2020-03-21&quot;)) %&gt;% 
+  ggplot() + geom_bar(aes(x = date2,y=number, fill = type),stat = &#39;identity&#39;, position = &quot;dodge&quot;)+ 
+  scale_colour_manual(labels=c(&quot;Total Death&quot;,&quot;Total Recovered&quot;),values = rainbow(2), name=&quot;Outcomes of patients&quot;)+
+ ggtitle(&quot;Figure 5: Exploration of the recovery and death in United States&quot;) +
+  xlab(&quot;Calendar date&quot;) +
+  ylab(&quot;Case number&quot;)</code></pre>
+<p><img src="/blog/post/2020-5-24-R-visualization-of-epidemic-in-United-States_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>let’s make a better one for rate</p>
+<pre class="r"><code>t5&lt;-md_date_w %&gt;%
+  filter(
+    type %in% c(&quot;death_all_state&quot;, &quot;recover_all_state&quot;)) %&gt;%
+  filter(date2&gt;as.Date(&quot;2020-03-21&quot;)) %&gt;% 
+  ggplot() + geom_bar(aes(x = date2,y=number, fill = type),stat = &#39;identity&#39;, position = &quot;fill&quot;)+
+  scale_colour_manual(labels=c(&quot;Total Death&quot;,&quot;Total Recovered&quot;),values = rainbow(2), name=&quot;Outcomes of patients&quot;)+
+ ggtitle(&quot;Figure 6: Exploration of the recovery rate in United States&quot;) +
+  xlab(&quot;Calendar date&quot;) +
+  ylab(&quot;Case number&quot;)
+t5</code></pre>
+<p><img src="/blog/post/2020-5-24-R-visualization-of-epidemic-in-United-States_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>As Table 5, Table 6 shows that the proportion of death and recover remain genrally unchanged.</p>
+</div>
+<div id="rq5-is-there-any-difference-of-healthcare-system-performance-between-different-states" class="section level1">
+<h1>RQ5: Is there any difference of healthcare system performance between different states?</h1>
+<p>We use mortality and proption of recovery as the measures of healthcare system performance.</p>
+<pre class="r"><code>md2&lt;-md
+md2[is.na(md2)] = 0
+names(md2)[2]&lt;-&quot;state&quot;</code></pre>
+<pre class="r"><code>md2$mortality&lt;-md2$Deaths/md2$Positive*100
+md2$prop_of_recovery&lt;-md2$Recovered/md2$Positive*100</code></pre>
+<pre class="r"><code>md2$date2 &lt;- as.Date(paste(substr(md2$Date,1,4),substr(md2$Date,5,6),substr(md2$Date,7,8),sep = &#39;-&#39;))</code></pre>
+<pre class="r"><code>md3 &lt;-
+  md2 %&gt;% filter(date2==as.Date(&quot;2020-04-13&quot;)) %&gt;% select(-Date) %&gt;%  gather(key = &quot;measures&quot;, value = &quot;percentage(%)&quot;,-c(state, Positive)) %&gt;% filter(measures %in% c(&quot;mortality&quot;,&quot;prop_of_recovery&quot;))  </code></pre>
+<p>boxplot</p>
+<pre class="r"><code>md3 %&gt;%  plot_ly(color = ~measures, y = ~`percentage(%)`,type = &quot;box&quot;) %&gt;% layout(title = &quot;Figure 8: mortality and proprtion of recovey in each state in U.S&quot;)</code></pre>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"visdat":{"39c8486e5587":["function () ","plotlyVisDat"]},"cur_data":"39c8486e5587","attrs":{"39c8486e5587":{"y":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Figure 8: mortality and proprtion of recovey in each state in U.S","yaxis":{"domain":[0,1],"automargin":true,"title":"`percentage(%)`"},"xaxis":{"domain":[0,1],"automargin":true},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"fillcolor":"rgba(102,194,165,0.5)","y":[2.88808664259928,2.65131226566685,2.12765957446809,3.29551593733117,3.07410059065688,3.95627277459656,4.49891637396308,2.71099744245524,2.15384615384615,2.34454638124363,3.4847915884341,3.7037037037037,1.80360721442886,2.51461988304094,1.89340813464236,3.6049943246311,4.24963574550753,4.50581395348837,4.94141619969435,4.20631899505139,3.14140023076637,2.9319606087735,2.72206303724928,6.24926857811586,4.24242424242424,2.59799453053783,18.1818181818182,3.33106730115568,1.77664974619289,1.78571428571429,2.41691842900302,2.08845208845209,2.33502538071066,3.78267063049672,2.08835341365462,3.83709188825311,5.15610338869205,3.92831541218638,4.78492025132914,3.3459595959596,2.16537873465846,4.98338870431894,2.45295698924731,2.47062368183188,0.691244239631336,1.94295900178253,2.06385732777218,0.761743546339399,2.59265703845485,1.96078431372549,3.74331550802139,4.87945442320622,4.49241540256709,1.43769968051118,0.363636363636364],"type":"box","name":"mortality","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(141,160,203,0.5)","y":[30.6859205776173,0,27.7304964539007,0,0,0,0,25.9335038363171,13.1076923076923,0,0,42.962962962963,62.124248496994,43.3333333333333,0,0,0,0,30.922058074376,0,0,6.74798567591764,39.1117478510029,1.74370977179637,51.030303030303,0,0,0,43.4010152284264,0,38.368580060423,0,24.2639593908629,0,23.6947791164659,0,12.2477965041455,0,41.807636539391,0,0,0,4.53629032258065,0,23.8479262672811,29.7860962566845,16.3166978282756,9.22556072788828,0,84.3137254901961,2.00534759358289,0,0,13.5782747603834,50.1818181818182],"type":"box","name":"prop_of_recovery","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"line":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Explanation of the outliner of mortality: When state is “MP”(Northern Mariana Islands), there is a significantly high mortality (18.18%). There is only 11 positive cases in Northern Mariana Island, and two of them died, by 2020-4-13. Because the relative small sample size comapre with other state, it’s not a statistically informed results.</p>
+<p>Explanation of the outliner of proportion of recovery: When state is “VI”(Virgin Islands), there is a significantly high proportion of recovery (84.31%). There is 51 confirmed cases, 43 recoved and 1 died. You may think that, it may due to the cases in this state is earlier, because the disease prognosis is slow, it’s the reason we observe a high proportion of recovery. Okay, let’s have a look if it is true.</p>
+<p>Then let’s visulize the daily increase case (not cumulative case) by each state, but we problem is that there is 56 states or areas, it’s rather difficult to visualize clearly in a plot. When you don’t know how to select sample, randomization is the best choose.</p>
+<pre class="r"><code>vi&lt;-subset(md,State==&quot;VI&quot;)
+vi$prev&lt;-c(as.matrix(vi[-1,3]),0)
+vi$new&lt;-vi$Positive-vi$prev
+nc&lt;-subset(md,State==&quot;NC&quot;)
+nc$prev&lt;-c(as.matrix(nc[-1,3]),0)
+nc$new&lt;-nc$Positive-nc$prev
+ak&lt;-subset(md,State==&quot;AK&quot;)
+ak$prev&lt;-c(as.matrix(ak[-1,3]),0)
+ak$new&lt;-ak$Positive-ak$prev
+ct&lt;-subset(md,State==&quot;CT&quot;)
+ct$prev&lt;-c(as.matrix(ct[-1,3]),0)
+ct$new&lt;-ct$Positive-ct$prev
+va&lt;-subset(md,State==&quot;VA&quot;)
+va$prev&lt;-c(as.matrix(va[-1,3]),0)
+va$new&lt;-va$Positive-va$prev
+look&lt;-rbind(vi,nc,ak,ct,va)</code></pre>
+<pre class="r"><code>look$date2 &lt;- as.Date(paste(substr(look$Date,1,4),substr(look$Date,5,6),substr(look$Date,7,8),sep = &#39;-&#39;))</code></pre>
+<pre class="r"><code>look %&gt;%
+  ggplot(aes(date2, new, color = State)) +
+  geom_point(pch = 19,
+             size = 2) +  geom_line(size = 0.8) +
+  theme_minimal(base_size = 14)+
+ ggtitle(&quot;Figure 9: Daily new diagnosis case number in five state&quot;) +
+  xlab(&quot;Calendar date&quot;) +
+  ylab(&quot;New diagnosis case number&quot;)</code></pre>
+<p><img src="/blog/post/2020-5-24-R-visualization-of-epidemic-in-United-States_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+As Figure 9 shows that, we didnot found that VI has a significantly more diagnosis number in earlier stage. So, the high recovery probability and faster recovery may be due to the nice air quality in Virgin Islands, which will help the recovery in lungs. Of cource, we cannot exclude the sample size is small.</p>
+<p>So if there is any relationship between diagnosis case number and mortality/ proportion of recovery? If so, it may suggest that the healthcare system in some states may be overload, and some preventable death are due to inability to get medical treatment.</p>
+<pre class="r"><code>md3 %&gt;% plot_ly(x= ~Positive, y = ~`percentage(%)`, color = ~measures, type = &quot;scatter&quot;) %&gt;% layout(title = &#39;Figure 10: relationship between diagnosis case number and mortality/ proportion of recovery&#39;)</code></pre>
+<div id="htmlwidget-3" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"visdat":{"39c86c9c1ae3":["function () ","plotlyVisDat"]},"cur_data":"39c86c9c1ae3","attrs":{"39c86c9c1ae3":{"x":{},"y":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Figure 10: relationship between diagnosis case number and mortality/ proportion of recovery","xaxis":{"domain":[0,1],"automargin":true,"title":"Positive"},"yaxis":{"domain":[0,1],"automargin":true,"title":"`percentage(%)`"},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[277,3734,1410,3702,22348,7684,13381,1955,1625,20601,13315,135,499,1710,1426,22025,8236,1376,1963,21016,26867,8936,698,25635,1650,4388,11,2942,394,4816,331,814,985,64584,1245,2971,195031,6975,2069,1584,24199,903,2976,3319,868,5610,13906,2363,5747,51,748,10411,3428,626,275],"y":[2.88808664259928,2.65131226566685,2.12765957446809,3.29551593733117,3.07410059065688,3.95627277459656,4.49891637396308,2.71099744245524,2.15384615384615,2.34454638124363,3.4847915884341,3.7037037037037,1.80360721442886,2.51461988304094,1.89340813464236,3.6049943246311,4.24963574550753,4.50581395348837,4.94141619969435,4.20631899505139,3.14140023076637,2.9319606087735,2.72206303724928,6.24926857811586,4.24242424242424,2.59799453053783,18.1818181818182,3.33106730115568,1.77664974619289,1.78571428571429,2.41691842900302,2.08845208845209,2.33502538071066,3.78267063049672,2.08835341365462,3.83709188825311,5.15610338869205,3.92831541218638,4.78492025132914,3.3459595959596,2.16537873465846,4.98338870431894,2.45295698924731,2.47062368183188,0.691244239631336,1.94295900178253,2.06385732777218,0.761743546339399,2.59265703845485,1.96078431372549,3.74331550802139,4.87945442320622,4.49241540256709,1.43769968051118,0.363636363636364],"type":"scatter","mode":"markers","name":"mortality","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[277,3734,1410,3702,22348,7684,13381,1955,1625,20601,13315,135,499,1710,1426,22025,8236,1376,1963,21016,26867,8936,698,25635,1650,4388,11,2942,394,4816,331,814,985,64584,1245,2971,195031,6975,2069,1584,24199,903,2976,3319,868,5610,13906,2363,5747,51,748,10411,3428,626,275],"y":[30.6859205776173,0,27.7304964539007,0,0,0,0,25.9335038363171,13.1076923076923,0,0,42.962962962963,62.124248496994,43.3333333333333,0,0,0,0,30.922058074376,0,0,6.74798567591764,39.1117478510029,1.74370977179637,51.030303030303,0,0,0,43.4010152284264,0,38.368580060423,0,24.2639593908629,0,23.6947791164659,0,12.2477965041455,0,41.807636539391,0,0,0,4.53629032258065,0,23.8479262672811,29.7860962566845,16.3166978282756,9.22556072788828,0,84.3137254901961,2.00534759358289,0,0,13.5782747603834,50.1818181818182],"type":"scatter","mode":"markers","name":"prop_of_recovery","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>There seems no clear relationship for
+- Positive cases and mortality
+- Positive cases and proption of recovery</p>
+<p>If up-limt of workload in healthcare system were reached, we would observed that there is negative association between positive cases in state and mortality.</p>
+<p>This figure indicates that, by 2020-04-13, there still not reach the up-limt of healthcare system, and healthcare system is overall well-performed.</p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>This brief analysis focus on five research questions and provide nice visualizations. By 2020-4-13, mass-screening is effective to identify cases, and the healthcare system to treat patients is well preformed.</p>
+<p>There is some difference in states. New York State has much more cases than other state. Virgin Islands has higher recovery probability and faster recovery of disease.</p>
+<p>However, more data is needed and further follow-up is necessary to draw more valid conclusion</p>
+</div>
+<div id="references" class="section level1">
+<h1>References:</h1>
+</div>
