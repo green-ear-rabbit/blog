@@ -1,0 +1,260 @@
+---
+title: "My assignments in school: Data clean and exploration"
+author: "W"
+date: "`r Sys.Date()`"
+subtitle: An exploration of Chinese Longitudinal Healthy Longevity Survey (CLHLS)
+  cross-sectional dataset
+fontsize: 13pt
+mainfont: Palatino
+bibliography: reference/a1.bib
+biblio-style: apalike
+link-citations: yes
+tags: ["CLHLS", "data", "R markdown"]
+---
+```{r include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
+# Overview 
+Select and calculate data statistics. Submission deadline: 2020-03-16 14:00 (5% of final mark, no re-sit). 
+
+ - Create an R project folder with a .Rproj file in it
+ - Find a public health dataset that has been published in literature or government webisites. The dataset must be raw data (not processed) and should consist of at least 20 rows of data with 4 or more columns of associated data. Save the dataset as a .csv file in the R project folder
+ - Create an R markdown file (.Rmd), in which the dataset is imported
+ - In the.Rmdfile,report the summary of the dataset with descriptive statistics, including the mean, minimum, maximum, range and standard deviation
+ - Knit the .Rmd file into a .html report
+ - Submit the data file (.csv), the R markdown file (.Rmd), the report file (.html), and the project file (.Rproj)
+
+# My research topic 
+Dementia is a syndrome with deterioration in thinking, memory and behaviour [@yu_late-life_2020]. WHO reported that there are 10 million of new cases of dementia annually by 2019, and if no effective prevention or treatment, the dementia people will reach 152 million in 2050 [@shirai_green_2019
+].  
+
+This short report aims to identify some potential risk factors of dementia, by a simple and clean exploratory analysis.
+
+# Task 1: Create R project 
+I have already create a R project floder and a .Rproj file in it. Moreover, it has been connected to github, however, according to the university policy, this repositary in github will not be available in public until the submission deadline. 
+
+ - Floder name: DPH206_A1
+ - R project name: DPH206_A1.Rproj
+ - Github repositary name: Wanqi-Wang/DPH206_A1
+
+# Task 2: Find a dataset and import 
+I use Chinese Longitudinal Healthy Longevity Survey (CLHLS) in this assignment. CLHLS is one of the world's largest ongoing longitudinal surveys of health and aging. The study population are old adults in a randomly selected half of the total number of cities and counties in the 22 provinces in mainland China [@zeng_chinese_2004;@shen_association_2019]. 
+
+The survey were strared at 1998, and follow up at 2000, 2002, 2005, 2008-09, 2011-12, 2014, 2017 (unpublished). Accoding to assignment requirment, I use 2014 wave of dataset, which is the most recently published dataset. Click [here](https://sites.duke.edu/centerforaging/programs/chinese-longitudinal-healthy-longevity-survey-clhls/data-downloads/) to download datasets, codebooks and questionnaires from the official website.
+
+
+ - import data. The dataset published is in .dta file, thereby I use a specific R package for importing .dta file: readstata13.
+```{r}
+library(readstata13)
+ds<-read.dta13("Data/Dataset 7 2014.dta")
+```
+
+ - let's save the dataset as .csv in the R project floder
+```{r}
+write.csv(ds, 'data/dataset 7 2014.csv', fileEncoding = 'UTF-8')
+```
+
+# Task 3: Create an R markdown file. 
+
+Here it is!
+ 
+# Task 4: Descriptive statistics 
+```{r}
+dim(ds)
+```
+The dataset has 7192 rows (objectives) and 877 columns (variables).
+
+Let's create a new variable for dementia, according to the codebook and questionnaire, dementia was measured by Chinese adoptive version Mini-Mental State Examination (MMSE) in this project, which include attention, calculation, registration, orientation, recall and language. The total score is 30, with 24 questions, each question contribute 1.25 point.
+
+According codebook, C11~C53C is 24 questions of MMSE. 
+(Question number: C11, C12, C13, C14, C15, C16,C21A, C21B, C21C, C31A, C31B, C31C, C31D,C31E, C32, C41A, C41B, C41C, C51A, C51B, C52, C53A,C53B, C53C. notoice that C22 question are not take into count of total mark.). **Table 1** shows the raw data of MMSE questions in this dataset. To save space and the computing time of R, only the first 10 rows are presented.
+```{r}
+mmseq<-subset(ds,select = C11:C53C)
+DT::datatable(mmseq[c(1:10),],caption = "Table 1. A brief look at first 10 rows of the dataset on MMSE questions")
+```
+
+Let's summary the data (results are hidden due to space limited)
+```{r,results='hide'}
+summary(mmseq)
+```
+
+              
+Let's recode and clean the data in MMSE questionnaire
+
+- For 22 questions of them, correct get 1, and wrong or not answer get 0, while there are also missing value in it. Let's recode it. 
+```{r}
+library(car)
+library(dplyr)
+mmseq <- mmseq %>% 
+     mutate_at(c("C11", "C12", "C13", "C14", "C15", "C21A", "C21B","C21C", "C31A", "C31B", "C31C", "C31D", "C31E", "C41A", "C41B", "C41C", "C51A", "C51B", "C52", "C53A", "C53B", "C53C"), funs(recode(., "correct"=1,"wrong"=0,"not able to answer"=0,"unable to do"=0, "not able to do"=0 ,.default=NaN)))
+```
+tea$c13.t <- recode(tea$c13, "'correct'=1;'wrong'=0;'not able to answer'=0;else=1")
+
+
+- For 1 question of them, that is, the number of kinds of food named in one minute, more than 1 get 1 point, other get 0, while there are also missing values. Let's recode it.
+```{r}
+mmseq$C16 <-ifelse(mmseq$C16<7, 0, ifelse(mmseq$C16==99,NA, 1))         
+```
+- For 1 question of them, that is,  draw the figure following the example provided on questionnaire sheet (a pentagon), correct get 1, wrong/unable to do/ cannot use pen get/disable get 0, while there is also missing values.
+```{r}
+library(dplyr)
+mmseq<- mmseq %>% 
+    mutate_at("C32", funs(recode(.,'correct'=1,'wrong'=0,'unable to do'=0,"can't use pen to draw the figure"=0,"not able to do this (disabled)"=0,.default=NaN)))
+```
+
+- Let's have a look at our clean data!
+```{r, results='hide'}
+summary(mmseq)
+```
+
+```{r}
+DT::datatable(mmseq[c(1:10),],caption = "Table 2. Cleaned version of the first 10 rows of the dataset on MMSE questions")
+```
+
+
+- So, now, let us calculate the total score of MMSE. (name "dc" means dementia score which total score 24; "dc30" means dementia score scaled to 30 as total mark.)
+```{r}
+mmseq$dc <- rowSums(cbind(mmseq$C11,
+                             mmseq$C12, mmseq$C13,mmseq$C14,mmseq$C15,mmseq$C21A,mmseq$C21B,mmseq$C21C,mmseq$C31A,mmseq$C31B,mmseq$C31C,mmseq$C31D,mmseq$C31E,mmseq$C41A,mmseq$C41B,mmseq$C41C,mmseq$C51A,mmseq$C51B,mmseq$C52,mmseq$C53A,mmseq$C53B,mmseq$C53C,mmseq$C32,mmseq$C16),
+                    na.rm = FALSE)
+summary(mmseq$dc)
+mmseq$dc30<-1.25*mmseq$dc
+summary(mmseq$dc30)
+```
+
+- The total dementia score ranged from 0 to 30, with higher score indicating better cognition function. We classified the MMSE score into three categories. An MMSE score ≥24 was considered no impairment; an MMSE score ≥18 and <24 was considered mild impairment;  an MMSE score <18 was considered moderate/severe impairment [@yu_late-life_2020]. 
+(name 'dcut' means the dementia score cutted by criteria, name 'dclass' means the classification results according to people's cognitive functions)
+("1" indicates moderate or severe impairment; "2" indicates mild impairment; "3" indicates no impairment)
+```{r}
+mmseq$dcut <- ifelse(mmseq$dc30<18,1,ifelse(mmseq$dc30>23.99, 3,ifelse(mmseq$dc30<24,2,NaN)))
+mmseq$dclass<- factor(mmseq$dcut)
+summary(mmseq$dclass)
+```
+
+
+- let us have a look at other variables
+```{r}
+mmseq$gender<-ds$A1 #gender
+mmseq$age<-ds$TRUEAGE #age
+mmseq$resi<-ds$RESIDENC #residence (city/town/rural)
+mmseq$prov<-ds$PROV #province
+mmseq$race<-ds$A2 #race
+mmseq<- mmseq %>%  mutate_at("race",funs(recode(.,'han'='han',.default='others')))
+```
+
+Diabetes Mellitus
+```{r}
+mmseq$DM<-recode(ds$G15B1, 'yes'='yes','no'='no',.default = NA_character_)
+summary(mmseq$DM)
+```
+
+Hypertention
+```{r}
+mmseq$HT<- recode(ds$G15A1,'yes'='yes','no'='no',.default = NA_character_)
+summary(mmseq$HT)
+```
+
+Somking status (previous smoker/current somker/never smoke)
+```{r}
+mmseq$d71.r<- recode(ds$D71, 'yes'=1,'no'=2,.default = NaN)
+mmseq$d72.r<- recode(ds$D72, 'yes'=1,'no'=2,.default = NaN)
+mmseq$SMK<-ifelse(mmseq$d71.r==1,3,ifelse(mmseq$d72.r==1,2,ifelse(mmseq$d72.r==2,1,NA)))
+mmseq$smk<-factor(mmseq$SMK,labels=c("never","prvious","current"))
+summary(mmseq$smk)
+```
+
+Drinking status (previous smoker/current smoker/never smoker)
+```{r}
+mmseq$d81.r<- recode(ds$D81, 'yes'=1,'no'=2,.default = NaN)
+mmseq$d82.r<- recode(ds$D82, 'yes'=1,'no'=2,.default = NaN)
+mmseq$DK<-ifelse(mmseq$d81.r==1,3,ifelse(mmseq$d82.r==1,2,ifelse(mmseq$d82.r==2,1,NA)))
+mmseq$dk<-factor(mmseq$DK,labels=c("never","prvious","current"))
+summary(mmseq$dk)
+```
+
+
+Descriptive statistics of MMSE score among participants
+```{r}
+summary(mmseq$dc30)
+mean(mmseq$dc30, na.rm = TRUE)
+max(mmseq$dc30, na.rm = TRUE)
+min(mmseq$dc30, na.rm = TRUE)
+range(mmseq$dc30, na.rm = TRUE)
+median(mmseq$dc30, na.rm = TRUE)
+sd(mmseq$dc30, na.rm = TRUE)
+```
+
+
+```{r,results='asis'}
+stargazer::stargazer(
+   mmseq[1:27],
+     type = "html",title = "Table 3. summary of each questions and total score of MMSE questionnaires", notes = "abbreviations: 'dc' indicates the unscaled version of MMSE dementia score which total score is 24, 'dc30' indicates the scaled version of MMSE dementia score which total score is 30")
+```
+
+
+
+
+- Creat a boxplot of MMSE score across gender
+
+```{r}
+boxplot(mmseq$dc30~mmseq$gender,
+        main = "Figure 2. Cogntive function measured by MMSE score of male and female",
+        xlab = "Gender",
+        ylab = "The MMSE score", col="springgreen", border="tomato3")
+```
+
+# Explore of risk factors
+```{r}
+#install.packages("Gmisc")
+library(Gmisc)
+mmseq$dclass_label<-factor(mmseq$dcut, levels=c(1,2,3),labels=c("Moderate or severe impair.", "Mild impair.","No impair."))
+```
+
+```{r}
+T1<-function(varname,digits=1){
+             getDescriptionStatsBy(mmseq[,varname],mmseq$dclass_label,add_total_col = TRUE,show_all_values = TRUE,hrzl_prop = TRUE, useNA = "no", statistics = TRUE, statistics.sig_lim = 10^-3, html=TRUE)
+}
+```
+
+```{r}
+table_data<- list()
+table_data[["Sex"]]<-T1("gender")
+table_data[["Age"]]<-T1("age")
+table_data[["Residency"]]<-T1("resi")
+table_data[["Diabetes"]]<-T1("DM")
+table_data[["Hypertention"]]<-T1("HT")
+table_data[["Smoking status"]]<-T1("smk")
+table_data[["Drinking status"]]<-T1("dk")
+```
+
+```{r}
+rgroup <- c()
+n.rgroup <- c()
+output_data <-NULL 
+ for(varlabel in names(table_data)){
+   output_data <- rbind(output_data,table_data[[varlabel]])
+rgroup <- c(rgroup,varlabel)
+n.rgroup <- c(n.rgroup, nrow(table_data[[varlabel]]))}
+```
+
+```{r}
+htmlTable(output_data,align="rrrr",rgroup=rgroup,
+          n.rgroup=n.rgroup,
+          rgroupCSSseparator="",
+          n.cgroup=n.cgroup,
+          rowlabel="",
+          caption="Table 4",
+          tfoot='An MMSE score ≥24 was considered no impairment; an MMSE score ≥18 and <24 was considered mild impairment; an MMSE score <18 was considered moderate/severe impairment',
+          ctable=TRUE)
+```
+
+# Conclusion 
+**Figure 2** shows the descriptive analysis of MMSE score across gender, which shows that female have a lower cognitive function than male. 
+
+Accoding to the results shown in **Table 4**, sex is female, older age, diabetes, hypertention, current and previous smoking, current or previous alcohol use, can predict lower cognitive functions and increased risk of cognitive impairment. 
+
+However, it's only an pilot study, several study limitations merit noting. **First**, due to cross-sectional study design, the causal relationship is difficult to inference, while the reverse relationship is less likely to exist. **Second**, the pilot analysis did not take confounding varaibles into consideration, which threat the validity of results. **Third**, diabetes and hypertention in the survey are based on self-report of participants or their proxies, which lead to potential under-report of disease status.
+
+# References 
+
