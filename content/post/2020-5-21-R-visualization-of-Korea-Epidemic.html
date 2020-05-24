@@ -6,8 +6,8 @@ fontsize: 13pt
 output: pdf_document
 link-citations: yes
 mainfont: Palatino
-bibliography: reference/a1.bib
-subtitle: My assignments at school 
+bibliography: "reference/a1.bib"
+subtitle: My assignment at school
 biblio-style: apalike
 always_allow_html: true
 tags: ["Korea", "COVID-19", "Visualization"]
@@ -101,7 +101,7 @@ text(80,mean(dst$contact_number)+ 40, labels = &quot;mean of contact number&quot
 text(20,50, labels = &quot;y=25.12-0.02x, r=0.0035&quot;)
 text(80,mean(dst$contact_number)+2*sd(dst$contact_number)+40, labels = &quot;mean+2SD of contact number&quot;)
 text(x=dst$trueage, y=dst$contact_number+ 40, labels=ifelse(dst$contact_number&gt;mean(dst$contact_number)+2*sd(dst$contact_number),dst$contact_number,&quot;&quot;), col=&quot;red&quot;) </code></pre>
-<p><img src="/blog/post/2020-5-21-My-assignments-in-school-Data-visualization_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/blog/post/2020-5-21-R-visualization-of-Korea-Epidemic_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>As you see, in this scatter plot, some points are higher than mean+2SD. Moverover, due to the large y limit of plot, we cannot clearly distinguish liner regression line and the horizontal line of mean. Thereby, I would remove “extreme point” and plot again, however, definately we cannot remove “extreme point” by the point higher than mean+2SD, becasue the contacted number, this variable, may not be normally distributed. Let’s test it!</p>
 <ul>
 <li>Produce a curve to see if the contacted number of patients are normally distributed.</li>
@@ -110,7 +110,7 @@ text(x=dst$trueage, y=dst$contact_number+ 40, labels=ifelse(dst$contact_number&g
 ggdensity(dst$contact_number, 
           main = &quot;Figure 2: Density plot of contact_number of patients&quot;,
           xlab = &quot;Number of contacted people from infection to isolation&quot;)</code></pre>
-<p><img src="/blog/post/2020-5-21-My-assignments-in-school-Data-visualization_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<p><img src="/blog/post/2020-5-21-R-visualization-of-Korea-Epidemic_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 Clearly shown in <strong>Figure 2</strong>, it’s not a normal distribution. So we cannot pick up outliers by traditional statistical methods used in normal distribution. Let’s use boxplot! A boxplot was used to detect outliers and display heterogeneity of distribution and effects of explanatory variables.</p>
 <ul>
 <li>Let’s make a boxplot for each age group, to detect outliers of contacted number</li>
@@ -123,7 +123,7 @@ ylab=&quot;Note: Number of contacted people from infection to isolation&quot;,
 col=rainbow(9),
 border=&quot;brown&quot;
 )</code></pre>
-<p><img src="/blog/post/2020-5-21-My-assignments-in-school-Data-visualization_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="/blog/post/2020-5-21-R-visualization-of-Korea-Epidemic_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Let’s create a better boxplot</p>
 <pre class="r"><code>boxplot(dst$contact_number~dst$agegroup,
 main=&quot;Figure 4: Contacted number across age group (outliner removed)&quot;,
@@ -136,7 +136,7 @@ border=&quot;brown&quot;, outline=FALSE
 outliers &lt;- boxplot(dst$contact_number~dst$agegroup, plot=FALSE)$out
 means &lt;- by(dst[-which(dst$contact_number %in% outliers),]$contact_number, dst[-which(dst$contact_number %in% outliers),]$agegroup, mean) 
 points(means, col = &#39;black&#39;, pch = 17)</code></pre>
-<p><img src="/blog/post/2020-5-21-My-assignments-in-school-Data-visualization_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="/blog/post/2020-5-21-R-visualization-of-Korea-Epidemic_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <ul>
 <li>Let’s exclude outliers and re-plot a scatter plot and its linear trend.</li>
 </ul>
@@ -149,7 +149,7 @@ sqrt(summary(lm2)$r.squared)</code></pre>
 <pre class="r"><code>plot(dst2$trueage, dst2$contact_number, pch = 16, col = &quot;green&quot;, xlim = c(0, 110), ylim = c(0, 70), xlab = &#39;Age of participants&#39;, ylab = &#39;Contact number from infected to isolated&#39;, main = &quot;Figure 5: Distribution of contacted number across age (outliers excluded)&quot;, sub = &quot;Note: Analysis sample N=253&quot;, las = 1) 
 abline(lm2, col=&quot;black&quot;) 
 text(90, 12,&quot;y=8.00-0.02x, r=0.057&quot;)</code></pre>
-<p><img src="/blog/post/2020-5-21-My-assignments-in-school-Data-visualization_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="/blog/post/2020-5-21-R-visualization-of-Korea-Epidemic_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <ul>
 <li>Produce a quantile-quantile plot of the residuals to test for the normality of residuals</li>
 </ul>
@@ -159,7 +159,7 @@ qq &lt;- ggplot(dst2, aes(sample=RESID)) +
     stat_qq_line() +
     ggtitle(&quot;Figure 6: Quantile-quantile plot of residuals&quot;)
 qq</code></pre>
-<p><img src="/blog/post/2020-5-21-My-assignments-in-school-Data-visualization_files/figure-html/unnamed-chunk-15-1.png" width="672" />
+<p><img src="/blog/post/2020-5-21-R-visualization-of-Korea-Epidemic_files/figure-html/unnamed-chunk-15-1.png" width="672" />
 Accoding to the qqplot shown in <strong>Figure 6</strong>, personally feeling, the residuals are mainly normally distributed. Thereby, I assume that a simple linaer regression is acceptable.</p>
 </div>
 <div id="rq2-is-there-any-cluster-transmission-of-disease-e.g.religious-group" class="section level1">
@@ -172,18 +172,18 @@ dsp$inf&lt;-as.factor(dsp$infection_case)</code></pre>
 te&lt;-summary(dsp$inf[!is.na(dsp$inf)])
 f3&lt;-pie3D(te,explode=0.05, col=rainbow(7),main = &quot;Figure 7: Pie chart the distribution of suspected infection source (missing value excluded)&quot;)
 pie3D.labels(f3,labels=names(te),labelrad=1.8)</code></pre>
-<p><img src="/blog/post/2020-5-21-My-assignments-in-school-Data-visualization_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="/blog/post/2020-5-21-R-visualization-of-Korea-Epidemic_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <ul>
 <li>Plot a bar graph for each age group</li>
 </ul>
 <pre class="r"><code>barplot(summary(dsp$inf[!is.na(dsp$inf)]), col=rainbow(7),main = &quot;Figure 8: Bar graph the distribution of suspected infection source (missing value excluded)&quot;)</code></pre>
-<p><img src="/blog/post/2020-5-21-My-assignments-in-school-Data-visualization_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="/blog/post/2020-5-21-R-visualization-of-Korea-Epidemic_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Let’s explore if there is some difference for different gender</p>
 <pre class="r"><code>table1&lt;-table(dsp$sex,dsp$inf)
 barplot(table1, main=&quot;Figure 9: The bar plot for suspected infection source for different age group&quot;,
   xlab=&quot;suspected infection source&quot;,ylab=&quot;Number of patients&quot;, col=c(&quot;pink&quot;,&quot;blue&quot;),
   legend = rownames(table1), beside=TRUE)</code></pre>
-<p><img src="/blog/post/2020-5-21-My-assignments-in-school-Data-visualization_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="/blog/post/2020-5-21-R-visualization-of-Korea-Epidemic_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 <div id="rq3-how-is-the-cases-distributed-in-each-province" class="section level1">
 <h1>RQ3: How is the cases distributed in each province?</h1>
@@ -201,7 +201,7 @@ summary(ds$pro)</code></pre>
 ##             Ulsan 
 ##                30</code></pre>
 <pre class="r"><code>barplot(summary(ds$pro), col = rainbow(12), ylim = c(0, 1150), xlab = &#39;Province&#39;, ylab = &#39;Confirmed cases of COVID&#39;, main = &quot;Figure 10: the distribution of COVID cases across South Korea&quot;, density=10,las = 1)</code></pre>
-<p><img src="/blog/post/2020-5-21-My-assignments-in-school-Data-visualization_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="/blog/post/2020-5-21-R-visualization-of-Korea-Epidemic_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>

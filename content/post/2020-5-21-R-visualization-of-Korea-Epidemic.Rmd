@@ -6,8 +6,8 @@ fontsize: 13pt
 output: pdf_document
 link-citations: yes
 mainfont: Palatino
-bibliography: reference/a1.bib
-subtitle: My assignments at school 
+bibliography: "reference/a1.bib"
+subtitle: A brief visualization in R
 biblio-style: apalike
 always_allow_html: true
 tags: ["Korea", "COVID-19", "Visualization"]
@@ -216,9 +216,9 @@ As for research question 2, to visualize the suspected infection source, I first
 At last, I made **Figure 10** and find that Gyeongsangbuk-do has the most infected cases (n=1054), which is consistant with previous [news](http://www.korea.net/NewsFocus/Society/view?articleId=182693). The government may need to send professional medical and disease control team to Gyeongsangbuk-do, and provide more funding to the province for disease control.
 
 # Conclusion 
-It's only an pilot study, several study limitations merit noting. **First**, due to limited varaibles for travel history, co-morbidities, and symtoms, our analysis is relatively weak. **Second**, the generality is limited due to different policy and laws for disease control, different life and diety style between Korea and other counties. **Third**, even if the visulization is relatively aesthetic and colorful, different people may have different subjective opinion of "aesthetic". 
+It's only an pilot study, several study limitations merit noting. **First**, due to limited varaibles for travel history, co-morbidities, and symtoms, our analysis is relatively weak. **Second**, the generality is limited due to different policy and laws for disease control, different life and diety style between Korea and other counties. 
 
-Nevertheless, the report is an exploratory try of Korea COVID outbreak dataset and satisfied well with the assignment requirement, and a clear clue were tried to designed, rather than just make many plots. Both idea and code are finished independently. All relative online source are provided with a link, and all realtive research are provided citation and link-citation reference list. 
+Nevertheless, the report is an exploratory try of Korea COVID outbreak dataset, and a clear clue were tried to designed, rather than just make many plots. Both idea and code are finished independently. All relative online source are provided with a link, and all realtive research are provided citation and link-citation reference list. 
 
 # References 
 
