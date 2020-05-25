@@ -1,0 +1,24 @@
+---
+title: "2020-05-25-Jilin-hospitals-for-patients-with-fever"
+author: "Green Ear Rabbit"
+date: "25/05/2020"
+output: html_document
+---
+```{r}
+require(tidyverse) 
+require(leaflet)
+require(leafletCN) 
+if(require(rgeos)){
+  require(rgeos)
+} else{
+  install.packages(("rgeos"))
+}
+require(rgeos)
+```
+
+```{r}
+leaflet() %>% amap() %>%
+   addMarkers(lng=126.560574,lat=43.8444353, popup="北华大学附属医院") %>% addMarkers(lng=126.563828,lat=43.841591, popup="吉林市中心医院")%>% addMarkers(lng=126.571663,lat=43.86306926, popup="吉林市人民医院")%>% addMarkers(lng=126.557518,lat=43.91118, popup="吉林市化工医院一院区")%>% addMarkers(lng=126.552032,lat=43.849449, popup="吉林市妇产医院")%>% addMarkers(lng=126.53116,lat=43.87833, popup="吉林市第五人民医院")
+```
+
+

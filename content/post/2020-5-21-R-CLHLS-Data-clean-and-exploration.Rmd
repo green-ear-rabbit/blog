@@ -47,13 +47,10 @@ The survey were strared at 1998, and follow up at 2000, 2002, 2005, 2008-09, 201
  - import data. The dataset published is in .dta file, thereby I use a specific R package for importing .dta file: readstata13.
 ```{r}
 library(readstata13)
-ds<-read.dta13("Data/Dataset 7 2014.dta")
+ds<-read.dta13("data/Dataset72014.dta")
 ```
 
- - let's save the dataset as .csv in the R project floder
-```{r}
-write.csv(ds, 'data/dataset 7 2014.csv', fileEncoding = 'UTF-8')
-```
+
 
 # Task 3: Create an R markdown file. 
 
@@ -67,15 +64,10 @@ The dataset has 7192 rows (objectives) and 877 columns (variables).
 
 Let's create a new variable for dementia, according to the codebook and questionnaire, dementia was measured by Chinese adoptive version Mini-Mental State Examination (MMSE) in this project, which include attention, calculation, registration, orientation, recall and language. The total score is 30, with 24 questions, each question contribute 1.25 point.
 
-According codebook, C11~C53C is 24 questions of MMSE. 
-(Question number: C11, C12, C13, C14, C15, C16,C21A, C21B, C21C, C31A, C31B, C31C, C31D,C31E, C32, C41A, C41B, C41C, C51A, C51B, C52, C53A,C53B, C53C. notoice that C22 question are not take into count of total mark.). **Table 1** shows the raw data of MMSE questions in this dataset. To save space and the computing time of R, only the first 10 rows are presented.
-```{r}
-mmseq<-subset(ds,select = C11:C53C)
-DT::datatable(mmseq[c(1:10),],caption = "Table 1. A brief look at first 10 rows of the dataset on MMSE questions")
-```
 
 Let's summary the data (results are hidden due to space limited)
 ```{r,results='hide'}
+mmseq<-subset(ds,select = C11:C53C)
 summary(mmseq)
 ```
 
