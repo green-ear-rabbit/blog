@@ -1,0 +1,42 @@
+---
+title: 'My clinical notes 1: a patients with lupus erythematosus'
+author: "Green Ear Rabbit"
+date: "25/05/2020"
+output: html_document
+---
+
+A 19-year-old, rural, skinny girl diagnosed with lupus erythematosus. 
+
+Sometimes I met and talk with her in the ward. Some of our talking are very impressive to me, both reflect environmental and socail issues.
+
+After I take notes on her symptoms, I still want to ask more things, even if I am not supposed to do. I am always interested in how does people get disease. The lupus erythematosus, why does this disease come to her, rather than those bad people who are expected to get disease. 
+
+
+>"Do you parents, grandparents, or any relatives has this disease?"
+
+>"Nope"
+
+>"Did you take any medicine before several weeks before the symtoms onset."
+
+>"Nope"
+
+>"Do you have any symtoms before this month? Do you have other diseases when you are young?"
+
+>"No, never, I am healthy until I left my hometown and come to city. And I only cold and fever when I am young, never other diseases"
+
+>"Left hometown for what?" I asked
+
+>"To work in a manicure store, and later I got symptoms on my nose three months later."
+
+>I became interested in, and I asked, "So...how was the environment of that store? Is there any unusual smell?"
+
+>"Ah, Yes! There is the smell in that store, but you know, every manicure store have that smell. So the smell of manicure will cause my disease, right?"
+
+>"No... no, I don't know"
+
+Later I asked doctors in the office, will the smell of manicure cause lupus erythematosus? 
+
+I forgot what answer I got, but it was not a statisfied answer...
+
+
+

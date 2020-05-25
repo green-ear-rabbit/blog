@@ -21,14 +21,56 @@ Moreover, the virus has a high reproductive number (R0).</description>
     </item>
     
     <item>
-      <title>Hello! I am Wanqi!</title>
-      <link>https://green-ear-rabbit.github.io/blog/1/01/01/hello-i-am-wanqi/</link>
+      <title>Hello!</title>
+      <link>https://green-ear-rabbit.github.io/blog/1/01/01/hello/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://green-ear-rabbit.github.io/blog/1/01/01/hello-i-am-wanqi/</guid>
-      <description>Hello! I am Wanqi! I am an undergraduate student, and I am interested in epidemiology, clinical practice and statistical modeling.
+      <guid>https://green-ear-rabbit.github.io/blog/1/01/01/hello/</guid>
+      <description>Hello! I am Green Ear Rabbit (Because I have a rabbit and it like vegetables, I also like vegetables, vegetable is green). I am an undergraduate student, and I am interested in epidemiology, clinical practice and statistical modeling.
 It&amp;rsquo;s really interesting and exciting to learn how to make a blog in school. If there is any problems or conflicts, feel free to contact me via: greenearrabbit@163.com
 I am also planning for my graduate school or research, if you wish coperation or willing to provide an opportunity, don&amp;rsquo;t hesitate to contact me!</description>
+    </item>
+    
+    <item>
+      <title>Jilin-hospitals-for-patients-with-fever</title>
+      <link>https://green-ear-rabbit.github.io/blog/1/01/01/jilin-hospitals-for-patients-with-fever/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/1/01/01/jilin-hospitals-for-patients-with-fever/</guid>
+      <description>require(tidyverse) ## Loading required package: tidyverse## Warning: package &amp;#39;tidyverse&amp;#39; was built under R version 3.6.2## -- Attaching packages --------## v ggplot2 3.3.0 v purrr 0.3.4## v tibble 3.0.1 v dplyr 0.8.5## v tidyr 1.0.3 v stringr 1.4.0## v readr 1.3.1 v forcats 0.4.0## Warning: package &amp;#39;ggplot2&amp;#39; was built under R version 3.6.3## Warning: package &amp;#39;tibble&amp;#39; was built under R version 3.</description>
+    </item>
+    
+    <item>
+      <title>My clinical notes 1: a patients with lupus erythematosus</title>
+      <link>https://green-ear-rabbit.github.io/blog/1/01/01/my-clinical-notes-1-a-patients-with-lupus-erythematosus/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/1/01/01/my-clinical-notes-1-a-patients-with-lupus-erythematosus/</guid>
+      <description>A 19-year-old, rural, skinny girl diagnosed with lupus erythematosus.
+Sometimes I met and talk with her in the ward. Some of our talking are very impressive to me, both reflect environmental and socail issues.
+After I take notes on her symptoms, I still want to ask more things, even if I am not supposed to do. I am always interested in how does people get disease. The lupus erythematosus, why does this disease come to her, rather than those bad people who are expected to get disease.</description>
+    </item>
+    
+    <item>
+      <title>My clinical notes 2: many people only know ther syphilis when blood donation</title>
+      <link>https://green-ear-rabbit.github.io/blog/1/01/01/my-clinical-notes-2-many-people-only-know-ther-syphilis-when-blood-donation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/1/01/01/my-clinical-notes-2-many-people-only-know-ther-syphilis-when-blood-donation/</guid>
+      <description>I feel so bored one afternon and I go to outpatient department, where I can talk and ask questions to the doctors when they are free.
+“Many people got syphilis and are not be aware of that, but it’s not a problem. Because nowadays, people take antibotics often, you know, even for a cold. Tp. is so easy to be killed. Many patients found they were infected until they go to blood donation.</description>
+    </item>
+    
+    <item>
+      <title>My clinical notes: A schizophrenia patient</title>
+      <link>https://green-ear-rabbit.github.io/blog/1/01/01/my-clinical-notes-a-schizophrenia-patient/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/1/01/01/my-clinical-notes-a-schizophrenia-patient/</guid>
+      <description>One good weather day afternoon I sit in the public office and read a doctor’s book sleeply.
+There is a new patient just accepted by the department. It’s a patient with schizophrenia, with liver cirrhosis, and were sent to hospital by apsychia.
+Considering schizophrenia, he was put in a seperate and isolated ward.
+I am just a student, and what I can do is only to go to ask patient’s history.</description>
     </item>
     
     <item>
