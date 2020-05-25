@@ -1,5 +1,5 @@
 ---
-title: 'My clinical notes: A schizophrenia patient'
+title: 'My clinical notes 3: A schizophrenia patient'
 author: "Green Ear Rabbit"
 date: "25/05/2020"
 output: html_document
