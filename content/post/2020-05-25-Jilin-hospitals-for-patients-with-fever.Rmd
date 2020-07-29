@@ -1,7 +1,7 @@
 ---
-title: "Jilin hospitals for patients with fever"
+title: "R visualization of Jilin hospitals for patients with fever"
 author: "Wanqi"
-date: 2020-05-27T21:13:54-06:00
+date: 2020-06-27T21:13:54-06:00
 categories: ["R"]
 tags: ["Jilin", "COVID-19", "Epidemic"]
 output: html_document
