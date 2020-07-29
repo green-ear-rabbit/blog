@@ -1,15 +1,16 @@
 ---
 title: 'My clinical notes 1: a patients with lupus erythematosus'
-author: "Green Ear Rabbit"
-date: "25/05/2020"
-output: html_document
+author: "Wanqi"
+date: 2020-06-05T21:13:54-06:00
+categories: ["Clinical Notes"]
+tags: ["lupus", "tuberculosis", "clinical"]
 ---
 
 A 19-year-old, rural, skinny girl diagnosed with lupus erythematosus. 
 
-Sometimes I met and talk with her in the ward. Some of our talking are very impressive to me, both reflect environmental and socail issues.
+Sometimes I met and talk with her in the ward. Some of our talking are very impressive to me, both reflect environmental and social issues.
 
-After I take notes on her symptoms, I still want to ask more things, even if I am not supposed to do. I am always interested in how does people get disease. The lupus erythematosus, why does this disease come to her, rather than those bad people who are expected to get disease. 
+After I take notes on her symptoms, I still want to ask more things, even if I am not supposed to do. I am always interested in how does people get disease. The lupus erythematosus, why does this disease come to her.
 
 
 >"Do you parents, grandparents, or any relatives has this disease?"
@@ -22,7 +23,7 @@ After I take notes on her symptoms, I still want to ask more things, even if I a
 
 >"Do you have any symtoms before this month? Do you have other diseases when you are young?"
 
->"No, never, I am healthy until I left my hometown and come to city. And I only cold and fever when I am young, never other diseases"
+>"No, never, I am healthy until I left my hometown and come to this city. And I only cold and fever when I am young, never other diseases"
 
 >"Left hometown for what?" I asked
 

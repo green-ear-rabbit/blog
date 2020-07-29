@@ -1,8 +1,9 @@
 ---
 title: "Clinical notes: dementia caused by intracranial tuberculoma"
-author: "Green Ear Rabbit"
-date: "04/06/2020"
-output: html_document
+author: "Wanqi"
+date: 2020-06-04T21:13:54-06:00
+categories: ["Clinical Notes"]
+tags: ["tberculoma", "tuberculosis", "clinical"]
 ---
 
 Tuberculosis is not only a disease in respiratory systems, it can infect many organs, for example, osseous tuberculosis, Intra-abdominal Tuberculosis and central nervous system .
@@ -13,7 +14,7 @@ This is my first time to know intracranial tuberculoma, I begin to search some i
 
 Intracranial tuberculoma is a type of central nervous system tuberculosis (TB), which also include tuberculous meningitis and spinal tuberculous arachnoiditis
 
-Here is a nice link to help you know intracranial tuberculoma
+Here is a nice link to help you know more about intracranial tuberculoma
 
 [Overview guide from Science Direct] (https://www.sciencedirect.com/topics/medicine-and-dentistry/intracranial-tuberculoma)
 

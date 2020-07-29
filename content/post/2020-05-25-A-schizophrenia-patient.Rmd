@@ -1,18 +1,18 @@
 ---
-title: 'A schizophrenia patient'
-author: "Green Ear Qi"
-date: 2020-03-06T21:13:54-06:00
+title: 'Clinical notes: A schizophrenia patient'
+author: "Wanqi"
+date: 2020-05-25T21:13:54-06:00
 categories: ["R"]
-tags: ["society", "schizoprenia", "R"]
+tags: ["society", "schizoprenia", "clinical"]
 ---
 
-One good weather day afternoon when I sit in the public office and read a medical book sleepily. 
+One good-weather afternoon when I sit in the public office and read a medical book sleepily. 
 
 There is a new patient just accepted by our department. It's a patient with schizophrenia, with liver cirrhosis, and were sent to hospital by apsychia.
 
 Considering schizophrenia, he was put in a separate and isolated ward.
 
-I am just a student, and what I can do is only to go to ask patient's history. 
+I was just a student, and what I can do is only to go to ask patient's history. 
 
 ...
 ...
