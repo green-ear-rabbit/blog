@@ -1,0 +1,153 @@
+---
+title: "R visualization of Jilin Epidemic"
+author: "Wanqi"
+date: 2020-06-28T21:13:54-06:00
+categories: ["Clinical Notes"]
+tags: ["syphilis", "blood donation", "clinical"]
+output: html_document
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
+## load packages
+```{r}
+require(tidyverse) 
+require(leaflet)
+require(leafletCN) 
+if(require(rgeos)){
+  require(rgeos)
+} else{
+  install.packages(("rgeos"))
+}
+require(rgeos)
+require(maptools)
+```
+
+
+# New epicenter in China: Jilin, Jilin
+## Where is Jilin in China? 
+```{r}
+Sys.setlocale('LC_ALL', "Chinese")
+```
+
+
+Due to a problem of leafletCN package, which cannot distingguish Jilin city and Jilin province (also Hainan city and Hainan province), it cannot use demomap() to demo the map of Jilin city or province (also Hainan), see in a open issue in [github repo] (https://github.com/badbye/baidumap/issues/19). You know there is Jilin city in Jilin province:
+```{r}
+require(REmap)
+mapNames("吉林")
+```
+
+
+Neverless, we can still present it by the extra data
+
+
+```{r}
+load('data/ProvinceMapDatas.Rda')
+```
+
+
+```{r}
+jilin<-df_China %>% filter(NAME=="吉林") 
+```
+
+ 
+```{r fig1, fig.cap="Jilin province in China"}
+ggplot() + geom_polygon(data = df_China, aes(x = long, y = lat, group = interaction(class, group)), colour = "white", fill="seagreen1") + geom_polygon(data = jilin, aes(x = long, y = lat, group = interaction(class, group)), fill = "pink") + geom_text(aes(x=126.57, y= 43.87), label="Jilin")+
+  geom_rect(aes(xmin = 124, xmax = 124 + 9.3, ymin = 16 - 0.3, ymax = 16 + 9), fill = NA, colour = "black", size = 0.25) + geom_line(data = df_NanHaiLine, aes(x = long, y = lat, group = ID), colour = "grey40", size = 1) + coord_map() + ylim(14, 54) + theme(axis.title = element_blank(), axis.text = element_blank(), axis.ticks = element_blank(), panel.background = element_blank(), legend.position = c(0.85, 0.4), legend.title = element_blank(), legend.background = element_blank(), plot.title = element_text(hjust = 0.5,size = 16, face = "bold", color = "black"))
+```
+
+ \@ref(fig:fig1) is Jilin province in China.
+
+## Where is Jilin city in Jilin province
+```{r fig2, fig.cap="Jilin city in Jilin province"}
+ggplot()+geom_polygon(data = jilin, aes(x = long, y = lat, group = interaction(class, group)), fill = "pink")+ geom_point(aes(x=126.57, y= 43.87), pch=17)+geom_text(aes(x=126.57, y= 43.67), label="Jilin City")+ geom_text(aes(x=129.3, y= 41.7), label="Jilin Province") + theme(axis.title = element_blank(), axis.text = element_blank(), axis.ticks = element_blank(), panel.background = element_blank(), legend.position = c(0.85, 0.4), legend.title = element_blank(), legend.background = element_blank(), plot.title = element_text(hjust = 0.5,size = 16, face = "bold", color = "black"))
+```
+
+ \@ref(fig:fig2) is Jilin city in Jilin province.
+
+
+## How's the cases increase in Jilin province?
+```{r}
+require(nCov2019)
+data <- load_nCov2019(lang = 'en', source='github')
+```
+
+```{r}
+covid <- data['city']
+```
+
+```{r}
+jilin_p_cases<-covid %>% filter(province=="Jilin") 
+```
+
+```{r}
+jilin_p <-
+  jilin_p_cases %>% group_by(time) %>% summarise(
+    cases = sum(cum_confirm, na.rm = TRUE), recovered = sum(cum_heal, na.rm = TRUE)) 
+```
+
+```{r}
+str(jilin_p$time)
+```
+
+In the dataset time also in Date format, nice!
+
+```{r}
+Sys.setlocale('LC_ALL', "English")
+pj<-jilin_p %>% ggplot() + geom_point(aes(x = time, y = cases, color = "Cumulative diagnosis cases in Jilin province")) + geom_point(aes(x = time, y = recovered, color = "Cumulative recovered cases in Jilin province")) + labs(y = "Cases",x="Date", color = "Legend") + scale_colour_manual( values=c(`Cumulative diagnosis cases in Jilin city` = "red", `Cumulative recovered cases in Jilin city` = "blue"))+
+  geom_line(aes(x = time, y = cases),size = 0.8, col="red")+ geom_line(aes(x = time, y = recovered),size = 0.8, col="blue")
+```
+
+```{r fig3, fig.cap="How's the cumulative cases of COVID-19 in Jilin Province"}
+plotly::ggplotly(pj)
+```
+
+ \@ref(fig:fig3) is the cumulative cases of COVID-19 in Jilin Province. 
+
+## How's the cases increase in Jilin city?
+```{r}
+jilin_c_cases<-covid %>% filter(city=="Jilin") 
+```
+
+```{r}
+jilin_c <-
+  jilin_c_cases %>% group_by(time) %>% summarise(
+    cases = sum(cum_confirm, na.rm = TRUE), recovered = sum(cum_heal, na.rm = TRUE)) 
+```
+
+```{r}
+cj<-jilin_c %>% ggplot() + geom_point(aes(x = time, y = cases, color = "Cumulative diagnosis cases in Jilin city"), size=0.8) + geom_point(aes(x = time, y = recovered, color = "Cumulative recovered cases in Jilin city"), size=0.8) + labs(y = "Cases",x="Date", color = "Legend")+
+   scale_colour_manual( values=c(`Cumulative diagnosis cases in Jilin city` = "red", `Cumulative recovered cases in Jilin city` = "blue"))+
+  geom_line(aes(x = time, y = cases),size = 0.8, col="red")+ geom_line(aes(x = time, y = recovered),size = 0.8, col="blue")
+```
+
+```{r fig4, fig.cap="How's the cumulative cases of COVID-19 in Jilin City"}
+plotly::ggplotly(cj)
+```
+
+ \@ref(fig:fig4) is the cumulative cases of COVID-19 in Jilin City. 
+
+## Let's present Jilin city's cases together with Jilin province's cases
+
+```{r}
+p<-jilin_p %>% ggplot() + geom_point(aes(x = time, y = cases, color = "Cumulative diagnosis cases in Jilin province"), size=0.8) + geom_point(aes(x = time, y = recovered, color = "Cumulative recovered cases in Jilin province"), size=0.8) + geom_point(data=jilin_c, aes(x = time, y = cases, color = "Cumulative diagnosis cases in Jilin city"), size=0.8) + geom_point(data=jilin_c,aes(x = time, y = recovered, color = "Cumulative recovered cases in Jilin city"), size=0.8)+labs(y = "Cases",x="Date", color = "Legend") + scale_colour_manual( values=c(`Cumulative diagnosis cases in Jilin city` = "pink", `Cumulative recovered cases in Jilin city` = "seagreen1", `Cumulative diagnosis cases in Jilin province` = "red", `Cumulative recovered cases in Jilin province`="green")) 
+```
+
+```{r fig5, fig.cap="How's the cumulative cases of COVID-19 in Jilin City and Jilin province"}
+plotly::ggplotly(p)
+```
+
+ \@ref(fig:fig5) the cumulative cases of COVID-19 in Jilin Province and Jilin City (including infected arrivals from abroad).
+
+
+## Which hospitals does Jilin City provide nucleic acid testing and accept diagnosed patients
+
+```{r fig6, fig.cap="Which hospitals does Jilin City provide nucleic acid testing and accept diagnosed patients"}
+leaflet() %>% amap() %>%
+   addMarkers(lng=126.560574,lat=43.8444353, popup="北华大学附属医院") %>% addMarkers(lng=126.563828,lat=43.841591, popup="吉林市中心医院")%>% addMarkers(lng=126.571663,lat=43.86306926, popup="吉林市人民医院")%>% addMarkers(lng=126.557518,lat=43.91118, popup="吉林市化工医院一院区")%>% addMarkers(lng=126.552032,lat=43.849449, popup="吉林市妇产医院")%>% addMarkers(lng=126.53116,lat=43.87833, popup="吉林市第五人民医院")
+```
+
+\@ref(fig:fig6) the hospitals in Jilin City provide nucleic acid testing and accept diagnosed patients (Click the blud balloon you will see the hosipital name in Chinese). We can see the distribution may be not so good, because the reansportion of patients for their living place to the hospital may transmit the virus. However, to decide which hospital to test and treat fever patients also depends on hospital resources and ability.
+

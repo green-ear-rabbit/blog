@@ -6,13 +6,22 @@
     <description>Recent content in Clinical Notes on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 05 Jun 2020 21:13:54 -0600</lastBuildDate>
+    <lastBuildDate>Sun, 28 Jun 2020 21:13:54 -0600</lastBuildDate>
     
 	<atom:link href="https://green-ear-rabbit.github.io/blog/categories/clinical-notes/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>clinical notes: a patients with lupus erythematosus</title>
+      <title>R visualization of Jilin Epidemic</title>
+      <link>https://green-ear-rabbit.github.io/blog/2020/06/28/r-visualization-of-jilin-epidemic/</link>
+      <pubDate>Sun, 28 Jun 2020 21:13:54 -0600</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/2020/06/28/r-visualization-of-jilin-epidemic/</guid>
+      <description>load packagesrequire(tidyverse) require(leaflet)require(leafletCN) if(require(rgeos)){require(rgeos)} else{install.packages((&amp;quot;rgeos&amp;quot;))}require(rgeos)require(maptools)New epicenter in China: Jilin, JilinWhere is Jilin in China?Sys.setlocale(&amp;#39;LC_ALL&amp;#39;, &amp;quot;Chinese&amp;quot;)## [1] &amp;quot;LC_COLLATE=Chinese (Simplified)_China.936;LC_CTYPE=Chinese (Simplified)_China.936;LC_MONETARY=Chinese (Simplified)_China.936;LC_NUMERIC=C;LC_TIME=Chinese (Simplified)_China.936&amp;quot;Due to a problem of leafletCN package, which cannot distingguish Jilin city and Jilin province (also Hainan city and Hainan province), it cannot use demomap() to demo the map of Jilin city or province (also Hainan), see in a open issue in [github repo] (https://github.</description>
+    </item>
+    
+    <item>
+      <title>Clinical notes: a patients with lupus erythematosus</title>
       <link>https://green-ear-rabbit.github.io/blog/2020/06/05/clinical-notes-a-patients-with-lupus-erythematosus/</link>
       <pubDate>Fri, 05 Jun 2020 21:13:54 -0600</pubDate>
       
