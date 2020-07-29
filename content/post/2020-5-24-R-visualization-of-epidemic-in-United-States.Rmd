@@ -1,306 +1,184 @@
 ---
 title: "R-visualization-of-epidemic-in-United-States"
-author: "Green Ear Rabbit"
-date: "24/05/2020"
+author: "Wanqi"
+date: 2020-05-27T21:13:54-06:00
+categories: ["R"]
+tags: ["US", "COVID-19", "Epidemic"]
 output:
   html_document:
     df_print: paged
 mainfont: Palatino
 fontsize: 13pt
 subtitle: The characteristics of the COVID-19 outbreak in United States
-bibliography: "reference/a1.bib"
-link-citations: yes
-biblio-style: apalike
 always_allow_html: yes
 ---
-
-
-# My research topic
-COVID-19 has rapidly become a worldwide pandemic since December in 2019. China has controled the domestic cases effectively and timely by a series of polcy, e.g lockdown of Wuhan city, close of schools and company. However, United States has become the epicenter of this outbreak. 
-
-U.S has adopted "mass screening" policy to identify cases, which is use rapid and wide testing to identify both active and inactive cases to control the further transmission.
-
-However, we don't know if the "mass screening" is effective for disease control. Moreover, we don't know if the health systems are overload, if resources are limited. 
-
-This assignment use the data from [COVID Tracking Project](https://docs.google.com/spreadsheets/u/2/d/e/2PACX-1vRwAqp96T9sYYq2-i7Tj0pvTf6XVHjDSMIKBdZHXiCGGdNC0ypEU9NbngS8mxea55JuCFuua1MUeOj5/pubhtml) in United States. Data were downloaded at 4pm ET. April 14th.
-
-We mainly focus on following research questions:
-
- 1. How's the results and effectiveness of 'mass screening' in U.S. ?
- 2. How's the burden and chanlenge of health system in U.S. 
- 3. How's the trend of mortality
- 4. How's the geographic disrubution?
- 5. Is there any difference of health care system performance between different states?
-
-
-# Explore the trend
 ```{r include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 ```
 
+## Epidemic in United States
+
+On the another side of the world, however, the disease has rapidly transmitted through the world, especailly United States. As compare to China, it does not implement lockdown and social distancing policy at the early stage of the epidemic. But it's true that, US's mass screening and medical system performance has shown the its amazing health-care resources, which is shown in my previous assignment. However, many deaths should be preventable, and there is even more arguable policy recently.
+
+By May 21st, 2020, which is the time I write this assignment, the virus is still rapidly transimitted, with daily new diagnosis is ~ 20,000. However, all 50 states are now reopening. 
+
+Many public health experts argued that, states should not reopen currently, because economic interest should always be less impartant than lifes. They think that government are making compromises to meet economic interest or to save lifes. 
+
+However, on the other hand, I believe, reopening is also save lifes. Because it is a narrow-minded assumption that the epidemic kills people only by virus. The epidemic kill people in three ways: 
+
+ - Deaths directly cost by the virus
+ 
+ - Deaths of some chronic diseases, e.g., diabetes or cancer patients who has barriers in transportation or drug supply. 
+ - Deaths of people attacked by financial problem, e.g., bussiness people or workers no longer have money to pay for their health and survival. 
+
+
+We don't know the consequense of this reopening policy, maybe it kill more people, maybe it save lots of people. But at least we can have some insights from data. 
+
+
+## Aims 
+ - To visualize the trend of COVID-19 increase trend in US and US.
+ - To further explore the data depends on the information in datasets
+
+
+## Load packages
 ```{r}
-require(tidyverse)
-require(plotly)
+require(tidyverse) 
+require(leaflet)
+require(leafletCN) 
+if(require(rgeos)){
+  require(rgeos)
+} else{
+  install.packages(("rgeos"))
+}
+require(rgeos)
+require(maptools)
 ```
 
-Data download 
+
+## Load data
+
+
 ```{r}
-md <- readr::read_csv("data/USvirus.csv")
+require("ncovr")
+usd <- get_us()
+#us_states <- usd[['states_current']]
+us_daily <- usd[['states_daily']]
 ```
 
-some varibale names contatin some un-preferred symbols, let's change them.
+
 ```{r}
-names(md)[6]<-"hospitalized_curr"
-names(md)[7]<-"hospitalized_cumu"
-names(md)[8]<-"icu_curr"
-names(md)[9]<-"icu_cumu"
-names(md)[10]<-"ventilator_curr"
-names(md)[11]<-"ventilator_cumu"
+us_daily$date2 <- as.Date(as.character(us_daily$date), format="%Y%m%d") 
 ```
 
-by date
+## How's the mass screening now? How's the cumulative postive cases now? How's the deaths and recovered cases now?
+
 ```{r}
-require(tidyverse)
-md_date <-
-  md %>% group_by(Date) %>% summarise(
-    positive_all_state = sum(Positive, na.rm = TRUE),
-    negative_all_state = sum(Negative, na.rm = TRUE),
-    pending_all_state = sum(Pending, na.rm = TRUE),
-    hospitalized_curr_all_state = sum(hospitalized_curr, na.rm = TRUE),
-    hospitalized_cumu_all_state = sum(hospitalized_cumu, na.rm = TRUE),
-    icu_curr_all_sate = sum(icu_curr, na.rm = TRUE),
-    icu_cumu_all_state = sum(icu_cumu, na.rm = TRUE),
-    ventilator_curr_all_state = sum(ventilator_curr, na.rm = TRUE),
-    ventilator_cumu_all_state = sum(ventilator_cumu, na.rm = TRUE),
-    recover_all_state = sum(Recovered, na.rm = TRUE),
-    death_all_state = sum(Deaths, na.rm = TRUE)
+daily <-
+  us_daily %>% group_by(date2) %>% summarise(
+    `Positive from testing` = sum(positive, na.rm = TRUE),
+    `Negative from testing` = sum(negative, na.rm = TRUE),
+    Pending = sum(pending, na.rm = TRUE),
+    `Current hospitalized patients` = sum(hospitalizedCurrently, na.rm = TRUE),
+    `Current patients in ICU`= sum(inIcuCurrently, na.rm = TRUE),
+     `Current patients on ventilator`= sum(onVentilatorCurrently, na.rm = TRUE),
+    Recovered = sum(recovered, na.rm = TRUE),
+    Death = sum(death, na.rm = TRUE)
   )
 ```
 
+ok!
 ```{r}
-md_date$date2 <- as.Date(paste(substr(md_date$Date,1,4),substr(md_date$Date,5,6),substr(md_date$Date,7,8),sep = '-'))
-```
-
-```{r}
-md_date_w <-
-  md_date %>% select(-Date) %>%  gather(key = "type", value = "number",-date2)
-```
-
-Let's have a look at the epidemic in U.S.
-
-```{r}
-ggplot(md_date_w, aes(date2, number, color = type)) +
-  geom_line(size = 0.8) +
-  geom_point(pch = 19, size = 2) +
-  theme_minimal(base_size = 14)+ 
-   scale_colour_manual(labels=c("Total death","Cumulative patients in hospital","Current patients in hospital","Cumulative patients in ICU","Current patients in ICU","Total negative cases form testing","Pending in testing","Total positive cases from testing","Total recovered cases","Cumulative patients on ventilator", "Current patients on ventilator"),values = rainbow(11), name="Categories")+
- ggtitle("Figure 1: Exploration of the trend of the epidemic") +
-  xlab("Calendar date") +
-  ylab("Case number")
-```
-
-Because the range of cases is relatively various for different categories, the *Figure 1* might be difficult to provide clear and detailed information. Let's continous the exploration. 
-
-
-
-# RQ1: How's the results and effectiveness of 'mass screening' in U.S.?
-
-Following plots are to evaluate the effectiveness of "mass testing" policy
-
-
-Let's have a look at cumulative results by 2020-04-13 before next step
-```{r}
-legendtitle <- list(yref='paper',xref="paper",y=1.03,x=1.15, text="Test results",showarrow=F)
-
-md_date_w %>%
-  filter(
-    type %in% c("positive_all_state", "negative_all_state","pending_all_state")) %>%
-  filter(date2==as.Date("2020-04-13")) %>% group_by(type) %>% plot_ly(labels = ~type, values = ~number , type = "pie") %>% 
-layout(title ="Figure 2: Cumulative results from mass screening by 2020-04-13", annotations=legendtitle)
-```
-
-
-```{r include=FALSE}
-#method 1: the silly method; result is hidden
-data1<-subset(md_date_w, type=="positive_all_state"| type=="negative_all_state"| type=="pending_all_state")
-
-ggplot(data1, aes(date2, number, color = type)) +
-  geom_line(size = 0.8) +
-  geom_point(pch = 19, size = 2) +
-  theme_minimal(base_size = 14)
+us1<-daily %>%
+  filter(date2>as.Date("2020-03-21")) %>% ggplot() + geom_point(aes(x = date2, y = `Positive from testing`, color = "Positive from testing")) + geom_point(aes(x = date2, y = `Negative from testing`, color = "Negative from testing")) + geom_point(aes(x = date2, y = Pending, color = "Pending")) + labs(y = "Cases", color = "Legend") + scale_colour_manual( values=c(`Positive from testing` = "red", `Negative from testing` = "green", Pending = "blue"))
 
 ```
 
-```{r}
-# medthod 2: a better method
-t2<-md_date_w %>%
-  filter(type %in% c("positive_all_state","negative_all_state", "pending_all_state")) %>% filter(date2>as.Date("2020-03-21")) %>%
-  ggplot(aes(date2, number, color = type)) +
-  geom_point(pch = 19,
-             size = 2) +  geom_line(size = 0.8) +
-  theme_minimal(base_size = 14)+
- scale_color_manual(labels=c("Total negative cases from testing","Pending cases","Total positive cases from testing"),values = 1:3, name="Results from 'mass screening'")+
- ggtitle("Figure 3: Exploration of the results of mass screening") +
-  xlab("Calendar date") +
-  ylab("Case number")+
-  geom_smooth(method = loess)
-t2
+```{r fig8, fig.cap="Results from 'mass screening' in U.S."}
+plotly::ggplotly(us1)
 ```
 
-As Figure 3 shows, the results of mass screening indicates that negative cases are always more than positive cases, and screening size is increasing since the March 21st. 
-
-
-
-# RQ2: Let's evaluate the burden and chanlenge of health system in U.S. 
-this plot is to evaluate the burden and effectiveness of health systems, we use current patients in hospitalized/in icu/ on ventilator. Becuse we aim to evaluate the burden for clinical settings, people recover/ death and people who are isolated in house/community will be excluded in the analysis. Only the current patients in hospital are analyzed.
 
 
 ```{r}
-t3<-md_date_w %>%
-  filter(
-    type %in% c("hospitalized_curr_all_state", "icu_curr_all_sate", "ventilator_curr_all_state")) %>%
-  filter(date2>as.Date("2020-03-21")) %>% 
-  ggplot(aes(date2, number, color = type)) +
-  geom_point(pch = 19,
-             size = 2) +  geom_line(size = 0.8) +
-  theme_minimal(base_size = 14) +
-  scale_color_manual(labels=c("Current patients in hospital","Current patients in ICU","Current patients on ventilator"),values = 1:3, name="current patients in hospital")+
- ggtitle("Figure 4: Exploration of the chanllenges in clinical settings") +
-  xlab("Calendar date") +
-  ylab("Case number")+
-  geom_smooth(method = loess)
-t3
+us2<-daily %>%
+  filter(date2>as.Date("2020-03-21")) %>% ggplot() + geom_point(aes(x = date2, y = `Positive from testing`, color = "Diagnosed"),size=0.8) + geom_point(aes(x = date2, y = Death, color = "Death"),size=0.8) + geom_point(aes(x = date2, y = Recovered, color = "Recovered"),size=0.8) + labs(y = "Cases", color = "Legend") + scale_colour_manual( values=c(Diagnosed = "red", Death = "black", Recovered = "blue"))+
+  geom_line(aes(x = date2, y = `Positive from testing`),size = 0.8, col="red")+ geom_line(aes(x = date2, y = Death),size = 0.8, col="black")+ geom_line(aes(x = date2, y = Recovered),size = 0.8, col="blue")
+
+```
+
+```{r fig9, fig.cap="Survival outcome of patients in U.S."}
+plotly::ggplotly(us2)
+```
+
+Let's make a better one!
+```{r}
+diff(daily$date2)
+```
+
+```{r fig10, fig.cap="Survival outcome of patients in U.S."}
+require(dygraphs) 
+require(xts)
+us3<-daily %>% select(`Positive from testing`, Death, Recovered) %>% xts(daily$date2) %>% dygraph() %>%
+dyOptions(fillGraph = TRUE) %>% dyRangeSelector()
+us3
 ```
 
 
-Figure 4 shows that both patients in hospital, patients in ICU and patients on ventilator are keeping increasing since Mar 21st. However, the number of three categroies tend to become flat since April 11th.
+## How's the status of patients who are in hospitals
 
-To further explore whther the trend is due to effectiveness of mass screening, next section will be focus on the death rate. 
-
-# RQ3: The trend of death rate
-let's make a bar chart to explore the recover and death
-
-```{r}
-md_date_w %>%
-  filter(
-    type %in% c("death_all_state", "recover_all_state")) %>%
-  filter(date2>as.Date("2020-03-21")) %>% 
-  ggplot() + geom_bar(aes(x = date2,y=number, fill = type),stat = 'identity', position = "dodge")+ 
-  scale_colour_manual(labels=c("Total Death","Total Recovered"),values = rainbow(2), name="Outcomes of patients")+
- ggtitle("Figure 5: Exploration of the recovery and death in United States") +
-  xlab("Calendar date") +
-  ylab("Case number")
+So, currently, how's the patients are in hospital, how many of them are in ICU, how many of them are on ventilator?
+```{r fig11, fig.cap="Status of patient in hospitals"}
+us3<-daily %>% select(`Current hospitalized patients`, `Current patients in ICU`, `Current patients on ventilator`) %>% xts(daily$date2) %>% dygraph() %>%
+dyOptions(fillGraph = TRUE) %>% dyRangeSelector()
+us3
 ```
 
-let's make a better one for rate 
+You can see that, interestingly, there is a gap for patients in ICU from April 26th to May 7th. 
+
+
+
+## How's the daily increase?
 ```{r}
-t5<-md_date_w %>%
-  filter(
-    type %in% c("death_all_state", "recover_all_state")) %>%
-  filter(date2>as.Date("2020-03-21")) %>% 
-  ggplot() + geom_bar(aes(x = date2,y=number, fill = type),stat = 'identity', position = "fill")+
-  scale_colour_manual(labels=c("Total Death","Total Recovered"),values = rainbow(2), name="Outcomes of patients")+
- ggtitle("Figure 6: Exploration of the recovery rate in United States") +
-  xlab("Calendar date") +
-  ylab("Case number")
-t5
-```
-
-As Table 5, Table 6 shows that the proportion of death and recover remain genrally unchanged. 
-
-
-
-# RQ5: Is there any difference of healthcare system performance between different states?
-
-We use mortality and proption of recovery as the measures of healthcare system performance.
-```{r}
-md2<-md
-md2[is.na(md2)] = 0
-names(md2)[2]<-"state"
+diff(daily$date2)
 ```
 
 ```{r}
-md2$mortality<-md2$Deaths/md2$Positive*100
-md2$prop_of_recovery<-md2$Recovered/md2$Positive*100
-```
-
-
-```{r}
-md2$date2 <- as.Date(paste(substr(md2$Date,1,4),substr(md2$Date,5,6),substr(md2$Date,7,8),sep = '-'))
-```
-
-```{r}
-md3 <-
-  md2 %>% filter(date2==as.Date("2020-04-13")) %>% select(-Date) %>%  gather(key = "measures", value = "percentage(%)",-c(state, Positive)) %>% filter(measures %in% c("mortality","prop_of_recovery"))  
-```
-boxplot
-```{r}
-md3 %>%  plot_ly(color = ~measures, y = ~`percentage(%)`,type = "box") %>% layout(title = "Figure 8: mortality and proprtion of recovey in each state in U.S")
-```
-
-Explanation of the outliner of mortality: When state is "MP"(Northern Mariana Islands), there is a significantly high mortality (18.18%). There is only 11 positive cases in Northern Mariana Island, and two of them died, by 2020-4-13. Because the relative small sample size comapre with other state, it's not a statistically informed results.
-
-Explanation of the outliner of proportion of recovery: When state is "VI"(Virgin Islands), there is a significantly high proportion of recovery (84.31%). There is 51 confirmed cases, 43 recoved and 1 died. You may think that, it may due to the cases in this state is earlier, because the disease prognosis is slow, it's the reason we observe a high proportion of recovery. Okay, let's have a look if it is true.
-
-Then let's visulize the daily increase case (not cumulative case) by each state, but we problem is that there is 56 states or areas, it's rather difficult to visualize clearly in a plot. When you don't know how to select sample, randomization is the best choose. 
-```{r}
-vi<-subset(md,State=="VI")
-vi$prev<-c(as.matrix(vi[-1,3]),0)
-vi$new<-vi$Positive-vi$prev
-nc<-subset(md,State=="NC")
-nc$prev<-c(as.matrix(nc[-1,3]),0)
-nc$new<-nc$Positive-nc$prev
-ak<-subset(md,State=="AK")
-ak$prev<-c(as.matrix(ak[-1,3]),0)
-ak$new<-ak$Positive-ak$prev
-ct<-subset(md,State=="CT")
-ct$prev<-c(as.matrix(ct[-1,3]),0)
-ct$new<-ct$Positive-ct$prev
-va<-subset(md,State=="VA")
-va$prev<-c(as.matrix(va[-1,3]),0)
-va$new<-va$Positive-va$prev
-look<-rbind(vi,nc,ak,ct,va)
+#This is not a good way
+#tnew<-daily[-nrow(daily),2] %>% pull(`Positive from testing`) 
+#tnew1<-c(0,tnew)
+#daily$PinYesterday<-tnew1
+#daily$Pnew<-daily$`Positive from testing`-daily$PinYesterday
 ```
 
 ```{r}
-look$date2 <- as.Date(paste(substr(look$Date,1,4),substr(look$Date,5,6),substr(look$Date,7,8),sep = '-'))
+daily$Pnew<-c(0,diff(daily$`Positive from testing`))
+daily$Dnew<-c(0,diff(daily$Death))
 ```
 
-```{r}
-look %>%
-  ggplot(aes(date2, new, color = State)) +
-  geom_point(pch = 19,
-             size = 2) +  geom_line(size = 0.8) +
-  theme_minimal(base_size = 14)+
- ggtitle("Figure 9: Daily new diagnosis case number in five state") +
-  xlab("Calendar date") +
-  ylab("New diagnosis case number")
-```
-As Figure 9 shows that, we didnot found that VI has a significantly more diagnosis number in earlier stage. So, the high recovery probability and faster recovery may be due to the nice air quality in Virgin Islands, which will help the recovery in lungs. Of cource, we cannot exclude the sample size is small.
 
+```{r fig12, fig.cap="Daily increase number of COVID-19 in U.S."}
+d1<-daily %>% ggplot() + geom_point(aes(x = date2, y = Pnew, color = "Daily increase"), size=0.5)+
+  geom_point(aes(x = date2, y = Dnew, color = "Daily death"),size=0.5)+
+  labs(y = "Cases", color = "Legend") + scale_colour_manual( values=c(`Daily increase` = "red", `Daily death` = "black"))+ geom_line(aes(x = date2, y = Dnew),size = 0.8)+ geom_line(aes(x = date2, y = Pnew),size = 0.8, col="red")
 
-So if there is any relationship between diagnosis case number and mortality/ proportion of recovery? If so, it may suggest that the healthcare system in some states may be overload, and some preventable death are due to inability to get medical treatment.
-
-```{r}
-md3 %>% plot_ly(x= ~Positive, y = ~`percentage(%)`, color = ~measures, type = "scatter") %>% layout(title = 'Figure 10: relationship between diagnosis case number and mortality/ proportion of recovery')
+plotly::ggplotly(d1)
 ```
 
-There seems no clear relationship for
- - Positive cases and mortality
- - Positive cases and proption of recovery
+## How's the epidemic each state now?
 
-If up-limt of workload in healthcare system were reached, we would observed that there is negative association between positive cases in state and mortality. 
-
-This figure indicates that, by 2020-04-13, there still not reach the up-limt of healthcare system, and healthcare system is overall well-performed. 
-
-# Conclusion
-This brief analysis focus on five research questions and provide nice visualizations. By 2020-4-13, mass-screening is effective to identify cases, and the healthcare system to treat patients is well preformed.
-
-There is some difference in states. New York State has much more cases than other state. Virgin Islands has higher recovery probability and faster recovery of disease. 
-
-However, more data is needed and further follow-up is necessary to draw more valid conclusion
+```{r fig13, fig.cap="Total positive cases in U.S. currently"}
+require(usmap)
+mapus<-us_daily %>% filter(date==max(date)) %>%  plot_usmap("state", data = ., values = "positive") +
+scale_fill_gradient(low = "green", high = "red", na.value = "white", trans = "log", limits = c(1, 10^6), breaks = 10 ^(0:6), labels = c('1', '10', '100', '1,000', '10,000', '100,000', '1000,000'))+ theme(legend.title = element_blank())
+mapus
+```
 
 
-# References:
 
+ 
+
+
+# Acknowledgement
+
+Many thanks to ncovr package [@Zhao2020], by which make this assignmnet better than my previous assignment 5. And I get data in Jilin city and Jilin province from ncov2019 package [@Yu2020]. Time series also use packages of dygraphs [@Vanderkam2018], ggplot2 [@Wickham2020], plotly [@Sievert2020]. And the maps are made by following package: amap in leaflet [@Cheng2019], rgeos [@Bivand2020], and leafletCN [@Lang2020], beginr [@Zhao2019]
 

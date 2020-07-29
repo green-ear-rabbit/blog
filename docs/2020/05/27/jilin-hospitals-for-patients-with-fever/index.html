@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.69.1" />
+
+
+<title>Jilin hospitals for patients with fever - A Hugo website</title>
+<meta property="og:title" content="Jilin hospitals for patients with fever - A Hugo website">
+
+
+  <link href='https://green-ear-rabbit.github.io/blog/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/blog/css/fonts.css" media="all">
+<link rel="stylesheet" href="/blog/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/blog/" class="nav-logo">
+    <img src="/blog/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/blog/about/">About</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">1 min read</span>
+    
+
+    <h1 class="article-title">Jilin hospitals for patients with fever</h1>
+
+    
+    <span class="article-date">2020-05-27</span>
+    
+
+    <div class="article-content">
+      
+<script src="/blog/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/blog/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/blog/rmarkdown-libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="/blog/rmarkdown-libs/leaflet/leaflet.js"></script>
+<link href="/blog/rmarkdown-libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="/blog/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="/blog/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js"></script>
+<link href="/blog/rmarkdown-libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+<script src="/blog/rmarkdown-libs/leaflet-binding/leaflet.js"></script>
+
+
+<pre class="r"><code>require(tidyverse) 
+require(leaflet)
+require(leafletCN) 
+if(require(rgeos)){
+  require(rgeos)
+} else{
+  install.packages((&quot;rgeos&quot;))
+}
+require(rgeos)</code></pre>
+<pre class="r"><code>Sys.setlocale(&quot;LC_ALL&quot;,locale = &quot;Chinese&quot;)</code></pre>
+<pre><code>## [1] &quot;LC_COLLATE=Chinese (Simplified)_China.936;LC_CTYPE=Chinese (Simplified)_China.936;LC_MONETARY=Chinese (Simplified)_China.936;LC_NUMERIC=C;LC_TIME=Chinese (Simplified)_China.936&quot;</code></pre>
+<pre class="r"><code>leaflet() %&gt;% amap() %&gt;%
+   addMarkers(lng=126.560574,lat=43.8444353, popup=&quot;北华大学附属医院&quot;) %&gt;% addMarkers(lng=126.563828,lat=43.841591, popup=&quot;吉林市中心医院&quot;)%&gt;% addMarkers(lng=126.571663,lat=43.86306926, popup=&quot;吉林市人民医院&quot;)%&gt;% addMarkers(lng=126.557518,lat=43.91118, popup=&quot;吉林市化工医院一院区&quot;)%&gt;% addMarkers(lng=126.552032,lat=43.849449, popup=&quot;吉林市妇产医院&quot;)%&gt;% addMarkers(lng=126.53116,lat=43.87833, popup=&quot;吉林市第五人民医院&quot;)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}",{"minZoom":3,"maxZoom":17,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false},null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://amap.com\">amap.com<\/a >"}]},{"method":"addMarkers","args":[43.8444353,126.560574,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"北华大学附属医院",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[43.841591,126.563828,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"吉林市中心医院",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[43.86306926,126.571663,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"吉林市人民医院",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[43.91118,126.557518,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"吉林市化工医院一院区",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[43.849449,126.552032,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"吉林市妇产医院",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[43.87833,126.53116,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"吉林市第五人民医院",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[43.841591,43.91118],"lng":[126.53116,126.571663]}},"evals":[],"jsHooks":[]}</script>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/blog/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/blog/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/blog/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

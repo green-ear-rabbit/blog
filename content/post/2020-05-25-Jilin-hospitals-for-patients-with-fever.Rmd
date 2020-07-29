@@ -1,9 +1,16 @@
 ---
-title: "Jilin-hospitals-for-patients-with-fever"
-author: "Green Ear Rabbit"
-date: "25/05/2020"
+title: "Jilin hospitals for patients with fever"
+author: "Wanqi"
+date: 2020-05-27T21:13:54-06:00
+categories: ["R"]
+tags: ["Jilin", "COVID-19", "Epidemic"]
 output: html_document
 ---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
 ```{r}
 require(tidyverse) 
 require(leaflet)

@@ -1,5 +1,5 @@
 ---
-title: 'Many people only know ther syphilis when blood donation'
+title: 'Clinical notes: Many people only know ther syphilis when blood donation'
 author: "Wanqi"
 date: 2020-05-25T21:13:54-06:00
 categories: ["Clinical Notes"]
