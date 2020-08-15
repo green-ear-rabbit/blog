@@ -141,13 +141,3 @@ plotly::ggplotly(p)
 
  \@ref(fig:fig5) the cumulative cases of COVID-19 in Jilin Province and Jilin City (including infected arrivals from abroad).
 
-
-## Which hospitals does Jilin City provide nucleic acid testing and accept diagnosed patients
-
-```{r fig6, fig.cap="Which hospitals does Jilin City provide nucleic acid testing and accept diagnosed patients"}
-leaflet() %>% amap() %>%
-   addMarkers(lng=126.560574,lat=43.8444353, popup="北华大学附属医院") %>% addMarkers(lng=126.563828,lat=43.841591, popup="吉林市中心医院")%>% addMarkers(lng=126.571663,lat=43.86306926, popup="吉林市人民医院")%>% addMarkers(lng=126.557518,lat=43.91118, popup="吉林市化工医院一院区")%>% addMarkers(lng=126.552032,lat=43.849449, popup="吉林市妇产医院")%>% addMarkers(lng=126.53116,lat=43.87833, popup="吉林市第五人民医院")
-```
-
-\@ref(fig:fig6) the hospitals in Jilin City provide nucleic acid testing and accept diagnosed patients (Click the blud balloon you will see the hosipital name in Chinese). We can see the distribution may be not so good, because the reansportion of patients for their living place to the hospital may transmit the virus. However, to decide which hospital to test and treat fever patients also depends on hospital resources and ability.
-
