@@ -12,6 +12,25 @@
     
     
     <item>
+      <title>Clinical notes: Health Disparities</title>
+      <link>https://green-ear-rabbit.github.io/blog/2020/11/28/clinical-notes-health-disparities/</link>
+      <pubDate>Sat, 28 Nov 2020 21:13:54 -0600</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/2020/11/28/clinical-notes-health-disparities/</guid>
+      <description>People in low-socioeconomic status are at a high risk of diseases and death. I saw two patients both diagnosed with intracranial tuberculoma. One of them was a middle-aged and high-income man. He lived in a VIP ward for three months. He even wanted to live in the ward for several more days, after the doctors said that he is fully recovered. The other one is a 19-year-old rural boy, he came to city alone for a higher salary work.</description>
+    </item>
+    
+    <item>
+      <title>An human experiment: How does pescetarian diet affect health</title>
+      <link>https://green-ear-rabbit.github.io/blog/2020/11/27/an-human-experiment-how-does-pescetarian-diet-affect-health/</link>
+      <pubDate>Fri, 27 Nov 2020 21:13:54 -0600</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/2020/11/27/an-human-experiment-how-does-pescetarian-diet-affect-health/</guid>
+      <description>IntroductionTo evaluate the effect the health effect of pescetarian diet, an two-month’s intervention study was conducted on a 19-year-old female, from April, 6th to July 12th, in 2019. Food frequency questionnaire were answered by the participant at baseline. Blood glucose, hemoglobin A1c (HbA1c), blood urea nitrogen (BUN), high-density lipoprotein (HDL), low-density lipoprotein (LDL), height and body weight were measured at both baseline and follow-up.
+LimitationsThe sample size is only one, because the author fail to find more volunteer to participate in this study.</description>
+    </item>
+    
+    <item>
       <title>R visualization of Jilin Epidemic</title>
       <link>https://green-ear-rabbit.github.io/blog/2020/06/28/r-visualization-of-jilin-epidemic/</link>
       <pubDate>Sun, 28 Jun 2020 21:13:54 -0600</pubDate>
@@ -72,13 +91,14 @@ I was just a student, and what I can do is only to go to ask patient’s history
     </item>
     
     <item>
-      <title>Clinical notes: Many people only know ther syphilis when blood donation</title>
-      <link>https://green-ear-rabbit.github.io/blog/2020/05/25/clinical-notes-many-people-only-know-ther-syphilis-when-blood-donation/</link>
+      <title>Clinical notes: blood donation and syphilis test</title>
+      <link>https://green-ear-rabbit.github.io/blog/2020/05/25/clinical-notes-blood-donation-and-syphilis-test/</link>
       <pubDate>Mon, 25 May 2020 21:13:54 -0600</pubDate>
       
-      <guid>https://green-ear-rabbit.github.io/blog/2020/05/25/clinical-notes-many-people-only-know-ther-syphilis-when-blood-donation/</guid>
-      <description>At afternoon and I go to outpatient department, where I can talk and ask questions to the doctors when they are free.
-“Many people got syphilis and are not be aware of that, but it’s not a problem. Because nowadays, people take antibiotics often, you know, even for a cold. Tp. is so easy to be killed. Many patients found they were infected until they go to blood donation.”</description>
+      <guid>https://green-ear-rabbit.github.io/blog/2020/05/25/clinical-notes-blood-donation-and-syphilis-test/</guid>
+      <description>In the afternoon, the patients in the inpatient department are quiet and fall sleep. I usually go to the outpatient department, where I can talk and ask questions to the doctors when they are free.
+A doctor said that:
+“Many people got syphilis and are not be aware of that, but it’s not a problem. Because nowadays, people take antibiotics often, you know, even for a cold. Treponema pallidum is so easy to be killed.</description>
     </item>
     
     <item>
@@ -98,15 +118,6 @@ It&amp;rsquo;s really interesting and exciting to learn how to make a blog in sc
       
       <guid>https://green-ear-rabbit.github.io/blog/about/</guid>
       <description>This is a &amp;ldquo;hello world&amp;rdquo; example website for the blogdown package. The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.</description>
-    </item>
-    
-    <item>
-      <title>Clinical notes (but it is a public health problem): Health Disparities</title>
-      <link>https://green-ear-rabbit.github.io/blog/1/01/01/clinical-notes-but-it-is-a-public-health-problem-health-disparities/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://green-ear-rabbit.github.io/blog/1/01/01/clinical-notes-but-it-is-a-public-health-problem-health-disparities/</guid>
-      <description>People in low-socioeconomic status are at a high risk of diseases and death. I saw two patients both diagnosed with intracranial tuberculoma. One of them was a middle-aged and high-income man. He lived in a VIP ward for three months. He even wanted to live in the ward for several more days, after the doctors said that he is fully recovered. The other one is a 19-year-old rural boy, he came to city alone for a higher salary work.</description>
     </item>
     
   </channel>

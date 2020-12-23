@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>health disparities on A Hugo website</title>
+    <link>https://green-ear-rabbit.github.io/blog/tags/health-disparities/</link>
+    <description>Recent content in health disparities on A Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 28 Nov 2020 21:13:54 -0600</lastBuildDate>
+    
+	<atom:link href="https://green-ear-rabbit.github.io/blog/tags/health-disparities/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Clinical notes: Health Disparities</title>
+      <link>https://green-ear-rabbit.github.io/blog/2020/11/28/clinical-notes-health-disparities/</link>
+      <pubDate>Sat, 28 Nov 2020 21:13:54 -0600</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/2020/11/28/clinical-notes-health-disparities/</guid>
+      <description>People in low-socioeconomic status are at a high risk of diseases and death. I saw two patients both diagnosed with intracranial tuberculoma. One of them was a middle-aged and high-income man. He lived in a VIP ward for three months. He even wanted to live in the ward for several more days, after the doctors said that he is fully recovered. The other one is a 19-year-old rural boy, he came to city alone for a higher salary work.</description>
+    </item>
+    
+  </channel>
+</rss>

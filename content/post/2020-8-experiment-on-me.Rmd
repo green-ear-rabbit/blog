@@ -1,15 +1,22 @@
 ---
-title: "How does pescetarian diet affect health: An breif human experiment"
+title: "An human experiment: How does pescetarian diet affect health"
 author: "Wanqi"
-date: 2020-08-1T21:13:54-06:00
-categories: ["Others"]
-tags: ["diet", "nutrition", "vetetarian diet"]
+date: 2020-11-27T21:13:54-06:00
+categories: ["R"]
+tags: ["diet", "nutrition", "pescetarian"]
+output:
+  html_document:
+    df_print: paged
+mainfont: Palatino
+fontsize: 13pt
+subtitle: The characteristics of the COVID-19 outbreak in United States
+always_allow_html: yes
 ---
 
 
 # Introduction
 
-To evaluate the effect the health effect of pescetarian diet, an two-month's intervention study was conducted on a 19-year-old female, from April, 6th to Jun 12th, in 2019. Food frequency questionnaire were answered by the participant at baseline. Blood glucose, hemoglobin A1c (HbA1c), blood urea nitrogen (BUN), high-density lipoprotein (HDL), low-density lipoprotein (LDL), height and body weight were measured at both baseline and follow-up.  
+To evaluate the effect the health effect of pescetarian diet, an two-month's intervention study was conducted on a 19-year-old female, from April, 6th to July 12th, in 2019. Food frequency questionnaire were answered by the participant at baseline. Blood glucose, hemoglobin A1c (HbA1c), blood urea nitrogen (BUN), high-density lipoprotein (HDL), low-density lipoprotein (LDL), height and body weight were measured at both baseline and follow-up.  
 
 
 # Limitations
