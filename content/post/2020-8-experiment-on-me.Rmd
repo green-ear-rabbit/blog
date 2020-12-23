@@ -1,0 +1,24 @@
+---
+title: "How does pescetarian diet affect health: An breif human experiment"
+author: "Wanqi"
+date: 2020-08-1T21:13:54-06:00
+categories: ["Others"]
+tags: ["diet", "nutrition", "vetetarian diet"]
+---
+
+
+# Introduction
+
+To evaluate the effect the health effect of pescetarian diet, an two-month's intervention study was conducted on a 19-year-old female, from April, 6th to Jun 12th, in 2019. Food frequency questionnaire were answered by the participant at baseline. Blood glucose, hemoglobin A1c (HbA1c), blood urea nitrogen (BUN), high-density lipoprotein (HDL), low-density lipoprotein (LDL), height and body weight were measured at both baseline and follow-up.  
+
+
+# Limitations
+
+- The sample size is only one, because the author fail to find more volunteer to participate in this study.
+
+- It is possible that certain genetic predisposition influences the appetite of fresh, and also influence the health outcomes. 
+
+# Results
+
+(待更)
+
