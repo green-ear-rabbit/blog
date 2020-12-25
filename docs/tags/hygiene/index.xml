@@ -22,12 +22,12 @@ The assessment of national hygienic city has a comprehensive guideline on solid 
     </item>
     
     <item>
-      <title>Hygienic city study proposal (brief)</title>
-      <link>https://green-ear-rabbit.github.io/blog/2020/12/24/hygienic-city-study-proposal-brief/</link>
+      <title>SER</title>
+      <link>https://green-ear-rabbit.github.io/blog/2020/12/24/ser/</link>
       <pubDate>Thu, 24 Dec 2020 21:13:54 -0600</pubDate>
       
-      <guid>https://green-ear-rabbit.github.io/blog/2020/12/24/hygienic-city-study-proposal-brief/</guid>
-      <description>#knitr::include_graphics(&amp;#39;/image/ser1.pdf&amp;#39;)</description>
+      <guid>https://green-ear-rabbit.github.io/blog/2020/12/24/ser/</guid>
+      <description>knitr::include_graphics(&amp;#39;/image/ser1.pdf&amp;#39;, error = FALSE)Figure 1: captionknitr::include_graphics(“/img/test.jpg”, error = FALSE)```</description>
     </item>
     
   </channel>
