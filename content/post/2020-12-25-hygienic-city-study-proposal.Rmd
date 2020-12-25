@@ -1,7 +1,7 @@
 ---
 title: "Hygienic city study proposal (brief)"
 author: "Wanqi"
-date: 2020-12-25T21:13:54-06:00
+date: 2020-12-24T21:13:54-06:00
 categories: ["R"]
 tags: ["Hygiene", "COVID-19", "Epidemic"]
 output: html_document

@@ -6,10 +6,37 @@
     <description>Recent content in Tags on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 28 Nov 2020 21:13:54 -0600</lastBuildDate>
+    <lastBuildDate>Thu, 24 Dec 2020 21:13:54 -0600</lastBuildDate>
     
 	<atom:link href="https://green-ear-rabbit.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>COVID-19</title>
+      <link>https://green-ear-rabbit.github.io/blog/tags/covid-19/</link>
+      <pubDate>Thu, 24 Dec 2020 21:13:54 -0600</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/tags/covid-19/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Epidemic</title>
+      <link>https://green-ear-rabbit.github.io/blog/tags/epidemic/</link>
+      <pubDate>Thu, 24 Dec 2020 21:13:54 -0600</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/tags/epidemic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hygiene</title>
+      <link>https://green-ear-rabbit.github.io/blog/tags/hygiene/</link>
+      <pubDate>Thu, 24 Dec 2020 21:13:54 -0600</pubDate>
+      
+      <guid>https://green-ear-rabbit.github.io/blog/tags/hygiene/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>health disparities</title>
@@ -89,24 +116,6 @@
       <pubDate>Sun, 28 Jun 2020 21:13:54 -0600</pubDate>
       
       <guid>https://green-ear-rabbit.github.io/blog/tags/syphilis/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>COVID-19</title>
-      <link>https://green-ear-rabbit.github.io/blog/tags/covid-19/</link>
-      <pubDate>Sat, 27 Jun 2020 21:13:54 -0600</pubDate>
-      
-      <guid>https://green-ear-rabbit.github.io/blog/tags/covid-19/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Epidemic</title>
-      <link>https://green-ear-rabbit.github.io/blog/tags/epidemic/</link>
-      <pubDate>Sat, 27 Jun 2020 21:13:54 -0600</pubDate>
-      
-      <guid>https://green-ear-rabbit.github.io/blog/tags/epidemic/</guid>
       <description></description>
     </item>
     
