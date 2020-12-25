@@ -1,0 +1,69 @@
+---
+title: "Hygienic city study proposal (brief)"
+author: "Wanqi"
+date: 2020-12-25T21:13:54-06:00
+categories: ["R"]
+tags: ["Hygiene", "COVID-19", "Epidemic"]
+output: html_document
+---
+
+# Motivation
+
+A city's hygiene, which closely related to the local governance, can positively or negatively influence the health of citizens. The influence become especially prominent when we come to the infectious disease outbreak. 
+
+The assessment of national hygienic city has a comprehensive guideline on solid waste management, waste water management, coverage of green area and green area per capital, Air Pollution Index (API) or Air Quality index (AQI) and other seven items. Full guideline can be download from the website of [National Health Commisson of the People's Republic of China.](http://www.nhc.gov.cn/jkj/s5898/201509/a758669061fd469aa3a754c8781acae4.shtml). 
+
+
+# Study Aims
+
+ - Get the data which are sufficient and high-quality to conduct the analysis
+
+ - Evaluate the association between the hygiene city and the transmission of SARS-CoV-2.
+ 
+ - Analysis the potential policy that may be associated with COVID-19 transmission
+
+# Study design
+
+This is a retrospective analysis of the epidemic transmission in early 2020. The hygiene of a city will be independent variable, the confirmed cases of COVID-19 will be dependent variable. Because the main source of the early-stage outbreak is Wuhan, we use following variables as confounding variable: 1) Number of people move in to the city from Wuhan 2) Total population size. In addition, some cities that are in the northern border will be removed (Mudanjiang) for their unexpected high risk of COVID-19 outbreak. 
+
+
+
+# Measures (To be determined)
+
+ - **National hygienic city**: there is 93 reconfirm national hygienic cities in China in 2018, this is the newested list of national hygienic city.([Source: National Health Commisson of the People's Republic of China; Date: Mar 20th, 2019](http://www.chinanews.com/gn/2019/03-20/8785718.shtml)). We will also use the newest list in 2021. 
+ 
+ - **Total confirmed cases**: total conformed cases of each city are obtained from [nCov2019 packages](https://github.com/GuangchuangYu/nCov2019). Confirmed cases from oversea arrivals will not be included in the analysis
+ 
+ - **Move out data from Wuhan**: data may be obtained from [Baidu Qianxi](https://qianxi.baidu.com/2020/). 
+
+
+
+# Potential concerns 
+
+
+**Q1**: Will the emerging public health response level in different city be an confounding variable?
+**Q1**: No, other than the lockdown of Wuhan city, the policy in China are relatively consistent. Each city announce their emergency public health response level according to national standard. **However, we don't know if the real performance varies in each city's local government, this will be an limitation**. 
+
+**Q2**: Will the rural infected cases and rural hygiene be included in the analysis
+**Q2**: Yes, the assessment of national hygienic cities include the rural areas belong to this city. The rural infected cases also included in the total confirmed cases in a city. 
+
+
+**Q3**: After the lockdown of Wuhan city, some people escape out Wuhan city secretly, will they be included in the move out data.
+**A3**: It's difficult to know them, but we assume the number are not too much
+
+# Value and Impact
+
+1) This research will have theoretical implication of how does hygiene impact the disease transmission, which will help to understand the transmission dynamics of the virus. 
+
+2) This research will have practical implication to evaluate the effectiveness of national hygienic cities, which will promote the city hygiene in China and beyond. Also, it will help to provide suggestions to the policy making in controlling the COVID-19. 
+
+# Contact
+
+greenearrabbit@163.com
+Final year undergraduate student
+Suzhou, China
+
+
+ 
+
+ 
