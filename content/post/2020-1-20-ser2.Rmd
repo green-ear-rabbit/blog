@@ -1,0 +1,43 @@
+---
+title: "Supernatural beliefs intervention to enhance type 2 diabetes self-management in China: a
+pilot randomized controlled trial"
+author: "Wanqi"
+date: 2021-01-20T21:13:54-06:00
+output: html_document
+---
+
+Oral presentation at the [Annual Meeting of Society of Epidemiologic Research.](https://epiresearch.org/)
+
+
+**Authors**: Stephen W. Pan, Zihan Dong, Qikai Wang, Shiqiang Wu, Yuxin Liang, Wanqi Wang, Mark A. Strand, Amy Wachholtz, Guofeng Zhou, Dan Mao, Yimei Tang
+**Presenter**: Stephen W. Pan
+
+# Background
+
+China has over 100 million people living with type 2 diabetes mellitus (T2DM), many of
+whom experience adverse health outcomes due to suboptimal diabetes self-management.
+Interventions framed around pre-existing personal beliefs in the supernatural may improve T2DM
+self-management, but such interventions are lacking in China. This pilot randomized controlled trial
+(RCT) examined the feasibility of a full-size RCT to evaluate the efficacy of a supernatural beliefsbased intervention on T2DM self-management in China. 
+
+# Methods
+
+In 2019, 62 T2DM patients were
+enrolled at two hospitals in Suzhou, China. Participants were randomly assigned to view a 30-second
+control or intervention video at baseline. The control video showed general diabetes selfmanagement information. The intervention video showed identical information, but also indicated
+that some diabetics with supernatural beliefs have lower glycemic levels because their beliefs
+enhanced their confidence in diabetes self-management. Development of the intervention was
+guided by literature on spiritual framing health interventions. Baseline and follow-up measures after
+2-12 weeks were assessed by interviewer-administered surveys in-person and by telephone,
+respectively. Diabetes self-management was assessed with the Diabetes Self-Management
+Questionnaire. Group differences were assessed with T-tests and Chi-square tests. 
+
+# Results
+
+Comparable baseline characteristics between the control and intervention groups indicated that
+randomization was successful (Table). However, follow-up retention was low, especially for the
+intervention group (3% vs 31%, p<0.01). 
+
+# Conclusion
+
+A full-size efficacy RCT using the current study design is unlikely to succeed. T2DM patients shown the supernatural beliefs-based intervention had significantly higher loss to follow-up that was insurmountable. Older T2DM patients in Suzhou, China may not be receptive to supernatural beliefs-based interventions delivered in clinical settings.

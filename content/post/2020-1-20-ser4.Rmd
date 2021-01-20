@@ -1,0 +1,46 @@
+---
+title: "Muslim females and avoidance of health care services in China: a nationally representative
+cross-sectional study"
+author: "Wanqi"
+date: 2021-01-20T21:13:54-06:00
+output: html_document
+---
+
+Poster presentation at the [Annual Meeting of Society of Epidemiologic Research.](https://epiresearch.org/)
+
+
+**Authors**:Stephen Pan, Wanqi Wang, Zihan Dong
+**Presenter**: Stephen W. Pan
+
+# Background: 
+
+Evidence suggests that Muslim minority females in the US have lower rates of
+healthcare utilization than the overall population, partly due to religious-based values of privacy and
+modesty, and healthcare services that lack Islamic cultural sensitivities. However, the relation
+between minority Muslim identity, sex, and healthcare utilization is poorly understood in China,
+despite a population of >20 million Muslims. This study tested the hypothesis that healthcare
+avoidance is significantly more likely among Muslim females compared to non-religiously affiliated
+males and females in China. 
+
+# Methods: 
+
+This study was a secondary analysis of the 2010 East Asian
+Social Survey (EASS) China component. The EASS is a survey that includes nationally representative
+probability samples of residents > 18 years old. Health care avoidance was defined as refraining
+from seeing a doctor in the past 12 months, despite an illness or injury. Multiple logistic regression
+with probability sampling weights was used to examine associations between a) religious affiliation
+and gender and b) health care avoidance. Control variables included age, marital status, educational
+attainment, relative household income, urbanicity, province of residency, health insurance status,
+chronic disease status, alcohol use, physical activity, and tobacco use. Standardized predicted
+probabilities were calculated using the Margins command in Stata 15. 
+
+# Results: 
+
+The analytic sample size was 3461. Consistent with our hypothesis, the standardized predicted probability of refraining from seeing a doctor was significantly higher for Muslim females (64.4%, 95% CI: 45.0-83.8%)
+compared with non-religiously affiliated males (40.7%, 95% CI: 37.3-44.2%) (Figure). 
+
+# Conclusion:
+
+Healthcare avoidance is very prevalent among Muslim minority females in China. Research is
+needed to augment health care service uptake and elucidate how healthcare avoidance may be
+impacting health outcomes among Muslim females in China.
