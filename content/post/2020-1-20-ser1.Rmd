@@ -7,8 +7,9 @@ output: html_document
 
 Oral presentation at the [Annual Meeting of Society of Epidemiologic Research.](https://epiresearch.org/)
 
-```{r}
-knitr::include_graphics("master/static/image/ser.JPG")
+
+```{r, fig.align='center', out.width="100%", echo=FALSE,eval=TRUE}
+knitr::include_graphics("https://github.com/green-ear-rabbit/blog/blob/master/static/image/ser.JPG")
 ```
 
 
