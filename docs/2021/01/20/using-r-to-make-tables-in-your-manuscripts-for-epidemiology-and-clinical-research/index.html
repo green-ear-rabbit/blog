@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.69.1" />
+
+
+<title>Using R to make tables in your manuscripts (for epidemiology and clinical research) - A Hugo website</title>
+<meta property="og:title" content="Using R to make tables in your manuscripts (for epidemiology and clinical research) - A Hugo website">
+
+
+  <link href='https://green-ear-rabbit.github.io/blog/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/blog/css/fonts.css" media="all">
+<link rel="stylesheet" href="/blog/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/blog/" class="nav-logo">
+    <img src="/blog/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/blog/about/">About</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">7 min read</span>
+    
+
+    <h1 class="article-title">Using R to make tables in your manuscripts (for epidemiology and clinical research)</h1>
+
+    
+    <span class="article-date">2021-01-20</span>
+    
+
+    <div class="article-content">
+      
+
+
+<p><strong><em>All data in this section are not true data</em></strong></p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Early in March 2020, the World Health Organization (WHO) had declared that COVID-19 caused by SARS-CoV-2 a global pandemic1. The pandemic has an impact on nearly every country and territories in the world. There are studies shows that medical staff and university students are at a evaluated risk of mental health problems, while the issue of mental health is often neglected among secondary school students.</p>
+</div>
+<div id="data-analysis-results" class="section level1">
+<h1>Data analysis &amp; Results</h1>
+<div id="data-import" class="section level2">
+<h2>data import</h2>
+<pre class="r"><code>ds &lt;- readr::read_csv(&quot;data/data.csv&quot;)
+dim(ds)</code></pre>
+<pre><code>## [1] 1393   55</code></pre>
+</div>
+<div id="data-management" class="section level2">
+<h2>data management</h2>
+<p>sex distribution</p>
+<pre class="r"><code>ds$sex_i&lt;-factor(ds$Sex_analysis,labels=c(&quot;male&quot;,&quot;female&quot;))
+summary(ds$sex_i)</code></pre>
+<pre><code>##   male female 
+##    743    650</code></pre>
+<p>Ethnicity</p>
+<pre class="r"><code>ds$han&lt;- as.factor(ifelse(ds$Ethnicity_analysis== 1,&quot;Han&quot;,&quot;other&quot;))
+summary(ds$han)</code></pre>
+<pre><code>##   Han other 
+##  1377    16</code></pre>
+<p>Place of origin</p>
+<pre class="r"><code>ds$ori&lt;-factor(ds$Origin_analysis_3cat,labels=c(&quot;Jiangsu province&quot;,&quot;Outside of Jiangsu&quot;, &quot;Unknown&quot;))
+summary(ds$ori)</code></pre>
+<pre><code>##   Jiangsu province Outside of Jiangsu            Unknown 
+##                761                596                 36</code></pre>
+<p>sibling</p>
+<pre class="r"><code>ds$sib&lt;-factor(ds$Sibling_BL,labels=c(&quot;Yes&quot;,&quot;No&quot;, &quot;Unknown&quot;))
+summary(ds$sib)</code></pre>
+<pre><code>##     Yes      No Unknown 
+##     956     338      99</code></pre>
+<p>having chronic condition, participant</p>
+<pre class="r"><code>ds$c_participant&lt;-factor(ds$Morbidity_S_BL,labels=c(&quot;Yes&quot;,&quot;No&quot;, &quot;Unknown&quot;))
+summary(ds$c_participant)</code></pre>
+<pre><code>##     Yes      No Unknown 
+##      12    1326      55</code></pre>
+<p>having chronic condition, parents</p>
+<pre class="r"><code>ds$c_parents&lt;-factor(ds$Morbidity_P_BL,labels=c(&quot;Yes&quot;,&quot;No&quot;, &quot;Unknown&quot;))
+summary(ds$c_parents)</code></pre>
+<pre><code>##     Yes      No Unknown 
+##      46    1281      66</code></pre>
+<p>academic performance</p>
+<pre class="r"><code>ds$acade&lt;-factor(ds$Academic_PLS_BL,labels=c(&quot;[90,100)&quot;,&quot;[80,90)&quot;, &quot;[70,80)&quot;, &quot;[0,70)&quot;, &quot;Unknown&quot;))
+summary(ds$acade)</code></pre>
+<pre><code>## [90,100)  [80,90)  [70,80)   [0,70)  Unknown 
+##      143      365      398      418       69</code></pre>
+<p>academic year</p>
+<pre class="r"><code>ds$acayear&lt;-factor(ds$Academic_year,labels=c(&quot;Year 1&quot;, &quot;Year 2&quot;))
+summary(ds$acayear)</code></pre>
+<pre><code>## Year 1 Year 2 
+##    729    664</code></pre>
+<p>PHQ-9</p>
+<pre class="r"><code>ds$phq&lt;-factor(ds$PHQ9_cat_BL, levels=c(1,2,3,4,5),labels = c (&quot;normal&quot;,&quot;mild&quot;, &quot;moderate&quot;, &quot;moreatetely severe&quot;, &quot;severe&quot;))</code></pre>
+<pre class="r"><code>ds$phq2&lt;-factor(ds$PHQ9_cat_BL, levels=c(1,2,3,4,5),labels = c (&quot;normal&quot;,&quot;depression&quot;, &quot;depression&quot;, &quot;depression&quot;, &quot;depression&quot;))</code></pre>
+<p>GAD-7</p>
+<pre class="r"><code>ds$gad&lt;-factor(ds$GAD7_cat_BL, levels=c(1,2,3,4),labels = c (&quot;normal&quot;,&quot;mild&quot;, &quot;moderate&quot;, &quot;severe&quot;))
+ds$gad2&lt;-factor(ds$GAD7_cat_BL, levels=c(1,2,3,4),labels = c (&quot;normal&quot;,&quot;anxiety&quot;, &quot;anxiety&quot;, &quot;anxiety&quot;))</code></pre>
+<p>ISI-7</p>
+<pre class="r"><code>ds$isi&lt;-factor(ds$ISI_cat_BL, levels=c(1,2,3,4),labels = c (&quot;normal&quot;,&quot;subthreshold&quot;, &quot;moderate&quot;, &quot;severe&quot;))
+ds$isi2&lt;-factor(ds$ISI_cat_BL, levels=c(1,2,3,4),labels = c (&quot;normal&quot;,&quot;sleeping problems&quot;, &quot;sleeping problems&quot;, &quot;sleeping problems&quot;))</code></pre>
+</div>
+<div id="table-1" class="section level2">
+<h2>Table 1</h2>
+<pre class="r"><code>library(Gmisc)
+T1&lt;-function(varname,digits=1){
+             getDescriptionStatsBy(varname,ds$sex_i,add_total_col = TRUE,show_all_values = TRUE,hrzl_prop = TRUE, useNA = &quot;no&quot;, statistics = TRUE, statistics.sig_lim = 10^-3, html=TRUE)
+}</code></pre>
+<pre class="r"><code>table_data&lt;- list()</code></pre>
+<pre class="r"><code>table_data[[&quot;Ethnicity&quot;]]&lt;-T1(ds$han)
+table_data[[&quot;Interval between start of semester and study baseline (days)&quot;]]&lt;-T1(ds$Interval_Open_BL)
+table_data[[&quot;Academic performance last semester, final average mark&quot;]]&lt;-T1(ds$acade)
+table_data[[&quot;Academic year&quot;]]&lt;-T1(ds$acayear)
+table_data[[&quot;*Body height (cm)&quot;]]&lt;-T1(ds$Height_analysis)
+table_data[[&quot;*Body weight (kg)&quot;]]&lt;-T1(ds$Weight_analysis)
+table_data[[&quot;*Body mass index (kg/m^2)&quot;]]&lt;-T1(ds$BMI)
+table_data[[&quot;The place of origin&quot;]]&lt;-T1(ds$ori)
+table_data[[&quot;Having siblings&quot;]]&lt;-T1(ds$sib)
+table_data[[&quot;Having chronic condition(s), participants&quot;]]&lt;-T1(ds$c_participant)
+table_data[[&quot;Having chronic condition(s), parents&quot;]]&lt;-T1(ds$c_parents)
+table_data[[&quot;Age&quot;]]&lt;-T1(ds$Age_analysis)</code></pre>
+<pre class="r"><code>rgroup &lt;- c()
+n.rgroup &lt;- c()
+output_data &lt;-NULL 
+ for(varlabel in names(table_data)){
+   output_data &lt;- rbind(output_data,table_data[[varlabel]])
+rgroup &lt;- c(rgroup,varlabel)
+n.rgroup &lt;- c(n.rgroup, nrow(table_data[[varlabel]]))}</code></pre>
+<pre class="r"><code>htmlTable(output_data,align=&quot;rrrr&quot;,rgroup=rgroup,
+          n.rgroup=n.rgroup,
+          rgroupCSSseparator=&quot;&quot;,
+          rowlabel=&quot;&quot;,
+          caption=&quot;Table 1. Demographic characteristics of participants (N=1393)&quot;,
+          tfoot=&#39;*Body height were missing among 17 participants; body weight were missing among 26 participants; body mass index were missing among 29 participants&#39;,
+          ctable=TRUE)</code></pre>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
+<thead>
+<tr>
+<td colspan="5" style="text-align: left;">
+Table 1. Demographic characteristics of participants (N=1393)
+</td>
+</tr>
+<tr>
+<th style="border-bottom: 1px solid grey; font-weight: 900; border-top: 2px solid grey; text-align: center;">
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Total
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+male
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+female
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+P-value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+Ethnicity
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Han
+</td>
+<td style="text-align: right;">
+1,377 (98.9%)
+</td>
+<td style="text-align: right;">
+738 (53.6%)
+</td>
+<td style="text-align: right;">
+639 (46.4%)
+</td>
+<td style="text-align: right;">
+0.083
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  other
+</td>
+<td style="text-align: right;">
+16 (1.1%)
+</td>
+<td style="text-align: right;">
+5 (31.2%)
+</td>
+<td style="text-align: right;">
+11 (68.8%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+Interval between start of semester and study baseline (days)
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Mean (SD)
+</td>
+<td style="text-align: right;">
+13.8 (±2.5)
+</td>
+<td style="text-align: right;">
+13.8 (±2.5)
+</td>
+<td style="text-align: right;">
+13.8 (±2.5)
+</td>
+<td style="text-align: right;">
+0.95
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+Academic performance last semester, final average mark
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  [90,100)
+</td>
+<td style="text-align: right;">
+143 (10.3%)
+</td>
+<td style="text-align: right;">
+73 (51.0%)
+</td>
+<td style="text-align: right;">
+70 (49.0%)
+</td>
+<td style="text-align: right;">
+0.26
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  [80,90)
+</td>
+<td style="text-align: right;">
+365 (26.2%)
+</td>
+<td style="text-align: right;">
+191 (52.3%)
+</td>
+<td style="text-align: right;">
+174 (47.7%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  [70,80)
+</td>
+<td style="text-align: right;">
+398 (28.6%)
+</td>
+<td style="text-align: right;">
+201 (50.5%)
+</td>
+<td style="text-align: right;">
+197 (49.5%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  [0,70)
+</td>
+<td style="text-align: right;">
+418 (30.0%)
+</td>
+<td style="text-align: right;">
+242 (57.9%)
+</td>
+<td style="text-align: right;">
+176 (42.1%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Unknown
+</td>
+<td style="text-align: right;">
+69 (5.0%)
+</td>
+<td style="text-align: right;">
+36 (52.2%)
+</td>
+<td style="text-align: right;">
+33 (47.8%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+Academic year
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Year 1
+</td>
+<td style="text-align: right;">
+729 (52.3%)
+</td>
+<td style="text-align: right;">
+389 (53.4%)
+</td>
+<td style="text-align: right;">
+340 (46.6%)
+</td>
+<td style="text-align: right;">
+1.0
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Year 2
+</td>
+<td style="text-align: right;">
+664 (47.7%)
+</td>
+<td style="text-align: right;">
+354 (53.3%)
+</td>
+<td style="text-align: right;">
+310 (46.7%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+*Body height (cm)
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Mean (SD)
+</td>
+<td style="text-align: right;">
+163.7 (±8.0)
+</td>
+<td style="text-align: right;">
+166.7 (±8.4)
+</td>
+<td style="text-align: right;">
+160.3 (±5.8)
+</td>
+<td style="text-align: right;">
+&lt; 0.001
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+*Body weight (kg)
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Mean (SD)
+</td>
+<td style="text-align: right;">
+52.4 (±10.8)
+</td>
+<td style="text-align: right;">
+55.1 (±12.0)
+</td>
+<td style="text-align: right;">
+49.3 (±8.2)
+</td>
+<td style="text-align: right;">
+&lt; 0.001
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+*Body mass index (kg/m^2)
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Mean (SD)
+</td>
+<td style="text-align: right;">
+19.5 (±3.5)
+</td>
+<td style="text-align: right;">
+19.8 (±3.9)
+</td>
+<td style="text-align: right;">
+19.2 (±3.0)
+</td>
+<td style="text-align: right;">
+0.052
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+The place of origin
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Jiangsu province
+</td>
+<td style="text-align: right;">
+761 (54.6%)
+</td>
+<td style="text-align: right;">
+403 (53.0%)
+</td>
+<td style="text-align: right;">
+358 (47.0%)
+</td>
+<td style="text-align: right;">
+0.28
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Outside of Jiangsu
+</td>
+<td style="text-align: right;">
+596 (42.8%)
+</td>
+<td style="text-align: right;">
+316 (53.0%)
+</td>
+<td style="text-align: right;">
+280 (47.0%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Unknown
+</td>
+<td style="text-align: right;">
+36 (2.6%)
+</td>
+<td style="text-align: right;">
+24 (66.7%)
+</td>
+<td style="text-align: right;">
+12 (33.3%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+Having siblings
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Yes
+</td>
+<td style="text-align: right;">
+956 (68.6%)
+</td>
+<td style="text-align: right;">
+477 (49.9%)
+</td>
+<td style="text-align: right;">
+479 (50.1%)
+</td>
+<td style="text-align: right;">
+&lt; 0.001
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  No
+</td>
+<td style="text-align: right;">
+338 (24.3%)
+</td>
+<td style="text-align: right;">
+198 (58.6%)
+</td>
+<td style="text-align: right;">
+140 (41.4%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Unknown
+</td>
+<td style="text-align: right;">
+99 (7.1%)
+</td>
+<td style="text-align: right;">
+68 (68.7%)
+</td>
+<td style="text-align: right;">
+31 (31.3%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+Having chronic condition(s), participants
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Yes
+</td>
+<td style="text-align: right;">
+12 (0.9%)
+</td>
+<td style="text-align: right;">
+8 (66.7%)
+</td>
+<td style="text-align: right;">
+4 (33.3%)
+</td>
+<td style="text-align: right;">
+0.016
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  No
+</td>
+<td style="text-align: right;">
+1,326 (95.2%)
+</td>
+<td style="text-align: right;">
+696 (52.5%)
+</td>
+<td style="text-align: right;">
+630 (47.5%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Unknown
+</td>
+<td style="text-align: right;">
+55 (3.9%)
+</td>
+<td style="text-align: right;">
+39 (70.9%)
+</td>
+<td style="text-align: right;">
+16 (29.1%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+Having chronic condition(s), parents
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Yes
+</td>
+<td style="text-align: right;">
+46 (3.3%)
+</td>
+<td style="text-align: right;">
+21 (45.7%)
+</td>
+<td style="text-align: right;">
+25 (54.3%)
+</td>
+<td style="text-align: right;">
+0.027
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  No
+</td>
+<td style="text-align: right;">
+1,281 (92.0%)
+</td>
+<td style="text-align: right;">
+677 (52.8%)
+</td>
+<td style="text-align: right;">
+604 (47.2%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Unknown
+</td>
+<td style="text-align: right;">
+66 (4.7%)
+</td>
+<td style="text-align: right;">
+45 (68.2%)
+</td>
+<td style="text-align: right;">
+21 (31.8%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+Age
+</td>
+</tr>
+<tr>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+  Mean (SD)
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+13.8 (±0.8)
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+13.9 (±0.8)
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+13.8 (±0.8)
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+0.32
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td colspan="5">
+*Body height were missing among 17 participants; body weight were missing among 26 participants; body mass index were missing among 29 participants
+</td>
+</tr>
+</tfoot>
+</table>
+</div>
+<div id="table-2" class="section level2">
+<h2>Table 2</h2>
+<pre class="r"><code>T2&lt;-function(varname,digits=1){
+             getDescriptionStatsBy(varname,ds$sex_i,add_total_col = TRUE,show_all_values = TRUE,hrzl_prop = TRUE, useNA = &quot;no&quot;, statistics = TRUE, statistics.sig_lim = 10^-3, html=TRUE)
+}</code></pre>
+<pre class="r"><code>table2_data &lt;- list()</code></pre>
+<pre class="r"><code>table2_data[[&quot;PHQ-9&quot;]]&lt;-T2(ds$phq)
+table2_data[[&quot;GAD-7&quot;]]&lt;-T2(ds$gad)
+table2_data[[&quot;ISI&quot;]]&lt;-T2(ds$isi)</code></pre>
+<pre class="r"><code>rgroup &lt;- c()
+n.rgroup &lt;- c()
+output2_data &lt;-NULL 
+ for(varlabel in names(table2_data)){
+   output2_data &lt;- rbind(output2_data,table2_data[[varlabel]])
+rgroup &lt;- c(rgroup,varlabel)
+n.rgroup &lt;- c(n.rgroup, nrow(table2_data[[varlabel]]))}</code></pre>
+<pre class="r"><code>htmlTable(output2_data,align=&quot;rrrr&quot;,rgroup=rgroup,
+          n.rgroup=n.rgroup,
+          rgroupCSSseparator=&quot;&quot;,
+          rowlabel=&quot;&quot;,
+          caption=&quot;Table 2. Characteristics of symptoms of depression, anxiety and insomnia of participants&quot;,
+          tfoot=&#39;*PHQ-9 were missing among 26 participants; GAD-7 were missing among 12 participants; ISI were missing among 20 participants&#39;,
+          ctable=TRUE)</code></pre>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
+<thead>
+<tr>
+<td colspan="5" style="text-align: left;">
+Table 2. Characteristics of symptoms of depression, anxiety and insomnia of participants
+</td>
+</tr>
+<tr>
+<th style="border-bottom: 1px solid grey; font-weight: 900; border-top: 2px solid grey; text-align: center;">
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Total
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+male
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+female
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+P-value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+PHQ-9
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  normal
+</td>
+<td style="text-align: right;">
+873 (63.9%)
+</td>
+<td style="text-align: right;">
+500 (57.3%)
+</td>
+<td style="text-align: right;">
+373 (42.7%)
+</td>
+<td style="text-align: right;">
+0.001
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  mild
+</td>
+<td style="text-align: right;">
+276 (20.2%)
+</td>
+<td style="text-align: right;">
+125 (45.3%)
+</td>
+<td style="text-align: right;">
+151 (54.7%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  moderate
+</td>
+<td style="text-align: right;">
+112 (8.2%)
+</td>
+<td style="text-align: right;">
+59 (52.7%)
+</td>
+<td style="text-align: right;">
+53 (47.3%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  moreatetely severe
+</td>
+<td style="text-align: right;">
+65 (4.8%)
+</td>
+<td style="text-align: right;">
+28 (43.1%)
+</td>
+<td style="text-align: right;">
+37 (56.9%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  severe
+</td>
+<td style="text-align: right;">
+41 (3.0%)
+</td>
+<td style="text-align: right;">
+17 (41.5%)
+</td>
+<td style="text-align: right;">
+24 (58.5%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+GAD-7
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  normal
+</td>
+<td style="text-align: right;">
+990 (71.7%)
+</td>
+<td style="text-align: right;">
+565 (57.1%)
+</td>
+<td style="text-align: right;">
+425 (42.9%)
+</td>
+<td style="text-align: right;">
+&lt; 0.001
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  mild
+</td>
+<td style="text-align: right;">
+238 (17.2%)
+</td>
+<td style="text-align: right;">
+106 (44.5%)
+</td>
+<td style="text-align: right;">
+132 (55.5%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  moderate
+</td>
+<td style="text-align: right;">
+93 (6.7%)
+</td>
+<td style="text-align: right;">
+40 (43.0%)
+</td>
+<td style="text-align: right;">
+53 (57.0%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  severe
+</td>
+<td style="text-align: right;">
+60 (4.3%)
+</td>
+<td style="text-align: right;">
+28 (46.7%)
+</td>
+<td style="text-align: right;">
+32 (53.3%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+ISI
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  normal
+</td>
+<td style="text-align: right;">
+1,095 (79.8%)
+</td>
+<td style="text-align: right;">
+606 (55.3%)
+</td>
+<td style="text-align: right;">
+489 (44.7%)
+</td>
+<td style="text-align: right;">
+0.035
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  subthreshold
+</td>
+<td style="text-align: right;">
+220 (16.0%)
+</td>
+<td style="text-align: right;">
+101 (45.9%)
+</td>
+<td style="text-align: right;">
+119 (54.1%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  moderate
+</td>
+<td style="text-align: right;">
+42 (3.1%)
+</td>
+<td style="text-align: right;">
+18 (42.9%)
+</td>
+<td style="text-align: right;">
+24 (57.1%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+  severe
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+16 (1.2%)
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+9 (56.2%)
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+7 (43.8%)
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td colspan="5">
+*PHQ-9 were missing among 26 participants; GAD-7 were missing among 12 participants; ISI were missing among 20 participants
+</td>
+</tr>
+</tfoot>
+</table>
+</div>
+<div id="table-3" class="section level2">
+<h2>Table 3</h2>
+<pre class="r"><code>ds$COVID19_impact_dailylife_f&lt;- factor(ds$COVID19_impact_dailylife,
+                                          labels=c(&quot;none&quot;,&quot;mild&quot;,&quot;moderate&quot;, &quot;severe&quot;, &quot;extremely severe&quot;, &quot;Missing&quot;))
+summary(ds$COVID19_impact_dailylife_f)</code></pre>
+<pre><code>##             none             mild         moderate           severe 
+##              473              564              287               34 
+## extremely severe          Missing 
+##               33                2</code></pre>
+<pre class="r"><code>ds$COVID19_impact_studypractice_f&lt;- factor(ds$COVID19_impact_studypractice,
+                                          labels=c(&quot;none&quot;,&quot;mild&quot;,&quot;moderate&quot;, &quot;severe&quot;, &quot;extremely severe&quot;, &quot;Missing&quot;))
+
+ds$COVID19_impact_familyincome_f&lt;- factor(ds$COVID19_impact_familyincome,
+                                          labels=c(&quot;none&quot;,&quot;mild&quot;,&quot;moderate&quot;, &quot;severe&quot;, &quot;extremely severe&quot;, &quot;Missing&quot;))
+
+ds$COVID19_impact_familyhealth_f&lt;- factor(ds$COVID19_impact_familyhealth,
+                                          labels=c(&quot;none&quot;,&quot;mild&quot;,&quot;moderate&quot;, &quot;severe&quot;, &quot;extremely severe&quot;, &quot;Missing&quot;))
+
+ds$COVID19_impact_relationship_f&lt;- factor(ds$COVID19_impact_relationship,
+                                          labels=c(&quot;none&quot;,&quot;mild&quot;,&quot;moderate&quot;, &quot;severe&quot;, &quot;extremely severe&quot;))</code></pre>
+<pre class="r"><code>T3&lt;-function(varname,digits=1){
+             getDescriptionStatsBy(varname,ds$sex_i,add_total_col = TRUE,show_all_values = TRUE,hrzl_prop = TRUE, useNA = &quot;no&quot;, statistics = TRUE, statistics.sig_lim = 10^-3, html=TRUE)
+}</code></pre>
+<pre class="r"><code>table3_data &lt;- list()</code></pre>
+<pre class="r"><code>table3_data[[&quot;COVID-19 impact on daily life&quot;]]&lt;-T3(ds$COVID19_impact_dailylife_f)
+table3_data[[&quot;COVID-19 impact on study practice&quot;]]&lt;-T3(ds$COVID19_impact_studypractice_f)
+table3_data[[&quot;COVID-19 impact on family income&quot;]]&lt;-T3(ds$COVID19_impact_familyincome_f)
+table3_data[[&quot;COVID-19 impact on family health&quot;]]&lt;-T3(ds$COVID19_impact_familyhealth_f)
+table3_data[[&quot;COVID-19 impact on family relationship&quot;]]&lt;-T3(ds$COVID19_impact_relationship_f)</code></pre>
+<pre class="r"><code>rgroup &lt;- c()
+n.rgroup &lt;- c()
+output3_data &lt;-NULL 
+ for(varlabel in names(table3_data)){
+   output3_data &lt;- rbind(output3_data,table3_data[[varlabel]])
+rgroup &lt;- c(rgroup,varlabel)
+n.rgroup &lt;- c(n.rgroup, nrow(table3_data[[varlabel]]))}</code></pre>
+<pre class="r"><code>htmlTable(output3_data,align=&quot;rrrr&quot;,rgroup=rgroup,
+          n.rgroup=n.rgroup,
+          rgroupCSSseparator=&quot;&quot;,
+          rowlabel=&quot;&quot;,
+          caption=&quot;Table 3. Influence of COVID-19 epidemic and associated measures on family relationship during the past 14 days&quot;,
+          tfoot=&#39;&#39;,
+          ctable=TRUE)</code></pre>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
+<thead>
+<tr>
+<td colspan="5" style="text-align: left;">
+Table 3. Influence of COVID-19 epidemic and associated measures on family relationship during the past 14 days
+</td>
+</tr>
+<tr>
+<th style="border-bottom: 1px solid grey; font-weight: 900; border-top: 2px solid grey; text-align: center;">
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Total
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+male
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+female
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+P-value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+COVID-19 impact on daily life
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  none
+</td>
+<td style="text-align: right;">
+473 (34.0%)
+</td>
+<td style="text-align: right;">
+275 (58.1%)
+</td>
+<td style="text-align: right;">
+198 (41.9%)
+</td>
+<td style="text-align: right;">
+&lt; 0.001
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  mild
+</td>
+<td style="text-align: right;">
+564 (40.5%)
+</td>
+<td style="text-align: right;">
+267 (47.3%)
+</td>
+<td style="text-align: right;">
+297 (52.7%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  moderate
+</td>
+<td style="text-align: right;">
+287 (20.6%)
+</td>
+<td style="text-align: right;">
+151 (52.6%)
+</td>
+<td style="text-align: right;">
+136 (47.4%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  severe
+</td>
+<td style="text-align: right;">
+34 (2.4%)
+</td>
+<td style="text-align: right;">
+23 (67.6%)
+</td>
+<td style="text-align: right;">
+11 (32.4%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  extremely severe
+</td>
+<td style="text-align: right;">
+33 (2.4%)
+</td>
+<td style="text-align: right;">
+26 (78.8%)
+</td>
+<td style="text-align: right;">
+7 (21.2%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Missing
+</td>
+<td style="text-align: right;">
+2 (0.1%)
+</td>
+<td style="text-align: right;">
+1 (50.0%)
+</td>
+<td style="text-align: right;">
+1 (50.0%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+COVID-19 impact on study practice
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  none
+</td>
+<td style="text-align: right;">
+426 (30.6%)
+</td>
+<td style="text-align: right;">
+256 (60.1%)
+</td>
+<td style="text-align: right;">
+170 (39.9%)
+</td>
+<td style="text-align: right;">
+&lt; 0.001
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  mild
+</td>
+<td style="text-align: right;">
+417 (29.9%)
+</td>
+<td style="text-align: right;">
+191 (45.8%)
+</td>
+<td style="text-align: right;">
+226 (54.2%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  moderate
+</td>
+<td style="text-align: right;">
+337 (24.2%)
+</td>
+<td style="text-align: right;">
+171 (50.7%)
+</td>
+<td style="text-align: right;">
+166 (49.3%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  severe
+</td>
+<td style="text-align: right;">
+127 (9.1%)
+</td>
+<td style="text-align: right;">
+68 (53.5%)
+</td>
+<td style="text-align: right;">
+59 (46.5%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  extremely severe
+</td>
+<td style="text-align: right;">
+83 (6.0%)
+</td>
+<td style="text-align: right;">
+56 (67.5%)
+</td>
+<td style="text-align: right;">
+27 (32.5%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Missing
+</td>
+<td style="text-align: right;">
+3 (0.2%)
+</td>
+<td style="text-align: right;">
+1 (33.3%)
+</td>
+<td style="text-align: right;">
+2 (66.7%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+COVID-19 impact on family income
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  none
+</td>
+<td style="text-align: right;">
+514 (36.9%)
+</td>
+<td style="text-align: right;">
+273 (53.1%)
+</td>
+<td style="text-align: right;">
+241 (46.9%)
+</td>
+<td style="text-align: right;">
+0.001
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  mild
+</td>
+<td style="text-align: right;">
+469 (33.7%)
+</td>
+<td style="text-align: right;">
+234 (49.9%)
+</td>
+<td style="text-align: right;">
+235 (50.1%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  moderate
+</td>
+<td style="text-align: right;">
+314 (22.5%)
+</td>
+<td style="text-align: right;">
+172 (54.8%)
+</td>
+<td style="text-align: right;">
+142 (45.2%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  severe
+</td>
+<td style="text-align: right;">
+60 (4.3%)
+</td>
+<td style="text-align: right;">
+34 (56.7%)
+</td>
+<td style="text-align: right;">
+26 (43.3%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  extremely severe
+</td>
+<td style="text-align: right;">
+32 (2.3%)
+</td>
+<td style="text-align: right;">
+28 (87.5%)
+</td>
+<td style="text-align: right;">
+4 (12.5%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Missing
+</td>
+<td style="text-align: right;">
+4 (0.3%)
+</td>
+<td style="text-align: right;">
+2 (50.0%)
+</td>
+<td style="text-align: right;">
+2 (50.0%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+COVID-19 impact on family health
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  none
+</td>
+<td style="text-align: right;">
+1,131 (81.2%)
+</td>
+<td style="text-align: right;">
+597 (52.8%)
+</td>
+<td style="text-align: right;">
+534 (47.2%)
+</td>
+<td style="text-align: right;">
+0.39
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  mild
+</td>
+<td style="text-align: right;">
+165 (11.8%)
+</td>
+<td style="text-align: right;">
+87 (52.7%)
+</td>
+<td style="text-align: right;">
+78 (47.3%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  moderate
+</td>
+<td style="text-align: right;">
+70 (5.0%)
+</td>
+<td style="text-align: right;">
+40 (57.1%)
+</td>
+<td style="text-align: right;">
+30 (42.9%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  severe
+</td>
+<td style="text-align: right;">
+8 (0.6%)
+</td>
+<td style="text-align: right;">
+5 (62.5%)
+</td>
+<td style="text-align: right;">
+3 (37.5%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  extremely severe
+</td>
+<td style="text-align: right;">
+15 (1.1%)
+</td>
+<td style="text-align: right;">
+12 (80.0%)
+</td>
+<td style="text-align: right;">
+3 (20.0%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  Missing
+</td>
+<td style="text-align: right;">
+4 (0.3%)
+</td>
+<td style="text-align: right;">
+2 (50.0%)
+</td>
+<td style="text-align: right;">
+2 (50.0%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="5" style="font-weight: 900;">
+COVID-19 impact on family relationship
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  none
+</td>
+<td style="text-align: right;">
+1,125 (80.8%)
+</td>
+<td style="text-align: right;">
+594 (52.8%)
+</td>
+<td style="text-align: right;">
+531 (47.2%)
+</td>
+<td style="text-align: right;">
+0.030
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  mild
+</td>
+<td style="text-align: right;">
+171 (12.3%)
+</td>
+<td style="text-align: right;">
+91 (53.2%)
+</td>
+<td style="text-align: right;">
+80 (46.8%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  moderate
+</td>
+<td style="text-align: right;">
+63 (4.5%)
+</td>
+<td style="text-align: right;">
+32 (50.8%)
+</td>
+<td style="text-align: right;">
+31 (49.2%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  severe
+</td>
+<td style="text-align: right;">
+16 (1.1%)
+</td>
+<td style="text-align: right;">
+10 (62.5%)
+</td>
+<td style="text-align: right;">
+6 (37.5%)
+</td>
+<td style="text-align: right;">
+</td>
+</tr>
+<tr>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+  extremely severe
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+18 (1.3%)
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+16 (88.9%)
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+2 (11.1%)
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td colspan="5">
+</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/blog/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/blog/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/blog/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

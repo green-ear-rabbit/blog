@@ -1,0 +1,146 @@
+---
+title: 'Using R to get data from web page'
+author: "Wanqi"
+date: "30/01/2021"
+output: html_document
+---
+
+This is the data obtained from [Baidu Qianxi](https://qianxi.baidu.com/2020/)
+
+The move out from Wuhan China during the early outbreak at early 2020. 
+
+Go to website -> right click -> view page source
+
+Go to website -> fn_f12 ->network->js -> cityrank
+
+
+```{r}
+library(jsonlite)
+library(tidyverse)
+curve<-readLines('http://huiyan.baidu.com/migration/historycurve.jsonp?dt=city&id=420100&type=move_out&callback=')%>% str_remove_all("[\\(\\)]") %>%
+  fromJSON()%>%
+  .[['data']] %>%
+  .[['list']] %>%
+  as.tibble()
+```
+
+
+OKAY, then make a loop to get everyday's data
+```{r}
+x<-c('https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200110&callback=', 'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200111&callback=', 'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200112&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200113&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200114&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200115&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200116&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200117&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200118&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200119&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200120&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200121&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200122&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200123&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200124&callback=',
+'https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&id=420100&type=move_out&date=20200125&callback=')
+```
+
+```{r}
+for (i in x){
+  names<-substr(i,88,95)
+  assign(names,
+  readLines(i) %>% 
+  str_remove_all("[\\(\\)]") %>%
+  fromJSON() %>%
+  .[['data']] %>%
+  .[['list']] %>%
+  as_tibble() )
+}
+```
+
+Excellent!
+Don't forget that we need a total move out measures. Average or sum of all 16 days is not suitable, note that the value in move out data is the percentage. So we need to adjusted by everyday's total move out data, which is "curve" dataset we had get at the begining of this section. 
+
+Get the index everyday
+
+```{r}
+index<-curve %>% as.data.frame()
+n1<-index[1,101]
+n2<-index[1,102]
+n3<-index[1,103]
+n4<-index[1,104]
+n5<-index[1,105]
+n6<-index[1,106]
+n7<-index[1,107]
+n8<-index[1,108]
+n9<-index[1,109]
+n10<-index[1,110]
+n11<-index[1,111]
+n12<-index[1,112]
+n13<-index[1,113]
+n14<-index[1,114]
+n15<-index[1,115]
+n16<-index[1,116]
+```
+
+
+Multiple acoording number at each day's dataset
+"avalue" means adjusted value 
+10-25
+```{r}
+`20200110`$avalue1<-`20200110`$value*n1
+`20200111`$avalue2<-`20200111`$value*n2
+`20200112`$avalue3<-`20200112`$value*n3
+`20200113`$avalue4<-`20200113`$value*n4
+`20200114`$avalue5<-`20200114`$value*n5
+`20200115`$avalue6<-`20200115`$value*n6
+`20200116`$avalue7<-`20200116`$value*n7
+`20200117`$avalue8<-`20200117`$value*n8
+`20200118`$avalue9<-`20200118`$value*n9
+`20200119`$avalue10<-`20200119`$value*n10
+`20200120`$avalue11<-`20200120`$value*n11
+`20200121`$avalue12<-`20200121`$value*n12
+`20200122`$avalue13<-`20200122`$value*n13
+`20200123`$avalue14<-`20200123`$value*n14
+`20200124`$avalue15<-`20200124`$value*n15
+`20200125`$avalue16<-`20200125`$value*n16
+```
+
+
+Combine each day's dataset
+You know, each dataset may contain different cities, because each dataset is the top 100 move out city from Wuhan. It's not a easy work!!!
+```{r}
+xdata<-c("`20200110`","`20200111`","`20200112`","`20200113`","`20200114`","`20200115`","`20200116`","`20200117`","`20200118`","`20200119`","`20200120`","`20200121`","`20200122`","`20200123`","`20200124`","`20200125`")
+```
+
+
+```{r}
+qqdata <- `20200110` %>% 
+ merge(.,`20200111`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%
+ merge(.,`20200112`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200113`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200114`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200115`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200116`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200117`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200118`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200119`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200120`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200121`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200122`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200123`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200124`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) %>%  merge(.,`20200125`, by.x="city_name", by.y= "city_name",  all.x=TRUE, all.y = TRUE) 
+```
+
+Excellent
+
+Get a total index
+
+```{r}
+qqdata$total<- rowSums(cbind(qqdata$avalue1,qqdata$avalue2,qqdata$avalue3,qqdata$avalue4,qqdata$avalue5,qqdata$avalue6,qqdata$avalue7,qqdata$avalue8,qqdata$avalue9,qqdata$avalue10,qqdata$avalue11,qqdata$avalue12,qqdata$avalue13,qqdata$avalue14,qqdata$avalue15,qqdata$avalue16,qqdata$avalue17,qqdata$avalue18,qqdata$avalue19,qqdata$avalue20,qqdata$avalue21,qqdata$avalue22,qqdata$avalue23,qqdata$avalue24,qqdata$avalue25),na.rm = TRUE)
+```
+
+```{r}
+summary(qqdata$total)
+```
+
+make it as factor
+
+```{r}
+quantile(qqdata$total)
+```
+
+
+```{r}
+qqdata$risk <- 
+ifelse(qqdata$total<as.numeric(quantile(qqdata$total)[2]),"1", ifelse(qqdata$total<as.numeric(quantile(qqdata$total)[3]),"2",
+ifelse(qqdata$total<as.numeric(quantile(qqdata$total)[4]),"3","4")))
+table(qqdata$risk)
+```
+
