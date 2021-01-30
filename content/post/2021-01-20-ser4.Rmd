@@ -1,6 +1,5 @@
 ---
-title: "Muslim females and avoidance of health care services in China: a nationally representative
-cross-sectional study"
+title: "Muslim females and avoidance of health care services in China: a nationally representative cross-sectional study"
 author: "Wanqi"
 date: 2021-01-20T21:13:54-06:00
 output: html_document
@@ -9,7 +8,8 @@ output: html_document
 Poster presentation at the [Annual Meeting of Society of Epidemiologic Research.](https://epiresearch.org/)
 
 
-**Authors**:Stephen Pan, Wanqi Wang, Zihan Dong
+**Authors**:Stephen Pan, **Wanqi Wang**, Zihan Dong
+
 **Presenter**: Stephen W. Pan
 
 # Background: 

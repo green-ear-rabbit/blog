@@ -1,0 +1,250 @@
+---
+title: "Using R to make tables in your manuscripts (for epidemiology and clinical research)"
+author: "Wanqi"
+date: 2021-01-20T21:13:54-06:00
+output: html_document
+---
+
+
+```{r include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
+***All data in this section are not true data***
+
+
+# Introduction
+
+
+Early in March 2020, the World Health Organization (WHO) had declared that COVID-19 caused by SARS-CoV-2 a global pandemic1. The pandemic has an impact on nearly every country and territories in the world. There are studies shows that medical staff and university students are at a evaluated risk of mental health problems, while the issue of mental health is often neglected among secondary school students.
+
+# Data analysis & Results
+
+## data import 
+```{r}
+ds <- readr::read_csv("data/data.csv")
+dim(ds)
+```
+
+## data management
+
+sex distribution
+```{r}
+ds$sex_i<-factor(ds$Sex_analysis,labels=c("male","female"))
+summary(ds$sex_i)
+```
+Ethnicity
+```{r}
+ds$han<- as.factor(ifelse(ds$Ethnicity_analysis== 1,"Han","other"))
+summary(ds$han)
+```
+Place of origin
+```{r}
+ds$ori<-factor(ds$Origin_analysis_3cat,labels=c("Jiangsu province","Outside of Jiangsu", "Unknown"))
+summary(ds$ori)
+```
+sibling
+```{r}
+ds$sib<-factor(ds$Sibling_BL,labels=c("Yes","No", "Unknown"))
+summary(ds$sib)
+```
+
+having chronic condition, participant
+```{r}
+ds$c_participant<-factor(ds$Morbidity_S_BL,labels=c("Yes","No", "Unknown"))
+summary(ds$c_participant)
+```
+having chronic condition, parents
+```{r}
+ds$c_parents<-factor(ds$Morbidity_P_BL,labels=c("Yes","No", "Unknown"))
+summary(ds$c_parents)
+```
+academic performance
+```{r}
+ds$acade<-factor(ds$Academic_PLS_BL,labels=c("[90,100)","[80,90)", "[70,80)", "[0,70)", "Unknown"))
+summary(ds$acade)
+```
+academic year
+```{r}
+ds$acayear<-factor(ds$Academic_year,labels=c("Year 1", "Year 2"))
+summary(ds$acayear)
+```
+
+PHQ-9
+```{r}
+ds$phq<-factor(ds$PHQ9_cat_BL, levels=c(1,2,3,4,5),labels = c ("normal","mild", "moderate", "moreatetely severe", "severe"))
+```
+```{r}
+ds$phq2<-factor(ds$PHQ9_cat_BL, levels=c(1,2,3,4,5),labels = c ("normal","depression", "depression", "depression", "depression"))
+```
+
+GAD-7
+```{r}
+ds$gad<-factor(ds$GAD7_cat_BL, levels=c(1,2,3,4),labels = c ("normal","mild", "moderate", "severe"))
+ds$gad2<-factor(ds$GAD7_cat_BL, levels=c(1,2,3,4),labels = c ("normal","anxiety", "anxiety", "anxiety"))
+```
+
+ISI-7
+```{r}
+ds$isi<-factor(ds$ISI_cat_BL, levels=c(1,2,3,4),labels = c ("normal","subthreshold", "moderate", "severe"))
+ds$isi2<-factor(ds$ISI_cat_BL, levels=c(1,2,3,4),labels = c ("normal","sleeping problems", "sleeping problems", "sleeping problems"))
+```
+
+
+
+
+## Table 1
+
+
+
+```{r}
+library(Gmisc)
+T1<-function(varname,digits=1){
+             getDescriptionStatsBy(varname,ds$sex_i,add_total_col = TRUE,show_all_values = TRUE,hrzl_prop = TRUE, useNA = "no", statistics = TRUE, statistics.sig_lim = 10^-3, html=TRUE)
+}
+```
+
+```{r}
+table_data<- list()
+```
+
+```{r}
+table_data[["Ethnicity"]]<-T1(ds$han)
+table_data[["Interval between start of semester and study baseline (days)"]]<-T1(ds$Interval_Open_BL)
+table_data[["Academic performance last semester, final average mark"]]<-T1(ds$acade)
+table_data[["Academic year"]]<-T1(ds$acayear)
+table_data[["*Body height (cm)"]]<-T1(ds$Height_analysis)
+table_data[["*Body weight (kg)"]]<-T1(ds$Weight_analysis)
+table_data[["*Body mass index (kg/m^2)"]]<-T1(ds$BMI)
+table_data[["The place of origin"]]<-T1(ds$ori)
+table_data[["Having siblings"]]<-T1(ds$sib)
+table_data[["Having chronic condition(s), participants"]]<-T1(ds$c_participant)
+table_data[["Having chronic condition(s), parents"]]<-T1(ds$c_parents)
+table_data[["Age"]]<-T1(ds$Age_analysis)
+```
+
+```{r}
+rgroup <- c()
+n.rgroup <- c()
+output_data <-NULL 
+ for(varlabel in names(table_data)){
+   output_data <- rbind(output_data,table_data[[varlabel]])
+rgroup <- c(rgroup,varlabel)
+n.rgroup <- c(n.rgroup, nrow(table_data[[varlabel]]))}
+```
+
+```{r}
+htmlTable(output_data,align="rrrr",rgroup=rgroup,
+          n.rgroup=n.rgroup,
+          rgroupCSSseparator="",
+          rowlabel="",
+          caption="Table 1. Demographic characteristics of participants (N=1393)",
+          tfoot='*Body height were missing among 17 participants; body weight were missing among 26 participants; body mass index were missing among 29 participants',
+          ctable=TRUE)
+```
+
+
+## Table 2
+
+```{r}
+T2<-function(varname,digits=1){
+             getDescriptionStatsBy(varname,ds$sex_i,add_total_col = TRUE,show_all_values = TRUE,hrzl_prop = TRUE, useNA = "no", statistics = TRUE, statistics.sig_lim = 10^-3, html=TRUE)
+}
+```
+
+
+```{r}
+table2_data <- list()
+```
+
+```{r}
+table2_data[["PHQ-9"]]<-T2(ds$phq)
+table2_data[["GAD-7"]]<-T2(ds$gad)
+table2_data[["ISI"]]<-T2(ds$isi)
+```
+
+```{r}
+rgroup <- c()
+n.rgroup <- c()
+output2_data <-NULL 
+ for(varlabel in names(table2_data)){
+   output2_data <- rbind(output2_data,table2_data[[varlabel]])
+rgroup <- c(rgroup,varlabel)
+n.rgroup <- c(n.rgroup, nrow(table2_data[[varlabel]]))}
+```
+
+
+```{r}
+htmlTable(output2_data,align="rrrr",rgroup=rgroup,
+          n.rgroup=n.rgroup,
+          rgroupCSSseparator="",
+          rowlabel="",
+          caption="Table 2. Characteristics of symptoms of depression, anxiety and insomnia of participants",
+          tfoot='*PHQ-9 were missing among 26 participants; GAD-7 were missing among 12 participants; ISI were missing among 20 participants',
+          ctable=TRUE)
+```
+
+## Table 3
+
+```{r}
+ds$COVID19_impact_dailylife_f<- factor(ds$COVID19_impact_dailylife,
+                                          labels=c("none","mild","moderate", "severe", "extremely severe", "Missing"))
+summary(ds$COVID19_impact_dailylife_f)
+
+ds$COVID19_impact_studypractice_f<- factor(ds$COVID19_impact_studypractice,
+                                          labels=c("none","mild","moderate", "severe", "extremely severe", "Missing"))
+
+ds$COVID19_impact_familyincome_f<- factor(ds$COVID19_impact_familyincome,
+                                          labels=c("none","mild","moderate", "severe", "extremely severe", "Missing"))
+
+ds$COVID19_impact_familyhealth_f<- factor(ds$COVID19_impact_familyhealth,
+                                          labels=c("none","mild","moderate", "severe", "extremely severe", "Missing"))
+
+ds$COVID19_impact_relationship_f<- factor(ds$COVID19_impact_relationship,
+                                          labels=c("none","mild","moderate", "severe", "extremely severe"))
+
+```
+
+
+
+
+```{r}
+T3<-function(varname,digits=1){
+             getDescriptionStatsBy(varname,ds$sex_i,add_total_col = TRUE,show_all_values = TRUE,hrzl_prop = TRUE, useNA = "no", statistics = TRUE, statistics.sig_lim = 10^-3, html=TRUE)
+}
+```
+
+
+```{r}
+table3_data <- list()
+```
+
+```{r}
+table3_data[["COVID-19 impact on daily life"]]<-T3(ds$COVID19_impact_dailylife_f)
+table3_data[["COVID-19 impact on study practice"]]<-T3(ds$COVID19_impact_studypractice_f)
+table3_data[["COVID-19 impact on family income"]]<-T3(ds$COVID19_impact_familyincome_f)
+table3_data[["COVID-19 impact on family health"]]<-T3(ds$COVID19_impact_familyhealth_f)
+table3_data[["COVID-19 impact on family relationship"]]<-T3(ds$COVID19_impact_relationship_f)
+```
+
+```{r}
+rgroup <- c()
+n.rgroup <- c()
+output3_data <-NULL 
+ for(varlabel in names(table3_data)){
+   output3_data <- rbind(output3_data,table3_data[[varlabel]])
+rgroup <- c(rgroup,varlabel)
+n.rgroup <- c(n.rgroup, nrow(table3_data[[varlabel]]))}
+```
+
+
+```{r}
+htmlTable(output3_data,align="rrrr",rgroup=rgroup,
+          n.rgroup=n.rgroup,
+          rgroupCSSseparator="",
+          rowlabel="",
+          caption="Table 3. Influence of COVID-19 epidemic and associated measures on family relationship during the past 14 days",
+          tfoot='',
+          ctable=TRUE)
+```
+

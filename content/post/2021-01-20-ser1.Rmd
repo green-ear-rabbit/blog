@@ -13,7 +13,7 @@ knitr::include_graphics("https://github.com/green-ear-rabbit/blog/blob/master/st
 ```
 
 
-**Authors**: Wanqi Wang, Shiqiang Wu, Yuxin Liang, Zihan Dong, Qikai Wang, Guofeng Zhou, Dan Mao, Yimei Tang, Stephen W. Pan
+**Authors**: **Wanqi Wang**, Shiqiang Wu, Yuxin Liang, Zihan Dong, Qikai Wang, Guofeng Zhou, Dan Mao, Yimei Tang, Stephen W. Pan
 
 **Presenter**: Wanqi Wang
 

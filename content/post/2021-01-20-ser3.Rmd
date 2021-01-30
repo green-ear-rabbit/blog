@@ -1,0 +1,46 @@
+---
+title: "Caregiver during childhood is associated with HIV test uptake among Chinese college students: A cross-sectional study in Suzhou, China"
+author: "Wanqi"
+date: 2021-01-20T21:13:54-06:00
+output: html_document
+---
+
+Poster presentation at the [Annual Meeting of Society of Epidemiologic Research.](https://epiresearch.org/)
+
+
+**Authors**: **Wanqi Wang**, Zihan Dong, Hanrui Zhao, Stephen W. Pan
+
+**Presenter**: Wanqi Wang
+
+# INTRODUCTION
+
+Due in part to growing acceptance of casual sex and limited sex education, many
+college students in China are increasingly vulnerable to HIV infection. Unfortunately, HIV testing
+rates among college students in China remain suboptimal. Previous studies indicate that caregiver
+during childhood may be associated with healthcare avoidance. This study examined the association
+between childhood caregiver and HIV test uptake among college students in Suzhou, China.
+
+#METHOD
+
+Data were collected from a cross-sectional online survey. Links to the survey were distributed via
+email to enrolled students at an English language university in East China. Eligibility criteria:
+current university student between 18 and 30 years old in the study city, ever had anal, oral or
+vaginal sex. Caregiver during childhood and HIV testing history was based on participants’ self
+report. Logistic regression was used to assess the association between caregiver during childhood
+and HIV test uptake. Age, sex, income, and household registry were entered as control variables.
+
+# RESULTS
+
+A total of 265 participants were included in the study. 8.3% of participants had ever tested for HIV,
+63.4% were raised by two parents, 24.5% were raised by single parents, 7.17% were raised by one
+or more grandparents, and 4.9% were raised by other people. The odds of HIV testing were3.7 times
+greater for students raised by other people, compared with students raised by two parents
+(OR=4.70, CI=1.110~19.916, p<0.05). No significant differences in HIV testing were observed
+between students raised by two parents, a single parent and grandparents.
+
+# CONCLUSION
+
+Students who are not raised by parents or grandparents may be more likely to test for HIV, which
+may due to their perceived risk, or their more responsibility to health. To improve the HIV testing
+among college students, further studies are needed to understand the mechanisms of association
+between childhood caregivers and HIV testing.

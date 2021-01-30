@@ -1,6 +1,5 @@
 ---
-title: "Supernatural beliefs intervention to enhance type 2 diabetes self-management in China: a
-pilot randomized controlled trial"
+title: "Supernatural beliefs intervention to enhance type 2 diabetes self-management in China: a pilot randomized controlled trial"
 author: "Wanqi"
 date: 2021-01-20T21:13:54-06:00
 output: html_document
@@ -9,7 +8,8 @@ output: html_document
 Oral presentation at the [Annual Meeting of Society of Epidemiologic Research.](https://epiresearch.org/)
 
 
-**Authors**: Stephen W. Pan, Zihan Dong, Qikai Wang, Shiqiang Wu, Yuxin Liang, Wanqi Wang, Mark A. Strand, Amy Wachholtz, Guofeng Zhou, Dan Mao, Yimei Tang
+**Authors**: Stephen W. Pan, Zihan Dong, Qikai Wang, Shiqiang Wu, Yuxin Liang, **Wanqi Wang**, Mark A. Strand, Amy Wachholtz, Guofeng Zhou, Dan Mao, Yimei Tang
+
 **Presenter**: Stephen W. Pan
 
 # Background

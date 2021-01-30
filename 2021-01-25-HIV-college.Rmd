@@ -1,0 +1,11 @@
+---
+title: "Fear of nosocominal infection and HIV testing"
+author: "Wanqi"
+date: 2021-01-20T21:13:54-06:00
+output: html_document
+---
+
+
+HIV testing is the first step in the HIV “cascade of care”, and is critical for identifying cases to prevent further transmission and poorer disease prognosis.
+
+
