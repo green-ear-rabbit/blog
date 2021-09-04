@@ -1,5 +1,5 @@
 ---
-title: "Using R to make tables in your manuscripts (for epidemiology and clinical research)"
+title: "Student mental health table 1- table 2"
 author: "Wanqi"
 date: 2021-01-20T21:13:54-06:00
 output: html_document
@@ -9,8 +9,6 @@ output: html_document
 ```{r include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 ```
-
-***All data in this section are not true data***
 
 
 # Introduction
