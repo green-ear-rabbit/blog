@@ -1,0 +1,250 @@
+---
+title: 'Using R to get data from web page'
+author: "Wanqi"
+date: "30/01/2021"
+output: html_document
+---
+
+
+
+<p>This is the data obtained from <a href="https://qianxi.baidu.com/2020/">Baidu Qianxi</a></p>
+<p>The move out from Wuhan China during the early outbreak at early 2020.</p>
+<p>Go to website -&gt; right click -&gt; view page source</p>
+<p>Go to website -&gt; fn_f12 -&gt;network-&gt;js -&gt; cityrank</p>
+<pre class="r"><code>library(jsonlite)</code></pre>
+<pre><code>## Warning: package &#39;jsonlite&#39; was built under R version 3.6.3</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 3.6.2</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --</code></pre>
+<pre><code>## v ggplot2 3.3.3     v purrr   0.3.4
+## v tibble  3.1.0     v dplyr   1.0.4
+## v tidyr   1.1.2     v stringr 1.4.0
+## v readr   1.4.0     v forcats 0.5.1</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## Warning: package &#39;readr&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## Warning: package &#39;forcats&#39; was built under R version 3.6.3</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter()  masks stats::filter()
+## x purrr::flatten() masks jsonlite::flatten()
+## x dplyr::lag()     masks stats::lag()</code></pre>
+<pre class="r"><code>curve&lt;-readLines(&#39;http://huiyan.baidu.com/migration/historycurve.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;callback=&#39;)%&gt;% str_remove_all(&quot;[\\(\\)]&quot;) %&gt;%
+  fromJSON()%&gt;%
+  .[[&#39;data&#39;]] %&gt;%
+  .[[&#39;list&#39;]] %&gt;%
+  as.tibble()</code></pre>
+<pre><code>## Warning: `as.tibble()` is deprecated as of tibble 2.0.0.
+## Please use `as_tibble()` instead.
+## The signature and semantics have changed, see `?as_tibble`.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+<pre><code>## Warning in readLines(&quot;http://huiyan.baidu.com/migration/historycurve.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;callback=&quot;): incomplete final line
+## found on &#39;http://huiyan.baidu.com/migration/historycurve.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;callback=&#39;</code></pre>
+<p>OKAY, then make a loop to get everyday’s data</p>
+<pre class="r"><code>x&lt;-c(&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200110&amp;callback=&#39;, &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200111&amp;callback=&#39;, &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200112&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200113&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200114&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200115&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200116&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200117&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200118&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200119&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200120&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200121&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200122&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200123&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200124&amp;callback=&#39;,
+&#39;https://huiyan.baidu.com/migration/cityrank.jsonp?dt=city&amp;id=420100&amp;type=move_out&amp;date=20200125&amp;callback=&#39;)</code></pre>
+<pre class="r"><code>for (i in x){
+  names&lt;-substr(i,88,95)
+  assign(names,
+  readLines(i) %&gt;% 
+  str_remove_all(&quot;[\\(\\)]&quot;) %&gt;%
+  fromJSON() %&gt;%
+  .[[&#39;data&#39;]] %&gt;%
+  .[[&#39;list&#39;]] %&gt;%
+  as_tibble() )
+}</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200110&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200111&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200112&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200113&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200114&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200115&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200116&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200117&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200118&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200119&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200120&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200121&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200122&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200123&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200124&amp;callback=&#39;</code></pre>
+<pre><code>## Warning in readLines(i): incomplete final line found
+## on &#39;https://huiyan.baidu.com/migration/cityrank.jsonp?
+## dt=city&amp;id=420100&amp;type=move_out&amp;date=20200125&amp;callback=&#39;</code></pre>
+<p>Excellent!
+Don’t forget that we need a total move out measures. Average or sum of all 16 days is not suitable, note that the value in move out data is the percentage. So we need to adjusted by everyday’s total move out data, which is “curve” dataset we had get at the begining of this section.</p>
+<p>Get the index everyday</p>
+<pre class="r"><code>index&lt;-curve %&gt;% as.data.frame()
+n1&lt;-index[1,101]
+n2&lt;-index[1,102]
+n3&lt;-index[1,103]
+n4&lt;-index[1,104]
+n5&lt;-index[1,105]
+n6&lt;-index[1,106]
+n7&lt;-index[1,107]
+n8&lt;-index[1,108]
+n9&lt;-index[1,109]
+n10&lt;-index[1,110]
+n11&lt;-index[1,111]
+n12&lt;-index[1,112]
+n13&lt;-index[1,113]
+n14&lt;-index[1,114]
+n15&lt;-index[1,115]
+n16&lt;-index[1,116]</code></pre>
+<p>Multiple acoording number at each day’s dataset
+“avalue” means adjusted value
+10-25</p>
+<pre class="r"><code>`20200110`$avalue1&lt;-`20200110`$value*n1
+`20200111`$avalue2&lt;-`20200111`$value*n2
+`20200112`$avalue3&lt;-`20200112`$value*n3
+`20200113`$avalue4&lt;-`20200113`$value*n4
+`20200114`$avalue5&lt;-`20200114`$value*n5
+`20200115`$avalue6&lt;-`20200115`$value*n6
+`20200116`$avalue7&lt;-`20200116`$value*n7
+`20200117`$avalue8&lt;-`20200117`$value*n8
+`20200118`$avalue9&lt;-`20200118`$value*n9
+`20200119`$avalue10&lt;-`20200119`$value*n10
+`20200120`$avalue11&lt;-`20200120`$value*n11
+`20200121`$avalue12&lt;-`20200121`$value*n12
+`20200122`$avalue13&lt;-`20200122`$value*n13
+`20200123`$avalue14&lt;-`20200123`$value*n14
+`20200124`$avalue15&lt;-`20200124`$value*n15
+`20200125`$avalue16&lt;-`20200125`$value*n16</code></pre>
+<p>Combine each day’s dataset
+You know, each dataset may contain different cities, because each dataset is the top 100 move out city from Wuhan. It’s not a easy work!!!</p>
+<pre class="r"><code>xdata&lt;-c(&quot;`20200110`&quot;,&quot;`20200111`&quot;,&quot;`20200112`&quot;,&quot;`20200113`&quot;,&quot;`20200114`&quot;,&quot;`20200115`&quot;,&quot;`20200116`&quot;,&quot;`20200117`&quot;,&quot;`20200118`&quot;,&quot;`20200119`&quot;,&quot;`20200120`&quot;,&quot;`20200121`&quot;,&quot;`20200122`&quot;,&quot;`20200123`&quot;,&quot;`20200124`&quot;,&quot;`20200125`&quot;)</code></pre>
+<pre class="r"><code>qqdata &lt;- `20200110` %&gt;% 
+ merge(.,`20200111`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%
+ merge(.,`20200112`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200113`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200114`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200115`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200116`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200117`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200118`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200119`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200120`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200121`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200122`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200123`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200124`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) %&gt;%  merge(.,`20200125`, by.x=&quot;city_name&quot;, by.y= &quot;city_name&quot;,  all.x=TRUE, all.y = TRUE) </code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200113`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39; are duplicated in the result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200114`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39; are duplicated in the result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200115`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39; are
+## duplicated in the result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200116`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39; are
+## duplicated in the result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200117`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;,
+## &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39; are duplicated in the
+## result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200118`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;,
+## &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39; are duplicated in the
+## result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200119`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;,
+## &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;,
+## &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39; are duplicated in the result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200120`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;,
+## &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;,
+## &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39; are duplicated in the result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200121`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;,
+## &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;,
+## &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;,
+## &#39;province_name.y&#39;, &#39;value.y&#39; are duplicated in the result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200122`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;,
+## &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;,
+## &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;,
+## &#39;province_name.y&#39;, &#39;value.y&#39; are duplicated in the result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200123`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;,
+## &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;,
+## &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;,
+## &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39; are duplicated in the result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200124`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;,
+## &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;,
+## &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;,
+## &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39; are duplicated in the result</code></pre>
+<pre><code>## Warning in merge.data.frame(., `20200125`, by.x = &quot;city_name&quot;, by.y =
+## &quot;city_name&quot;, : column names &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;,
+## &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;,
+## &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;,
+## &#39;province_name.y&#39;, &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;,
+## &#39;value.y&#39;, &#39;province_name.x&#39;, &#39;value.x&#39;, &#39;province_name.y&#39;, &#39;value.y&#39; are
+## duplicated in the result</code></pre>
+<p>Excellent</p>
+<p>Get a total index</p>
+<pre class="r"><code>qqdata$total&lt;- rowSums(cbind(qqdata$avalue1,qqdata$avalue2,qqdata$avalue3,qqdata$avalue4,qqdata$avalue5,qqdata$avalue6,qqdata$avalue7,qqdata$avalue8,qqdata$avalue9,qqdata$avalue10,qqdata$avalue11,qqdata$avalue12,qqdata$avalue13,qqdata$avalue14,qqdata$avalue15,qqdata$avalue16,qqdata$avalue17,qqdata$avalue18,qqdata$avalue19,qqdata$avalue20,qqdata$avalue21,qqdata$avalue22,qqdata$avalue23,qqdata$avalue24,qqdata$avalue25),na.rm = TRUE)</code></pre>
+<pre class="r"><code>summary(qqdata$total)</code></pre>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+##   0.0558   2.6917   6.6738  32.8096  16.7263 674.3121</code></pre>
+<p>make it as factor</p>
+<pre class="r"><code>quantile(qqdata$total)</code></pre>
+<pre><code>##           0%          25%          50%          75%         100% 
+##   0.05578016   2.69173238   6.67379801  16.72632601 674.31210739</code></pre>
+<pre class="r"><code>qqdata$risk &lt;- 
+ifelse(qqdata$total&lt;as.numeric(quantile(qqdata$total)[2]),&quot;1&quot;, ifelse(qqdata$total&lt;as.numeric(quantile(qqdata$total)[3]),&quot;2&quot;,
+ifelse(qqdata$total&lt;as.numeric(quantile(qqdata$total)[4]),&quot;3&quot;,&quot;4&quot;)))
+table(qqdata$risk)</code></pre>
+<pre><code>## 
+##  1  2  3  4 
+## 33 33 33 34</code></pre>

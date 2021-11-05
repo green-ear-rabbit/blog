@@ -1,0 +1,204 @@
+---
+title: "GWAS in R"
+author: "Wanqi"
+date: 2021-01-20T21:13:54-06:00
+output: html_document
+---
+
+
+
+<pre class="r"><code>library(rrBLUP)</code></pre>
+<pre><code>## Warning: package &#39;rrBLUP&#39; was built under R version 3.6.2</code></pre>
+<p><a href="https://link.springer.com/protocol/10.1007%2F978-1-4939-6682-0_14" class="uri">https://link.springer.com/protocol/10.1007%2F978-1-4939-6682-0_14</a></p>
+<div id="data-import" class="section level2">
+<h2>data import</h2>
+<p>The data provided by the guide is Rdata format, which needs to be imported by load().</p>
+<pre class="r"><code>load(&quot;data/GWAS_Data.RData&quot;)</code></pre>
+</div>
+<div id="phenotype" class="section level2">
+<h2>phenotype</h2>
+<p>View phenotypic data</p>
+<pre class="r"><code>head(pheno)</code></pre>
+<pre><code>##      GID  ENV    Yield
+## 1 Oat179 Env1 6317.606
+## 2 Oat130 Env2 6335.475
+## 3 Oat303 Env4 7259.274
+## 4 Oat270 Env1 6916.124
+## 5 Oat202 Env4 6845.943
+## 6 Oat233 Env3 5750.001</code></pre>
+<p>Check variables structure. GID and ENV needs to be factors</p>
+<pre class="r"><code>str(pheno)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    932 obs. of  3 variables:
+##  $ GID  : Factor w/ 330 levels &quot;Oat1&quot;,&quot;Oat10&quot;,..: 89 36 228 191 116 150 205 25 153 264 ...
+##  $ ENV  : Factor w/ 4 levels &quot;Env1&quot;,&quot;Env2&quot;,..: 1 2 4 1 4 3 2 2 3 2 ...
+##  $ Yield: num  6318 6335 7259 6916 6846 ...</code></pre>
+<p>Checking normality of the data. In theory residuals needs to be checked
+but in general if data are normal, residuals are normal.</p>
+<pre class="r"><code>hist(pheno$Yield, col=&quot;black&quot;,xlab=&quot;Yield&quot;,ylab=&quot;Frequency&quot;,
+     border=&quot;white&quot;,breaks=10,main=&quot;Yield Histogram&quot;) # Data seems pretty normal with some outliers. </code></pre>
+<p><img src="/blog/post/2021-01-24-my-learning-experience-on-GWAS_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>shapiro.test(pheno$Yield)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  pheno$Yield
+## W = 0.99392, p-value = 0.0007821</code></pre>
+<p>Shapiro-Wilk test indicates that normality condition is not met. Let´s remove the outliers and check the normality again.</p>
+<pre class="r"><code>boxplot.yield&lt;- boxplot(pheno$Yield,xlab=&quot;Boxplot&quot;,ylab=&quot;Yield&quot;,ylim=c(4000,9000))</code></pre>
+<p><img src="/blog/post/2021-01-24-my-learning-experience-on-GWAS_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>outliers &lt;- boxplot.yield$out
+outliers</code></pre>
+<pre><code>##  [1] 8979.334 3944.849 3947.001 3948.641 4576.506 3942.469 8166.286 4616.835
+##  [9] 4672.310 8920.055</code></pre>
+<p>10 outliers, let’s remove it</p>
+<pre class="r"><code>pheno &lt;- pheno[-which(pheno$Yield%in%outliers),]</code></pre>
+<pre class="r"><code>shapiro.test(pheno$Yield)</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  pheno$Yield
+## W = 0.99719, p-value = 0.1093</code></pre>
+<p>it is normal now!</p>
+<p>let’s now remove all missing data</p>
+<pre class="r"><code>pheno &lt;- na.omit(pheno)</code></pre>
+<p>After filtering pheno 922 observations</p>
+</div>
+<div id="genotype" class="section level2">
+<h2>genotype</h2>
+<p>View genotypic data</p>
+<pre class="r"><code>geno[1:5,1:5]</code></pre>
+<pre><code>##      Marker1 Marker2 Marker3 Marker4 Marker5
+## Oat1      NA       1       1       1       1
+## Oat2      -1      NA       1       1       1
+## Oat3      -1       1       1       1      NA
+## Oat4      -1      NA      -1       1       1
+## Oat5      -1      NA      -1       1       1</code></pre>
+<pre class="r"><code>map[1:5,1:3]</code></pre>
+<pre><code>##      Markers chrom   loc
+## 1  Marker607    1A 16730
+## 2 Marker2900    1A 16730
+## 3 Marker1316    1A 25338
+## 4 Marker2297    1A 26595
+## 5 Marker1895    1A 27071</code></pre>
+<p>Filtering conditions will depend on the researcher. In this simple, function
+we remove individuals with missing data, markers with a certain % of missing,
+and heterozygous calls (IF there are a high proportion of heterozygous, it can
+indicate a problem with the marker, because oat is an inbreed specie)</p>
+<pre class="r"><code>filter.fun &lt;- function(geno,IM,MM,H){
+  #Remove individuals with more than a % missing data
+  individual.missing &lt;- apply(geno,1,function(x){
+    return(length(which(is.na(x)))/ncol(geno))
+  })
+  #length(which(individual.missing&gt;0.40)) #will tell you how many 
+  #individulas needs to be removed with 20% missing.
+  #Remove markers with % missing data
+  marker.missing &lt;- apply(geno,2,function(x)
+  {return(length(which(is.na(x)))/nrow(geno))
+    
+  })
+  length(which(marker.missing&gt;0.6))
+  #Remove markers herteozygous calls more than %. 
+  heteroz &lt;- apply(geno,1,function(x){
+    return(length(which(x==0))/length(!is.na(x)))
+  })
+  
+  filter1 &lt;- geno[which(individual.missing&lt;IM),which(marker.missing&lt;MM)]
+  filter2 &lt;- filter1[,(heteroz&lt;H)]
+  return(filter2)
+}
+geno[1:10,1:10]</code></pre>
+<pre><code>##       Marker1 Marker2 Marker3 Marker4 Marker5 Marker6 Marker7 Marker8 Marker9
+## Oat1       NA       1       1       1       1       1      -1      -1      -1
+## Oat2       -1      NA       1       1       1       1      -1      -1      -1
+## Oat3       -1       1       1       1      NA       1      -1      NA      -1
+## Oat4       -1      NA      -1       1       1       1      -1      -1       1
+## Oat5       -1      NA      -1       1       1      NA      -1      -1       1
+## Oat6       -1       1       1      NA      -1      NA      -1       1      -1
+## Oat7       NA       1      -1      -1      -1      NA       1       1      -1
+## Oat8       -1      NA      -1      -1      NA      NA      NA      -1       1
+## Oat9       -1       1       1      -1      -1       1      -1      -1      -1
+## Oat10      -1      NA       1       1       1      NA      -1       1      -1
+##       Marker10
+## Oat1        NA
+## Oat2         1
+## Oat3         1
+## Oat4        NA
+## Oat5        NA
+## Oat6        NA
+## Oat7        NA
+## Oat8        NA
+## Oat9        NA
+## Oat10       NA</code></pre>
+<pre class="r"><code>geno.filtered &lt;- filter.fun(geno[,1:3629],0.4,0.60,0.02)
+geno.filtered[1:5,1:5]</code></pre>
+<pre><code>##      Marker1 Marker2 Marker3 Marker4 Marker5
+## Oat1      NA       1       1       1       1
+## Oat2      -1      NA       1       1       1
+## Oat3      -1       1       1       1      NA
+## Oat4      -1      NA      -1       1       1
+## Oat5      -1      NA      -1       1       1</code></pre>
+<pre class="r"><code>dim(geno.filtered)</code></pre>
+<pre><code>## [1]  328 3268</code></pre>
+</div>
+<div id="imputation" class="section level2">
+<h2>Imputation</h2>
+<p>rrBLP program will make imputation. For the simplicity , we impute using the mean but EM algorithm can be also used. rrBLUP also allows to remove markers depending on the Minor allele frequency (MAF),in our example we remove those markers with MAF less than 0.05.</p>
+<p>*The EM imputation algorithm is based on the multivariate normal distribution and was designed for use with GBS (genotyping-by-sequencing) markers, which tend to be high density but with lots of missing data. Details are given in Poland et al. (2012). The EM algorithm stops at iteration t when the RMS error = n^{-1} |A_{t} - A_{t-1}|_2 &lt; tol.*</p>
+<pre class="r"><code>library(rrBLUP)
+Imputation &lt;- A.mat(geno.filtered,impute.method=&quot;EM&quot;,return.imputed=T,min.MAF=0.05)</code></pre>
+<pre><code>## [1] &quot;A.mat converging:&quot;
+## [1] 0.0431
+## [1] 0.00647</code></pre>
+<pre class="r"><code>K.mat &lt;- Imputation$A ### KINSHIP matrix
+geno.gwas &lt;- Imputation$imputed #NEW geno data.</code></pre>
+<pre class="r"><code>geno.gwas[1:5,1:5]## view geno</code></pre>
+<pre><code>##       Marker1 Marker3 Marker4   Marker5 Marker7
+## Oat1 -1.44066       1       1 1.0000000      -1
+## Oat2 -1.00000       1       1 1.0000000      -1
+## Oat3 -1.00000       1       1 0.6753843      -1
+## Oat4 -1.00000      -1       1 1.0000000      -1
+## Oat5 -1.00000      -1       1 1.0000000      -1</code></pre>
+<pre class="r"><code>K.mat[1:5,1:5]## view Kinship</code></pre>
+<pre><code>##           Oat1         Oat2       Oat3        Oat4         Oat5
+## Oat1 1.8191561  0.220454719  0.1009423  0.15218203  0.177660657
+## Oat2 0.2204547  2.111943356  0.1266988  0.02978199 -0.007214392
+## Oat3 0.1009423  0.126698834  1.8000414 -0.12678093 -0.126589635
+## Oat4 0.1521820  0.029781989 -0.1267809  1.87520005  1.803271696
+## Oat5 0.1776607 -0.007214392 -0.1265896  1.80327170  1.873595678</code></pre>
+</div>
+<div id="checking-population-structure-effects" class="section level2">
+<h2>CHECKING POPULATION STRUCTURE EFFECTS</h2>
+<p>Principal components analysis</p>
+<pre class="r"><code>geno.scale &lt;- scale(geno.gwas,center=T,scale=F) # Data needs to be center.
+svdgeno &lt;- svd(geno.scale) 
+PCA &lt;- geno.scale%*%svdgeno$v #Principal components
+PCA[1:5,1:5]</code></pre>
+<pre><code>##            [,1]       [,2]      [,3]       [,4]        [,5]
+## Oat1  -6.976549  -9.824339  5.290272  -1.184019  5.00415366
+## Oat2  -8.745900 -10.545057  4.730541  -8.834242 -0.02504027
+## Oat3  -6.292199   3.412671  4.774038   6.657838  8.93925754
+## Oat4 -19.524147   7.689386 -7.963162 -13.644082 -6.19429306
+## Oat5 -19.334593   8.011715 -7.624697 -13.033030 -6.53379527</code></pre>
+</div>
+<div id="screeplot-to-visualize-the-proportion-of-variance-explained-by-pca" class="section level2">
+<h2>Screeplot to visualize the proportion of variance explained by PCA</h2>
+<p>pdf(“Figure2.pdf”)
+plot(round((svdgeno<span class="math inline">\(d)^2/sum((svdgeno\)</span>d)^2),d=7)[1:10],type=“o”,main=“Screeplot”,xlab=“PCAs”,ylab=“% variance”)
+dev.off()
+##Proportion of variance explained by PCA1 and PCA2
+PCA1 &lt;- 100<em>round((svdgeno<span class="math inline">\(d[1])^2/sum((svdgeno\)</span>d)^2),d=3); PCA1
+PCA2 &lt;- 100</em>round((svdgeno<span class="math inline">\(d[2])^2/sum((svdgeno\)</span>d)^2),d=3); PCA2
+### Plotting Principal components.
+pdf(“Figure3.pdf”)
+plot(PCA[,1],PCA[,2],xlab=paste(“Pcomp:”,PCA1,“%”,sep="“),ylab=paste(”Pcomp:“,PCA2,”%“,sep=”“),pch=20,cex=0.7)
+dev.off()
+### Plotting depending on clustering.
+Eucl &lt;- dist(geno.gwas) ###Euclinean distance
+fit &lt;- hclust(Eucl,method=”ward.D2“)### Ward criterion makes clusters with same size.
+groups2 &lt;- cutree(fit,k=2) ### Selecting two clusters.
+table(groups2)# Number of individuals per cluster.
+pdf(”Figure4.pdf“)
+plot(PCA[,1],PCA[,2],xlab=paste(”Pcomp:“,PCA1,”%“,sep=”“),ylab=paste(”Pcomp:“,PCA2,”%“,sep=”“),pch=20,cex=0.7,col=groups2)
+legend(”bottomright“,c(”Subpop1: 244“,”Subpop2: 84“),pch=20,col=(c(”black“,”red“)),lty=0,bty=”n",cex=1)
+dev.off()</p>
+</div>
